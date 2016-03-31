@@ -1,5 +1,5 @@
 ---
-title: Fancy API Tooling in Rails
+title: What Rails Can Teach PHP About Building APIs
 slides:
 category: api
 tags: rails, api, php
