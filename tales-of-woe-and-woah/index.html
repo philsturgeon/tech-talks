@@ -29,36 +29,114 @@
 		<div class="theme-font-overpass2 theme-color-mint-beige" style="width: 100%; height: 100%;">
 		    <div class="reveal">
 		        <div class="slides">
-              <section data-markdown>
-                <script type="text/template">
-                    ## Page title
+                <section data-markdown>
+                  <script type="text/template">
+                      # API Tales of "Woe" and "Woah!"
+                      ## @philsturgeon
+                      ### 🇧🇷 PHP Brazil 🇧🇷
+                  </script>
+                </section>
 
-                    Not here to talk about the correct status codes, or the right methods.
-                    This will explain what can go wrong if you use the wrong stuff.
+                <section data-background-image="./img/intro-bristol.jpg">
+                  <h1 style="background: rgba(0, 0, 0, 0.25)">From Bristol 🇬🇧</h1>
+                </section>
 
-                    - missing a /foo/{id} taking down the server
-                      - pagination/cursors/limits would have stopped this
-                      - make /foo/ 404 instead of matching /foo
-                      - Avoid letting pagination be a DDoS vector
+                <section data-markdown>
+                  <script type="text/template">
+                      ## Defensive Routing
 
-                    - Avoid letting includes be a DDoS vector and generally a PITA.
+                      - missing a /foo/{id} taking down the server
+                        - pagination/cursors/limits would have stopped this
+                        - make /foo/ 404 instead of matching /foo
+                        - Avoid letting pagination be a DDoS vector
+                  </script>
+                </section>
 
-                    - Google deleting everything in your API
+                <section data-markdown>
+                  <script type="text/template">
+                      ## Selective Includes
 
-                    - Avoid people downloading your entire dataset and putting you out of business.
-                      - UUIDs stop (slow) malicious downloading of your data
+                      - Avoid letting includes be a DDoS vector and generally a PITA.
+                        - MEGAINCLUDE OF DOOM
+                  </script>
+                </section>
 
-                    - Don't get stuck using a two year old RC build of JSON-API forever due to
-                     busted development workflows.
+                <section>
+                  <h1>Don't Do Slow Stuff</h1>
+                  <section data-markdown>
+                    <script type="text/template">
+                      ## Tell clients where to wait
+                      - Take a ticket
+                      - Return sockets to subscribe for updates
+                      - or... be lazy and poll on `/foo/123`
+                    </script>
+                  </section>
 
-                    - How to respect error messages on the client side so people don't rage quit the
-                      app.
+                  <section data-markdown>
+                    <script type="text/template">
+                      ## Make Sure It's Actually Quicker
+                      - Maybe put that image straight on S3
+                      - Redis maybe doesn't need 1meg files going into it for later
+                      - Definitely don't base64 encode them!
+                    </script>
+                  </section>
+                </section>
 
+                <section data-markdown>
+                  <script type="text/template">
+                      ## Google Deleting Your Content
 
-                    - Stop your services from lying to each other.
+                      <blockquote class="twitter-tweet" data-lang="en"><p lang="en" dir="ltr"><a href="https://twitter.com/philsturgeon">@philsturgeon</a> my favorite WTF story is using a GET verb to delete resources. Which was interesting when Google crawled the API cc/ <a href="https://twitter.com/glenc">@glenc</a></p>&mdash; Jamie Hannaford (@jamiehannaford) <a href="https://twitter.com/jamiehannaford/status/473860510614831104">June 3, 2014</a></blockquote>
 
-                </script>
-              </section>
+                      _Use at least `POST` for destructive actions, or `PATCH` / `DELETE` depending._
+                  </script>
+                </section>
+
+                <section data-background-image="./img/instagram-plaintext.png"></section>
+
+                <section data-markdown>
+                  <script type="text/template">
+                      ## Universal Uniqueness
+                      - Avoid people downloading your entire dataset and putting you out of business
+                      - UUIDs stop (slow) malicious downloading of your public but unique data
+                  </script>
+                </section>
+
+                <section data-markdown>
+                  <script type="text/template">
+                      ## Server Errors on 200
+                      - APIERROR 5 THE FUCK IS THAT
+                      - Runscope will not report them
+                  </script>
+                </section>
+
+                <section data-markdown>
+                  <script type="text/template">
+                      ## At least one dev API per team
+                      - Don't get stuck using a two year old RC build of JSON-API forever due to
+                       busted development workflows.
+                 </script>
+               </section>
+
+               <section data-markdown>
+                 <script type="text/template">
+                    ## Educate Clients about Error Handling
+                    - Don't Retry on a rate limited response...
+                    - Implement early timeouts
+                    -
+                  </script>
+                </section>
+
+                <section data-markdown>
+                  <script type="text/template">
+                      ## Stop services lying to each other
+                      - strong parameters
+                        - php https://packagist.org/packages/koine/strong-parameters
+                      - VCR instead of static stubs
+                      - Be sure to re-record VCR stubs
+                      - Jenkins can host your entrie stack with Docker Compose
+                  </script>
+                </section>
 		            <section class="has-light-background" data-state="no-title-footer" data-background-color="#80b682">
 		                <div class="sl-block" data-block-type="image">
 		                    <div class="sl-block-content" style="z-index: 11; height: 600px">
@@ -91,7 +169,7 @@
 					{ src: 'plugin/markdown/markdown.js' },
 					{ src: 'plugin/notes/notes.js', async: true },
 					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
-          { src: 'plugin/title-footer/title-footer.js', async: true, callback: function() { title_footer.initialize(); } }
+          { src: 'plugin/title-footer/title-footer.js', async: true, callback: function() { title_footer.initialize(null, 'rgba(0,0,0,0.1)'); } }
 				]
 			});
 		</script>
