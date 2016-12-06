@@ -1,177 +1,316 @@
 <!doctype html>
 <html>
-	<head>
-		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-		<title>API Tales of Woe and Woah</title>
+	<title>API Tales of Woe and Woah</title>
 
-		<link rel="stylesheet" href="css/reveal.css">
-		<link rel="stylesheet" href="css/theme/black.css">
+	<link rel="stylesheet" href="css/reveal.css">
+	<link rel="stylesheet" href="css/theme/black.css">
 
-		<!-- Theme used for syntax highlighting of code -->
-		<link rel="stylesheet" href="lib/css/zenburn.css">
+	<!-- Theme used for syntax highlighting of code -->
+	<link rel="stylesheet" href="lib/css/zenburn.css">
 
-		<link rel="stylesheet" href="plugin/title-footer/title-footer.css">
+	<link rel="stylesheet" href="plugin/title-footer/title-footer.css">
 
-		<!-- Printing and PDF exports -->
-		<script>
-			var link = document.createElement( 'link' );
-			link.rel = 'stylesheet';
-			link.type = 'text/css';
-			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
-			document.getElementsByTagName( 'head' )[0].appendChild( link );
-		</script>
-	</head>
-	<body>
-  </head>
-	<body>
-		<div class="theme-font-overpass2 theme-color-mint-beige" style="width: 100%; height: 100%;">
-		    <div class="reveal">
-		        <div class="slides">
-                <section data-markdown>
-                  <script type="text/template">
-                      # API Tales of "Woe" and "Woah!"
-                      ## @philsturgeon
-                      ### 🇧🇷 PHP Brazil 🇧🇷
-                  </script>
-                </section>
+	<!-- Printing and PDF exports -->
+	<script>
+	var link = document.createElement( 'link' );
+	link.rel = 'stylesheet';
+	link.type = 'text/css';
+	link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+	document.getElementsByTagName( 'head' )[0].appendChild( link );
+	</script>
+</head>
+<body>
+</head>
+<body>
+	<div class="theme-font-overpass2 theme-color-mint-beige" style="width: 100%; height: 100%;">
+		<div class="reveal">
+			<div class="slides">
+				<section data-markdown>
+					<script type="text/template">
+						# API Tales of "Woe" and "Woah!"
+						## @philsturgeon
+						### 🇧🇷 PHP Brazil 🇧🇷
+					</script>
+				</section>
 
-                <section data-background-image="./img/intro-bristol.jpg">
-                  <h1 style="background: rgba(0, 0, 0, 0.25)">From Bristol 🇬🇧</h1>
-                </section>
+				<section data-background-image="./img/intro-bristol.jpg">
+					<h1 style="background: rgba(0, 0, 0, 0.25)">From Bristol 🇬🇧</h1>
+				</section>
 
-                <section data-markdown>
-                  <script type="text/template">
-                      ## Defensive Routing
+				<section data-markdown>
+					<script type="text/template">
+						## Defensive Routing
 
-                      - missing a /foo/{id} taking down the server
-                        - pagination/cursors/limits would have stopped this
-                        - make /foo/ 404 instead of matching /foo
-                        - Avoid letting pagination be a DDoS vector
-                  </script>
-                </section>
+						- missing a /foo/{id} taking down the server
+						- pagination/cursors/limits would have stopped this
+						- make /foo/ 404 instead of matching /foo
+						- Avoid letting pagination be a DDoS vector
+					</script>
+				</section>
 
-                <section data-markdown>
-                  <script type="text/template">
-                      ## Selective Includes
+				<section data-markdown>
+					<script type="text/template">
+						## Selective Includes
 
-                      - Avoid letting includes be a DDoS vector and generally a PITA.
-                        - MEGAINCLUDE OF DOOM
-                  </script>
-                </section>
+						- Avoid letting includes be a DDoS vector and generally a PITA.
+						- MEGAINCLUDE OF DOOM
+					</script>
+				</section>
 
-                <section>
-                  <h1>Don't Do Slow Stuff</h1>
-                  <section data-markdown>
-                    <script type="text/template">
-                      ## Tell clients where to wait
-                      - Take a ticket
-                      - Return sockets to subscribe for updates
-                      - or... be lazy and poll on `/foo/123`
-                    </script>
-                  </section>
+				<section>
+					<h1>Don't Do Slow Stuff</h1>
+					<section data-markdown>
+						<script type="text/template">
+							## Tell clients where to wait
+							- Take a ticket
+							- Return sockets to subscribe for updates
+							- or... be lazy and poll on `/foo/123`
+						</script>
+					</section>
 
-                  <section data-markdown>
-                    <script type="text/template">
-                      ## Make Sure It's Actually Quicker
-                      - Maybe put that image straight on S3
-                      - Redis maybe doesn't need 1meg files going into it for later
-                      - Definitely don't base64 encode them!
-                    </script>
-                  </section>
-                </section>
+					<section data-markdown>
+						<script type="text/template">
+							## Make Sure It's Actually Quicker
+							- Maybe put that image straight on S3
+							- Redis maybe doesn't need 1meg files going into it for later
+							- Definitely don't base64 encode them!
+						</script>
+					</section>
+				</section>
 
-                <section data-markdown>
-                  <script type="text/template">
-                      ## Google Deleting Your Content
+				<section data-markdown>
+					<script type="text/template">
+						## Google Deleting Your Content
 
-                      <blockquote class="twitter-tweet" data-lang="en"><p lang="en" dir="ltr"><a href="https://twitter.com/philsturgeon">@philsturgeon</a> my favorite WTF story is using a GET verb to delete resources. Which was interesting when Google crawled the API cc/ <a href="https://twitter.com/glenc">@glenc</a></p>&mdash; Jamie Hannaford (@jamiehannaford) <a href="https://twitter.com/jamiehannaford/status/473860510614831104">June 3, 2014</a></blockquote>
+						<blockquote class="twitter-tweet" data-lang="en"><p lang="en" dir="ltr"><a href="https://twitter.com/philsturgeon">@philsturgeon</a> my favorite WTF story is using a GET verb to delete resources. Which was interesting when Google crawled the API cc/ <a href="https://twitter.com/glenc">@glenc</a></p>&mdash; Jamie Hannaford (@jamiehannaford) <a href="https://twitter.com/jamiehannaford/status/473860510614831104">June 3, 2014</a></blockquote>
 
-                      _Use at least `POST` for destructive actions, or `PATCH` / `DELETE` depending._
-                  </script>
-                </section>
+						_Use at least `POST` for destructive actions, or `PATCH` / `DELETE` depending._
+					</script>
+				</section>
 
-                <section data-background-image="./img/instagram-plaintext.png"></section>
+				<section>
+					<section data-background-image="./img/instagram-plaintext.png">
+						<div style="bottom: 100px" style="background: rgba(0, 0, 0, 0.25)">
+							<h1>Use SSL</h1>
+							<p>letsencrypt.org</p>
+						</div>
+					</section>
+					<section data-background-image="./img/instagram-plaintext.png">
+						<div style="background: rgba(0, 0, 0, 0.25)">
+							<cite><a href="http://blog.mazinahmed.net/2014/07/session-hijacking-in-instagram-mobile.html">Mazin Ahmed</a></cite>
+						</div>
+					</section>
+				</section>
 
-                <section data-markdown>
-                  <script type="text/template">
-                      ## Universal Uniqueness
-                      - Avoid people downloading your entire dataset and putting you out of business
-                      - UUIDs stop (slow) malicious downloading of your public but unique data
-                  </script>
-                </section>
+				<section data-markdown>
+					<script type="text/template">
+						## Universal Uniqueness
+						- Avoid people downloading your entire dataset and putting you out of business
+						- UUIDs stop (slow) malicious downloading of your public but unique data
+					</script>
+				</section>
 
-                <section data-markdown>
-                  <script type="text/template">
-                      ## Server Errors on 200
-                      - APIERROR 5 THE FUCK IS THAT
-                      - Runscope will not report them
-                  </script>
-                </section>
+				<section data-markdown>
+					<script type="text/template">
+						## Server Errors on 200
+						- APIERROR 5 THE FUCK IS THAT
+						- Runscope will not report them
+					</script>
+				</section>
 
-                <section data-markdown>
-                  <script type="text/template">
-                      ## At least one dev API per team
-                      - Don't get stuck using a two year old RC build of JSON-API forever due to
-                       busted development workflows.
-                 </script>
-               </section>
+				<section data-markdown>
+					<script type="text/template">
+						## Retry Failures from Client Side
+						- If a request gets a server timeout, try it again
+						- Maybe try it twice, but wait a second or two
+						- Check the status code before you retry
+					</script>
+				</section>
 
-               <section data-markdown>
-                 <script type="text/template">
-                    ## Educate Clients about Error Handling
-                    - Don't Retry on a rate limited response...
-                    - Implement early timeouts
-                    -
-                  </script>
-                </section>
+				<section>
+					<section data-markdown>
+						<script type="text/template">
+							## 403 vs 429
+							[hello.js](https://github.com/MrSwitch/hello.js) was seeing a 403 from Google when rate limit was exceeded. Thought it was a refresh token issue. Retried thousands of times _per page load_!
+						</script>
+					</section>
 
-                <section data-markdown>
-                  <script type="text/template">
-                      ## Stop services lying to each other
-                      - strong parameters
-                        - php https://packagist.org/packages/koine/strong-parameters
-                      - VCR instead of static stubs
-                      - Be sure to re-record VCR stubs
-                      - Jenkins can host your entrie stack with Docker Compose
-                  </script>
-                </section>
-		            <section class="has-light-background" data-state="no-title-footer" data-background-color="#80b682">
-		                <div class="sl-block" data-block-type="image">
-		                    <div class="sl-block-content" style="z-index: 11; height: 600px">
-		                        <img style="" data-src="https://s3.amazonaws.com/media-p.slid.es/uploads/588583/images/3093186/ebook.jpg"/>
-		                    </div>
-		                </div>
-		                <div class="sl-block" data-block-type="text">
-		                    <div class="sl-block-content" style="z-index: 12; font-size: 150%;">
-		                        <p>apisyouwonthate.com</p>
-		                    </div>
-		                </div>
-		            </section>
-		        </div>
-		    </div>
+					<section data-background-image="./img/429.jpg" data-background-size="contain" data-background-color="black">
+					</section>
+
+					<section data-markdown>
+						<script type="text/template">
+							## Don't Retry ALL Failures
+							<blockquote>If you go over these limits when using our HTTP based APIs, Slack will start returning a `HTTP 429 Too Many Requests` error, a JSON object containing the number of calls you have been making, and a `Retry-After` header containing the number of seconds until you can retry.</blockquote>
+							[Slack: Rate Limits](https://api.slack.com/docs/rate-limits)
+						</script>
+					</section>
+				</section>
+
+
+				<section>
+					<section>
+						<h2>Talking over HTTP</h1>
+						<ul>
+							<li>Expect the worst from everyone</li>
+							<li class="fragment">The response might not be JSON</li>
+							<li class="fragment">The response might not be <em>anything</em>!</li>
+						</ul>
+
+					  <pre class="fragment fade-in"><code data-trim data-noescape>
+def get_something(id)
+  response = JSON.parse(client.get('/api/something/'+id))
+
+  if response['RESPONSE']['CODE'] == "SUCCESS"
+    return response
+  elsif response['RESPONSE']['CODE'] == 'NOT FOUND'
+    return response
+  else
+    message = response['RESPONSE']['APIERROR']
+    raise SomeError, "Error from third-party API: #{message}."
+  end
+end
+						</code></pre>
+
+						<ul>
+							<li class="fragment">This will explode in so many ways</li>
+						</ul>
+					</section>
+
+					<section data-background-image="./img/dont-trust-returned-content.png">
+					</section>
+
+					<section>
+						<h2>Talking over HTTP</h1>
+						<ul>
+							<li>If it's not JSON, catch that exception</li>
+						</ul>
+
+						<pre class="fragment fade-in"><code data-noescape>
+def get_something(id)
+  response = JSON.parse(client.get('/api/something/'+id))
+
+  if response['RESPONSE']['CODE'] == "SUCCESS"
+    return response
+  elsif response['RESPONSE']['CODE'] == 'NOT FOUND'
+    return response
+  else
+    message = response['RESPONSE']['APIERROR']
+    raise SomeError, "Error from third-party API: #{message}."
+  end
+rescue JSON::ParserError => e
+  raise HttpServerError, "Service returned invalid JSON data"
+end
+						</code></pre>
+					</section>
+
+
+					<section>
+						<h2>Talking over HTTP</h1>
+						<ul>
+							<li>The response might be empty if its a timeout</li>
+						</ul>
+
+						<pre class="fragment fade-in"><code data-trim data-noescape>
+def get_something(id)
+  response = JSON.parse(client.get('/api/something/'+id))
+
+  if response.nil?
+    raise HttpServerError, "Service returned an empty response"
+  end
+
+  # ... success or fail
+
+rescue JSON::ParserError => e
+  raise HttpServerError, "Service returned invalid JSON data"
+end
+						</code></pre>
+					</section>
+
+					<section>
+						<h2>Talking over HTTP</h1>
+						<ul>
+							<li>The response might be a weird shape</li>
+						</ul>
+
+						<pre class="fragment fade-in"><code data-trim data-noescape>
+def get_something(id)
+  response = JSON.parse(client.get('/api/something/'+id))
+
+  if response.nil?
+    raise HttpServerError, "Service returned an empty response"
+  end
+
+  unless response['RESPONSE'] && response['RESPONSE']['CODE']
+    raise HttpServerError, "Service returned an unexpected response: #{response}"
+  end
+
+  # ... success or fail
+
+rescue JSON::ParserError => e
+  raise HttpServerError, "Service returned invalid JSON data"
+end
+						</code></pre>
+					</section>
+				</section>
+
+				<section data-markdown>
+					<script type="text/template">
+						## At least one dev API per team
+						- Don't get stuck using a two year old RC build of JSON-API forever due to
+						busted development workflows.
+					</script>
+				</section>
+
+				<section data-markdown>
+					<script type="text/template">
+						## Stop services lying to each other
+						- strong parameters
+						- php https://packagist.org/packages/koine/strong-parameters
+						- VCR instead of static stubs
+						- Be sure to re-record VCR stubs
+						- Jenkins can host your entrie stack with Docker Compose
+					</script>
+				</section>
+				<section class="has-light-background" data-state="no-title-footer" data-background-color="#80b682">
+					<div class="sl-block" data-block-type="image">
+						<div class="sl-block-content" style="z-index: 11; height: 600px">
+							<img style="" data-src="https://s3.amazonaws.com/media-p.slid.es/uploads/588583/images/3093186/ebook.jpg"/>
+						</div>
+					</div>
+					<div class="sl-block" data-block-type="text">
+						<div class="sl-block-content" style="z-index: 12; font-size: 150%;">
+							<p>apisyouwonthate.com</p>
+						</div>
+					</div>
+				</section>
+			</div>
 		</div>
+	</div>
 
-		<script src="lib/js/head.min.js"></script>
-		<script src="js/reveal.js"></script>
+	<script src="lib/js/head.min.js"></script>
+	<script src="js/reveal.js"></script>
 
-		<script>
-			// More info https://github.com/hakimel/reveal.js#configuration
-			Reveal.initialize({
-				history: true,
+	<script>
+	// More info https://github.com/hakimel/reveal.js#configuration
+	Reveal.initialize({
+		history: true,
 
-        center: true,
+		slideNumber: true,
 
-				// More info https://github.com/hakimel/reveal.js#dependencies
-				dependencies: [
-					{ src: 'plugin/markdown/marked.js' },
-					{ src: 'plugin/markdown/markdown.js' },
-					{ src: 'plugin/notes/notes.js', async: true },
-					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
-          { src: 'plugin/title-footer/title-footer.js', async: true, callback: function() { title_footer.initialize(null, 'rgba(0,0,0,0.1)'); } }
-				]
-			});
-		</script>
-	</body>
+		// More info https://github.com/hakimel/reveal.js#dependencies
+		dependencies: [
+			{ src: 'plugin/markdown/marked.js' },
+			{ src: 'plugin/markdown/markdown.js' },
+			{ src: 'plugin/notes/notes.js', async: true },
+			{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+			{ src: 'plugin/title-footer/title-footer.js', async: true, callback: function() { title_footer.initialize(null, 'rgba(0,0,0,0.1)'); } }
+		]
+	});
+	</script>
+</body>
 </html>
