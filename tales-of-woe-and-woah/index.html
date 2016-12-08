@@ -62,45 +62,66 @@
 					<h1>HORROR STORIES!</h1>
 				</section>
 
-				<section data-background-color="white">
-					<img src="./img/slow-dodgy-system.png">
+				<section data-background-color="white" data-background-image="./img/slow-dodgy-system.png" data-background-size="contain">
 				</section>
 
-				<section data-background-color="white">
-					<img src="./img/do-slow-stuff-later.png">
+				<section data-background-color="white" data-background-image="./img/current-system.png" data-background-size="contain">
 				</section>
+
+				<section data-background-color="white" data-background-image="./img/better-system.png" data-background-size="contain">
+				</section>
+
 
 				<section>
 					<h1>Don't Do Slow Stuff</h1>
-					<section data-markdown>
-						<script type="text/template">
-							## Tell clients where to wait
-							- Take a ticket
-							- Return sockets to subscribe for updates
-							- or... be lazy and poll on `/foo/123`
-						</script>
-					</section>
+					<ul>
+						<li class="fragment">Tell clients where to get updates</li>
+						<li class="fragment">Sockets, web hooks, or even long-polling!</li>
+					<ul>
+				</section>
 
-					<section data-markdown>
-						<script type="text/template">
-							## Make Sure It's Actually Quicker
-							- Maybe put that image straight on S3
-							- Redis maybe doesn't need 1meg files going into it for later
-							- Definitely don't base64 encode them!
-						</script>
-					</section>
+				<section>
+					<h1>Is Your Async Code Actually Quicker?</h1>
+					<ul>
+						<li class="fragment">Maybe put that image straight on S3</li>
+						<li class="fragment">Redis maybe doesn't need 1 megabyte files going into the queue</li>
+						<li class="fragment">Definitely don't base64 encode them!</li>
+					</ul>
+				</section>
+
+				<section data-background-color="white">
+					<img src="./img/better-system.png">
+				</section>
+
+				<section>
+					<h2>The most daft performance issue</h2>
+					<img src="./img/patched-client-missing-id.png">
 				</section>
 
 				<section data-markdown>
 					<script type="text/template">
 						## Defensive Routing
 
-						- missing a /foo/{id} taking down the server
-						- pagination/cursors/limits would have stopped this
-						- make /foo/ 404 instead of matching /foo
-						- Avoid letting pagination be a DDoS vector
+						- If `$id = null`, then `/foo/{$id}` is `/foo/`
+						- Pagination would have stopped this
+						- Limits would have stopped this
+						- `/foo/` should not equal `/foo`
+						- Throw a 404 instead
 					</script>
 				</section>
+
+				<section>
+          <h2>Restrict pagination limit size!</h2>
+          <pre><code data-trim data-noescape>
+if ($limit < 1 || $limit > 100) {
+
+  $limit = 100;
+
+}
+</code></pre>
+					<p>Don't let an unpaginated endpoint be a DDoS vector.</p>
+        </section>
+
 
 				<section data-markdown>
 					<script type="text/template">
@@ -351,14 +372,11 @@ end
 					</section>
 				</section>
 
-        <section>
-          <h2>Expect the worst from clients too!</h2>
-          <pre><code data-trim data-noescape>
-if ($limit < 1 || $limit > 100) {
-	$limit = 100;
-}
-</code></pre>
-        </section>
+				<section>
+
+					<blockquote class="twitter-tweet" data-lang="en"><p lang="en" dir="ltr">The UPS API is so sparsely documented I&#39;m having to actually send parcels to see what sort of data I get for specific situations.</p>&mdash; Dan Harper (@DanHarper7) <a href="https://twitter.com/DanHarper7/status/748550285761601536">June 30, 2016</a></blockquote>
+<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+				</section>
 
 
 				<section data-markdown>
