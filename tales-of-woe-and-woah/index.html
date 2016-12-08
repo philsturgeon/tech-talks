@@ -7,7 +7,7 @@
 	<title>API Tales of Woe and Woah</title>
 
 	<link rel="stylesheet" href="css/reveal.css">
-	<link rel="stylesheet" href="css/theme/black.css">
+	<link rel="stylesheet" href="css/theme/night.css">
 
 	<!-- Theme used for syntax highlighting of code -->
 	<link rel="stylesheet" href="lib/css/zenburn.css">
@@ -29,7 +29,8 @@
 	<div class="theme-font-overpass2 theme-color-mint-beige" style="width: 100%; height: 100%;">
 		<div class="reveal">
 			<div class="slides">
-				<section data-markdown>
+
+				<section data-state="no-title-footer" data-markdown>
 					<script type="text/template">
 						# API Tales of "Woe" and "Woah!"
 						## @philsturgeon
@@ -37,28 +38,36 @@
 					</script>
 				</section>
 
-				<section data-background-image="./img/intro-bristol.jpg">
+				<section data-state="no-title-footer" data-background-image="./img/intro-me.png" data-background-size="contain" data-background-color="white">
+					<div class="fragment" style="color: white; background: rgba(0, 0, 0, 0.5); padding:0.5em">
+						<h2 style="color: white">Stuff I've Been Part Of</h2>
+						<ul class="fragment">
+							<li>The League of Extraordinary Packages</li>
+							<li class="fragment">PHP The Right Way</li>
+							<li class="fragment">CodeIgniter</li>
+							<li class="fragment">PyroCMS</li>
+							<li class="fragment">FuelPHP</li>
+							<li class="fragment">PHP-FIG</li>
+							<li class="fragment">PancakeApp</li>
+							<li class="fragment">Build APIs You Won't Hate</li>
+						</ul>
+					</div>
+				</section>
+
+				<section data-state="no-title-footer" data-background-image="./img/intro-bristol.jpg">
 					<h1 style="background: rgba(0, 0, 0, 0.25)">From Bristol 🇬🇧</h1>
 				</section>
 
-				<section data-markdown>
-					<script type="text/template">
-						## Defensive Routing
-
-						- missing a /foo/{id} taking down the server
-						- pagination/cursors/limits would have stopped this
-						- make /foo/ 404 instead of matching /foo
-						- Avoid letting pagination be a DDoS vector
-					</script>
+				<section>
+					<h1>HORROR STORIES!</h1>
 				</section>
 
-				<section data-markdown>
-					<script type="text/template">
-						## Selective Includes
+				<section data-background-color="white">
+					<img src="./img/slow-dodgy-system.png">
+				</section>
 
-						- Avoid letting includes be a DDoS vector and generally a PITA.
-						- MEGAINCLUDE OF DOOM
-					</script>
+				<section data-background-color="white">
+					<img src="./img/do-slow-stuff-later.png">
 				</section>
 
 				<section>
@@ -84,6 +93,26 @@
 
 				<section data-markdown>
 					<script type="text/template">
+						## Defensive Routing
+
+						- missing a /foo/{id} taking down the server
+						- pagination/cursors/limits would have stopped this
+						- make /foo/ 404 instead of matching /foo
+						- Avoid letting pagination be a DDoS vector
+					</script>
+				</section>
+
+				<section data-markdown>
+					<script type="text/template">
+						## Selective Includes
+
+						- Avoid letting includes be a DDoS vector and generally a PITA.
+						- MEGAINCLUDE OF DOOM
+					</script>
+				</section>
+
+				<section data-markdown>
+					<script type="text/template">
 						## Google Deleting Your Content
 
 						<blockquote class="twitter-tweet" data-lang="en"><p lang="en" dir="ltr"><a href="https://twitter.com/philsturgeon">@philsturgeon</a> my favorite WTF story is using a GET verb to delete resources. Which was interesting when Google crawled the API cc/ <a href="https://twitter.com/glenc">@glenc</a></p>&mdash; Jamie Hannaford (@jamiehannaford) <a href="https://twitter.com/jamiehannaford/status/473860510614831104">June 3, 2014</a></blockquote>
@@ -93,17 +122,15 @@
 				</section>
 
 				<section>
-					<section data-background-image="./img/instagram-plaintext.png">
-						<div style="bottom: 100px" style="background: rgba(0, 0, 0, 0.25)">
-							<h1>Use SSL</h1>
-							<p>letsencrypt.org</p>
-						</div>
-					</section>
-					<section data-background-image="./img/instagram-plaintext.png">
-						<div style="background: rgba(0, 0, 0, 0.25)">
-							<cite><a href="http://blog.mazinahmed.net/2014/07/session-hijacking-in-instagram-mobile.html">Mazin Ahmed</a></cite>
-						</div>
-					</section>
+					<h2>Use SSL</h2>
+					<p>Come on folks, it's free.</p>
+          <p>Go to <a href="https://letsencrypt.org">letsencrypt.org</a></p>
+				</section>
+
+				<section>
+          <h2>Instagram Didn't</h2>
+          <img src="./img/instagram-plaintext.png">
+					<cite><a href="http://blog.mazinahmed.net/2014/07/session-hijacking-in-instagram-mobile.html">Mazin Ahmed</a></cite>
 				</section>
 
 				<section data-markdown>
@@ -120,6 +147,71 @@
 						- APIERROR 5 THE FUCK IS THAT
 						- Runscope will not report them
 					</script>
+				</section>
+
+				<section class="has-light-background" data-background-color="#80b682">
+					<img src="./img/fb-shite-error.png" />
+          <div>
+  					<span class="fragment" style="background: rgba(0, 0, 0, 0.5); padding: 0.3em">
+  						🤖 Blorp, I'm a robot, and I have no idea what this means!
+  					</span>
+          </div>
+				</section>
+
+        <section class="has-light-background" data-background-color="#80b682">
+					<pre class="fade-in"><code data-trim data-noescape>
+{
+  "error": {
+    "errors": [
+      {
+        "domain": "youtube.parameter",
+        "reason": "missingRequiredParameter",
+        "message": "No filter selected.",
+        "locationType": "parameter",
+        "location": ""
+      }
+    ],
+    "code": 400,
+    "message": "No filter selected."
+  }
+}
+					</code></pre>
+					<span class="fragment" style="background: rgba(0, 0, 0, 0.5); padding: 0.3em">
+						🙋 Hi, I'm a human and I have no idea what this means!
+					</span>
+				</section>
+
+				<section class="has-light-background" data-background-color="#80b682">
+					<pre class="fade-in"><code data-trim data-noescape>
+{
+  "error": {
+    "errors": [
+      {
+        "domain": "youtube.parameter",
+        "reason": "missingRequiredParameter",
+        "message": "No filter selected.",
+        "locationType": "parameter",
+        "location": ""
+      }
+    ],
+    "code": 400,
+    <mark>"message": "No filter selected."</mark>
+  }
+}
+					</code></pre>
+					<span class="fragment" style="background: rgba(0, 0, 0, 0.5); padding: 0.3em">
+						Oh I'm missing the 'filter' parameter?
+					</span>
+				</section>
+
+				<section>
+					<div  style="background: rgba(255, 0, 0, 0.5); padding: 0.3em">
+						WRONG!
+					</div>
+
+					<p class="fragment">Needed to add <code>&mine=true</code> to URL...</p>
+
+					<p class="fragment">🤔 😫</p>
 				</section>
 
 				<section data-markdown>
@@ -157,8 +249,9 @@
 						<h2>Talking over HTTP</h1>
 						<ul>
 							<li>Expect the worst from everyone</li>
-							<li class="fragment">The response might not be JSON</li>
-							<li class="fragment">The response might not be <em>anything</em>!</li>
+							<li class="fragment">The response might not contain JSON</li>
+							<li class="fragment">The response might be empty</li>
+							<li class="fragment">The response might never come!</li>
 						</ul>
 
 					  <pre class="fragment fade-in"><code data-trim data-noescape>
@@ -202,8 +295,8 @@ def get_something(id)
     message = response['RESPONSE']['APIERROR']
     raise SomeError, "Error from third-party API: #{message}."
   end
-rescue JSON::ParserError => e
-  raise HttpServerError, "Service returned invalid JSON data"
+<mark>rescue JSON::ParserError => e
+  raise HttpServerError, "Service returned invalid JSON data"</mark>
 end
 						</code></pre>
 					</section>
@@ -258,11 +351,22 @@ end
 					</section>
 				</section>
 
+        <section>
+          <h2>Expect the worst from clients too!</h2>
+          <pre><code data-trim data-noescape>
+if ($limit < 1 || $limit > 100) {
+	$limit = 100;
+}
+</code></pre>
+        </section>
+
+
 				<section data-markdown>
 					<script type="text/template">
 						## At least one dev API per team
-						- Don't get stuck using a two year old RC build of JSON-API forever due to
-						busted development workflows.
+						- Avoid versioning REST/etc by evolving APIs
+						- Can't "evolve" staging if multiple clients develop against it
+						- This is how you get stuck on JSON-API v1.0 RC-2 forever two years 😭
 					</script>
 				</section>
 
@@ -276,15 +380,20 @@ end
 						- Jenkins can host your entrie stack with Docker Compose
 					</script>
 				</section>
+
 				<section class="has-light-background" data-state="no-title-footer" data-background-color="#80b682">
 					<div class="sl-block" data-block-type="image">
 						<div class="sl-block-content" style="z-index: 11; height: 600px">
-							<img style="" data-src="https://s3.amazonaws.com/media-p.slid.es/uploads/588583/images/3093186/ebook.jpg"/>
+							<a href="https://apisyouwonthate.com/">
+                <img data-src="https://s3.amazonaws.com/media-p.slid.es/uploads/588583/images/3093186/ebook.jpg"/>
+              </a>
 						</div>
 					</div>
 					<div class="sl-block" data-block-type="text">
 						<div class="sl-block-content" style="z-index: 12; font-size: 150%;">
-							<p>apisyouwonthate.com</p>
+              <a href="https://apisyouwonthate.com/" style="color: white">
+                apisyouwonthate.com
+              </a>
 						</div>
 					</div>
 				</section>
