@@ -62,15 +62,8 @@
 					<h1>HORROR STORIES!</h1>
 				</section>
 
-				<section data-background-color="white" data-background-image="./img/slow-dodgy-system.png" data-background-size="contain">
-				</section>
-
-				<section data-background-color="white" data-background-image="./img/current-system.png" data-background-size="contain">
-				</section>
-
 				<section data-background-color="white" data-background-image="./img/better-system.png" data-background-size="contain">
 				</section>
-
 
 				<section>
 					<h1>Don't Do Slow Stuff</h1>
@@ -122,14 +115,16 @@ if ($limit < 1 || $limit > 100) {
 					<p>Don't let an unpaginated endpoint be a DDoS vector.</p>
         </section>
 
+				<section style="font-size:63px">
+					<h2>Includes are cool</h2>
+					<p>But, restrict what people can include.</p>
+				</section>
 
-				<section data-markdown>
-					<script type="text/template">
-						## Selective Includes
-
-						- Avoid letting includes be a DDoS vector and generally a PITA.
-						- MEGAINCLUDE OF DOOM
-					</script>
+				<section style="font-size:63px">
+					?include=literally,everything,in,<br/>
+					the,goddam,database,what,is,<br/>
+					happening,so,slow,help,me,database,<br/>
+					server,is,on,fire,agggghhhhhh
 				</section>
 
 				<section data-markdown>
@@ -162,12 +157,25 @@ if ($limit < 1 || $limit > 100) {
 					</script>
 				</section>
 
-				<section data-markdown>
-					<script type="text/template">
-						## Server Errors on 200
-						- APIERROR 5 THE FUCK IS THAT
-						- Runscope will not report them
-					</script>
+				<section>
+					<h2>Ruscope helps you catch liars</h2>
+					<img src="./img/2-minute-web-response.png">
+				</section>
+
+				<section>
+					<h2>Server Errors on 200</h2>
+
+					<img src="./img/200-error.png" />
+				</section>
+
+				<section>
+					<img src="./img/insanity-wolf-200.jpg" />
+
+					<ul>
+						<li class="fragment">Nothing to do with REST</li>
+						<li class="fragment">RPC should use status codes properly too!</li>
+						<li class="fragment">Runscope, New Relic etc. will not report</li>
+					</ul>
 				</section>
 
 				<section class="has-light-background" data-background-color="#80b682">
@@ -266,134 +274,122 @@ if ($limit < 1 || $limit > 100) {
 
 
 				<section>
-					<section>
-						<h2>Talking over HTTP</h1>
-						<ul>
-							<li>Expect the worst from everyone</li>
-							<li class="fragment">The response might not contain JSON</li>
-							<li class="fragment">The response might be empty</li>
-							<li class="fragment">The response might never come!</li>
-						</ul>
+					<h2>Talking over HTTP</h1>
+					<ul>
+						<li>Expect the worst from everyone</li>
+						<li class="fragment">The response might not contain JSON</li>
+						<li class="fragment">The response might be empty</li>
+						<li class="fragment">The response might never come!</li>
+					</ul>
 
-					  <pre class="fragment fade-in"><code data-trim data-noescape>
+				  <pre class="fragment fade-in"><code data-trim data-noescape>
 def get_something(id)
-  response = JSON.parse(client.get('/api/something/'+id))
+response = JSON.parse(client.get('/api/something/'+id))
 
-  if response['RESPONSE']['CODE'] == "SUCCESS"
-    return response
-  elsif response['RESPONSE']['CODE'] == 'NOT FOUND'
-    return response
-  else
-    message = response['RESPONSE']['APIERROR']
-    raise SomeError, "Error from third-party API: #{message}."
-  end
+if response['RESPONSE']['CODE'] == "SUCCESS"
+  return response
+elsif response['RESPONSE']['CODE'] == 'NOT FOUND'
+  return response
+else
+  message = response['RESPONSE']['APIERROR']
+  raise SomeError, "Error from third-party API: #{message}."
 end
-						</code></pre>
-
-						<ul>
-							<li class="fragment">This will explode in so many ways</li>
-						</ul>
-					</section>
-
-					<section data-background-image="./img/dont-trust-returned-content.png">
-					</section>
-
-					<section>
-						<h2>Talking over HTTP</h1>
-						<ul>
-							<li>If it's not JSON, catch that exception</li>
-						</ul>
-
-						<pre class="fragment fade-in"><code data-noescape>
-def get_something(id)
-  response = JSON.parse(client.get('/api/something/'+id))
-
-  if response['RESPONSE']['CODE'] == "SUCCESS"
-    return response
-  elsif response['RESPONSE']['CODE'] == 'NOT FOUND'
-    return response
-  else
-    message = response['RESPONSE']['APIERROR']
-    raise SomeError, "Error from third-party API: #{message}."
-  end
-<mark>rescue JSON::ParserError => e
-  raise HttpServerError, "Service returned invalid JSON data"</mark>
 end
-						</code></pre>
-					</section>
+					</code></pre>
 
+					<ul>
+						<li class="fragment">This will explode in so many ways</li>
+					</ul>
+				</section>
 
-					<section>
-						<h2>Talking over HTTP</h1>
-						<ul>
-							<li>The response might be empty if its a timeout</li>
-						</ul>
-
-						<pre class="fragment fade-in"><code data-trim data-noescape>
-def get_something(id)
-  response = JSON.parse(client.get('/api/something/'+id))
-
-  if response.nil?
-    raise HttpServerError, "Service returned an empty response"
-  end
-
-  # ... success or fail
-
-rescue JSON::ParserError => e
-  raise HttpServerError, "Service returned invalid JSON data"
-end
-						</code></pre>
-					</section>
-
-					<section>
-						<h2>Talking over HTTP</h1>
-						<ul>
-							<li>The response might be a weird shape</li>
-						</ul>
-
-						<pre class="fragment fade-in"><code data-trim data-noescape>
-def get_something(id)
-  response = JSON.parse(client.get('/api/something/'+id))
-
-  if response.nil?
-    raise HttpServerError, "Service returned an empty response"
-  end
-
-  unless response['RESPONSE'] && response['RESPONSE']['CODE']
-    raise HttpServerError, "Service returned an unexpected response: #{response}"
-  end
-
-  # ... success or fail
-
-rescue JSON::ParserError => e
-  raise HttpServerError, "Service returned invalid JSON data"
-end
-						</code></pre>
-					</section>
+				<section data-background-image="./img/dont-trust-returned-content.png">
 				</section>
 
 				<section>
+					<h2>Talking over HTTP</h1>
+					<ul>
+						<li>If it's not JSON, catch that exception</li>
+					</ul>
 
-					<blockquote class="twitter-tweet" data-lang="en"><p lang="en" dir="ltr">The UPS API is so sparsely documented I&#39;m having to actually send parcels to see what sort of data I get for specific situations.</p>&mdash; Dan Harper (@DanHarper7) <a href="https://twitter.com/DanHarper7/status/748550285761601536">June 30, 2016</a></blockquote>
-<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+					<pre class="fragment fade-in"><code data-noescape>
+def get_something(id)
+response = JSON.parse(client.get('/api/something/'+id))
+
+if response['RESPONSE']['CODE'] == "SUCCESS"
+  return response
+elsif response['RESPONSE']['CODE'] == 'NOT FOUND'
+  return response
+else
+  message = response['RESPONSE']['APIERROR']
+  raise SomeError, "Error from third-party API: #{message}."
+end
+<mark>rescue JSON::ParserError => e
+raise HttpServerError, "Service returned invalid JSON data"</mark>
+end
+					</code></pre>
 				</section>
 
 
-				<section data-markdown>
-					<script type="text/template">
-						## At least one dev API per team
-						- Avoid versioning REST/etc by evolving APIs
-						- Can't "evolve" staging if multiple clients develop against it
-						- This is how you get stuck on JSON-API v1.0 RC-2 forever two years 😭
-					</script>
+				<section>
+					<h2>Talking over HTTP</h1>
+					<ul>
+						<li>The response might be empty if its a timeout</li>
+					</ul>
+
+					<pre class="fragment fade-in"><code data-trim data-noescape>
+def get_something(id)
+response = JSON.parse(client.get('/api/something/'+id))
+
+if response.nil?
+  raise HttpServerError, "Service returned an empty response"
+end
+
+# ... success or fail
+
+rescue JSON::ParserError => e
+raise HttpServerError, "Service returned invalid JSON data"
+end
+					</code></pre>
+				</section>
+
+				<section>
+					<h2>Talking over HTTP</h1>
+					<ul>
+						<li>The response might be a weird shape</li>
+					</ul>
+
+					<pre class="fragment fade-in"><code data-trim data-noescape>
+def get_something(id)
+response = JSON.parse(client.get('/api/something/'+id))
+
+if response.nil?
+  raise HttpServerError, "Service returned an empty response"
+end
+
+unless response['RESPONSE'] && response['RESPONSE']['CODE']
+  raise HttpServerError, "Service returned an unexpected response: #{response}"
+end
+
+# ... success or fail
+
+rescue JSON::ParserError => e
+raise HttpServerError, "Service returned invalid JSON data"
+end
+					</code></pre>
+				</section>
+
+				<section>
+					<h2>Documentation is not optional</h2>
+					<blockquote class="twitter-tweet" data-lang="en"><p lang="en" dir="ltr">The UPS API is so sparsely documented I&#39;m having to actually send parcels to see what sort of data I get for specific situations.</p>&mdash; Dan Harper (@DanHarper7) <a href="https://twitter.com/DanHarper7/status/748550285761601536">June 30, 2016</a></blockquote>
+					<p class="fragment">Learn how to build docs: <a href="http://bit.ly/api-doc-video">bit.ly/api-doc-video</a></p>
 				</section>
 
 				<section data-markdown>
 					<script type="text/template">
 						## Stop services lying to each other
-						- strong parameters
-						- php https://packagist.org/packages/koine/strong-parameters
-						- VCR instead of static stubs
+						- Strong Parameters
+							- For PHP: https://packagist.org/packages/koine/strong-parameters
+						- PHP-VCR instead of static stubs
 						- Be sure to re-record VCR stubs
 						- Jenkins can host your entrie stack with Docker Compose
 					</script>
