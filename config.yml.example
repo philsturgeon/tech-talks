@@ -1,0 +1,5 @@
+key: 
+secret: 
+region: us-east-1
+bucket: talks.philsturgeon.uk
+path: .
