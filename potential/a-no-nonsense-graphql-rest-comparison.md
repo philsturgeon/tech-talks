@@ -16,8 +16,8 @@ This article aims to cover a few notable differences, and make the following poi
 
 Based off of the articles here:
 
-https://philsturgeon.uk/api/2017/01/24/graphql-vs-rest-overview/
-https://philsturgeon.uk/api/2017/01/26/graphql-vs-rest-caching/
-https://www.smashingmagazine.com/2016/09/understanding-rest-and-rpc-for-http-apis/
+- https://philsturgeon.uk/api/2017/01/24/graphql-vs-rest-overview/
+- https://philsturgeon.uk/api/2017/01/26/graphql-vs-rest-caching/
+- https://www.smashingmagazine.com/2016/09/understanding-rest-and-rpc-for-http-apis/
 
 Not sure if its entry/mid/advanced, etc, I keep language simple so everyone should understand what im talking about, but if they dont know anything about APIs this probably isnt for them.
