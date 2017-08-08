@@ -121,7 +121,6 @@ Second Half: Stuff I hate about Ruby/Rails
 - PSR-0 released 2010
 
 ---
-
 # Ruby's Head Start
 
 Ruby community has been building gems since 2004
@@ -163,15 +162,30 @@ PHP of course had:
 
 ---
 
-Ruby was used for non-web stuff for years, so wide range of gems
-
----
-
 Sinatra and Rails are both Rack-based, meaning many gems work with both
 
 ---
 
-- Rack the defacto standard avoids need for PSR HTTP stuff
+- Rack::Attack
+- Rack::Cache
+- Rack::Throttle
+- Rack::Referrals
+- Rack::Turnout
+- Warden
+
+---
+
+No sinatra-oauth2-client
+
+No rails-oauth2-client
+
+Just oauth2-client
+
+---
+
+## No Ruby FIG Required
+
+Rack means no need for PSR HTTP stuff
 
 Defacto standards, and a willingness to work together early on, meant from the start efforts were joined.
 
@@ -189,6 +203,13 @@ Get abandoned, crappy or gross alts to redirect to us
 
 # Testing requests doesnt go over "wire"
 
+- You don't want to start a dev server
+- You don't want to start a dev server
+
+---
+
+# Testing requests doesnt go over "wire"
+
 <dl>
   <dt>Ruby</dt>
 
@@ -196,11 +217,6 @@ Get abandoned, crappy or gross alts to redirect to us
   <dd>rack-test (Rack)</dd>
 </dl>
 
-<dl>
-  <dt>PHP</dt>
-
-  <dd>TODO</dd>
-</dl>
 ---
 - Awesome data factories
   - Factory Girl
