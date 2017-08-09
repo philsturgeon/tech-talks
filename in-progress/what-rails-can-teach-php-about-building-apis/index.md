@@ -357,8 +357,27 @@ TODO Show it off
 
 ---
 
-- Awesome data factories
-  - Factory Girl
+### Awesome data factories
+
+## Factory Girl
+
+---
+
+```
+FactoryGirl.define do
+  factory :user do
+    first_name "John"
+    last_name  "Doe"
+    admin false
+  end
+
+  factory :admin, class: User do
+    first_name "Admin"
+    last_name  "User"
+    admin      true
+  end
+end
+```
 
 ---
 
@@ -391,6 +410,7 @@ Ruby
   - ROAR
 
 PHP
+  - [Hyperspan](https://github.com/vlucas/hyperspan)
 
 ---
 
@@ -400,11 +420,39 @@ TODO INSERT VIDEO OF DOPE SO EASY
 
 ---
 
-- Moneypatching... 🙈
+## Moneypatching 🙈
 
-- Good for testing, bad for anything else
+---
 
-- Kahlan has monkey patching for testing!
+### Moneypatching 🙈
+
+### Good for testing, bad for everything else
+
+---
+
+### Kahlan has monkey patching for testing!
+
+---
+
+```php
+it("shows some examples of function stubbing", function() {
+
+  allow('RabbitMQ')->toReceive('publish')
+    ->with('a very important message')
+    ->andReturn(true);
+
+  $subject->doImportantThing();
+}
+```
+
+---
+
+<blockquote class="twitter-tweet" data-lang="en"><p lang="en" dir="ltr">PHP Developers. What is your opinion on Kahlan?</p>&mdash; Scarbutt O&#39;Doul (@philsturgeon) <a href="https://twitter.com/philsturgeon/status/895418592916684800">August 9, 2017</a></blockquote>
+<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+---
+
+Use [Kahlan](https://kahlan.github.io/docs/) more!!
 
 ---
 
@@ -484,4 +532,7 @@ Play with _other_ languages when you get home
 ---
 
 ### Take inspiration from these experiences
+
+---
+
 ## Better the PHP ecosystem
