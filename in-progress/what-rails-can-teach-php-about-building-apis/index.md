@@ -363,7 +363,7 @@ TODO Show it off
 
 ---
 
-```
+``` ruby
 FactoryGirl.define do
   factory :user do
     first_name "John"
@@ -381,24 +381,45 @@ end
 
 ---
 
-Automagically sniff/stub web connections from tests
+``` ruby
+# Returns a User instance that's not saved
+user = build(:user)
 
-Ruby
-  - VCR
-
-PHP
-  - PHP-VCR
+# Returns a saved User instance
+user = create(:user)
+```
 
 ---
 
-- Simplistic state machines
+### Intercept/block web connections for tests
 
-Ruby
-  - Statesman
-  - AASM
+Allow exceptions IF YOU MUST
 
-PHP
-  - TODO
+---
+
+### Intercept/block web connections for tests
+
+Otherwise... record and replay
+
+---
+
+<!-- .slide: data-background="https://php-vcr.github.io/img/phpvcr-overview.png" data-background-size="contain" -->
+
+---
+
+## Simple State machines
+
+<dl>
+<dt><strong>Ruby</strong></dt>
+<dd>Statesman</dd>
+<dd>AASM</dd>
+</dl>
+
+<dl>
+<dt><strong>PHP</strong></dt>
+<dd>TODO</dd>
+<dd>&nbsp;</dd>
+</dl>
 
 ---
 
