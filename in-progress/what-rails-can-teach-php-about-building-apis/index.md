@@ -139,7 +139,7 @@ Opposite of the FIG, bridge gap very different projects to converge
 
 ### Gems can change ownership easily
 
-gem "oauth2-client"
+`gem "oauth2-client"`
 
 Note: Creator isn't important, authors arent held hostage
 
@@ -183,29 +183,6 @@ Tying code to a framework is a waste of everyones time
 
 ---
 
-## Ruby community created Rack
-
-### Rack = PSR-7 + PSR-15 (Draft)
-
-Note: Sinatra and Rails are both Rack-based, meaning many gems work with both
-
----
-
-### Rack HTTP middlewares helps building APIs
-
-Rack::Attack / Rack::ConditionalGet / Rack::ETag / Rack::Cache / Rack::Proxy / Rack::Referrals / Rack::Throttle / Rack::Turnout
-
-
-Note: Many middlewares really help building APIs
-
----
-
-## No need for Framework-specific API packages
-
-### e.g: Dingo
-
----
-
 ## What about these amazing API, HTTP & Testing tools?!
 
 ---
@@ -214,25 +191,129 @@ Note: Many middlewares really help building APIs
 
 ---
 
-Rails has --api mode
+`rails new --api your-project`
 
-Strips out cookies, sessions, views, etc.
-
----
-
-Rails handles conditional GET (ETag and Last-Modified)
-
-stale?
+### No cookies / sessions / browser stuff
 
 ---
 
-HEAD requests: Rails will transparently convert HEAD requests into GET ones, and return just the headers on the way out. This makes HEAD work reliably in all Rails APIs.
+### Rack HTTP middleware helps building APIs
+
+Rack::Attack / Rack::ConditionalGet / Rack::ETag / Rack::Cache / Rack::Proxy / Rack::Referrals / Rack::Throttle / Rack::Turnout
+
+Note: Many middlewares really help building APIs
+
+---
+
+## HTTP Client Middleware
+
+Request: auth, refresh tokens, format body, error if missing user agent
+
+---
+
+## HTTP Client Middleware
+
+Response: autoconvert JSON/XML, turn status codes into exceptions, etc
+
+---
+
+### Combining Client + Server Middleware
+
+```
++Deprecate.new(date: '2017-07-13 15:42:12 GMT')
+def create
+  # ...
+end
+```
+
+---
+
+### Combining Client + Server Middleware
+
+Server Middleware injects HTTP Header
+
+`Sunset: Thu, 13 Jul 2017 15:42:12 GMT`
+
+---
+
+### Combining Client + Server Middleware
+
+HTTP Client Middleware freaks out on the CLI!
+
+`Endpoint Deprecated: Will cease to function in 26 days!`
 
 ---
 
 Rails implements a lot of functionality as Rack Middleware
 
-(PHP frameworks should do this)
+---
+
+### Rails handles conditional GET
+
+## ETag and Last-Modified
+
+---
+
+```
+def show
+  @article = Article.find(params[:id])
+
+  if stale?(etag: @article, last_modified: @article.updated_at)
+    @statistics = @article.really_expensive_call
+    respond_to do |format|
+      # all the supported formats
+    end
+  end
+end
+```
+
+---
+
+### Without E-Tag
+
+```text
+Completed 200 OK in 35ms (Views: 33.4ms | ActiveRecord: 0.3ms)
+```
+
+---
+
+### With E-Tag
+
+```text
+Completed 304 Not Modified in 2ms (ActiveRecord: 0.3ms)
+```
+
+---
+
+`35ms vs 2ms = 94% improvement!`
+
+---
+
+_[Read more on ETags](https://robots.thoughtbot.com/introduction-to-conditional-http-caching-with-rails)_
+
+---
+
+Rails: HEAD Requests
+
+Note: Rails will transparently convert HEAD requests into GET ones, and return just the headers on the way out
+
+---
+
+### Rack = PSR-7 + PSR-15 (Draft)
+
+PSR-7 is just the message
+
+(RelayPHP / EquipPHP / etc.)
+
+---
+
+### Rack = PSR-7 + PSR-15 (Draft)
+
+PSR-15 standardises passing middlewares around
+
+---
+
+[Read more on HTTP middleware in PHP](https://philsturgeon.uk/php/2016/05/31/why-care-about-php-middleware/)
 
 ---
 
