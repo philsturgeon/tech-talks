@@ -1,140 +1,105 @@
 ---
 title: What Ruby Can Teach PHP About Building APIs
-theme: night
+theme: league
+revealOptions:
+  transition: 'fade'
+  slideNumber: true
 ---
-
-
 
 # What <s>Rails</s> Ruby Can Teach PHP About Building APIs
 
 ### PHPNE 2017 / @philsturgeon
----
-I built APIs with PHP 2009-2014
----
-Switched to Rails for a job in 2014-present
----
-First Half: Stuff I love about Ruby/Rails
-Second Half: Stuff I hate about Ruby/Rails
----
-
-- Amazing robust well supported gems
-
-- Rack the defacto standard avoids need for PSR HTTP stuff
-
-- Testing requests doesnt go over wire
-
-- Awesome data factories
-
-- describe-it spec-driven testing tools
-
-- Automagically sniff/stub web connections from tests
-
-- Simplistic state machines
-
-- Serialization and Deserialization
-
-- Inline REPL debugging
-
-- Moneypatching... 🙈
 
 ---
 
-## Packages in Ruby
-
-- Gems released 2004
-
-- People built gems for loads of stuff and worked together
+I built APIs with PHP 2009 - 2014
 
 ---
 
-## Packages in PHP
-
-- PEAR released 1999
-
-- CodeIgniter released 2006 to help people "avoid PEAR"
-
-- ~1 million frameworks 2006-2012
+Switched to Rails for a job in 2014
 
 ---
 
-# Packages in PHP
-
-- Composer released 2009
-
-- Ignoring Composer, frameworks build own package managers
-
-  - CodeIgniter Sparks
-  - Laravel Bundles
-  - CakePHP Bakery
-  - Fuel Cells
-  - Zend Modules
+<!-- .slide: data-background="img/intro-happy.jpg" -->
 
 ---
 
-## Packages in PHP
-
-- Incompatible with each other
-
-- Dev A builds for FW A, Dev B for FW B
-
-- PSR-0 released 2010
+<!-- .slide: data-background="img/intro-sad.jpg" -->
 
 ---
 
-## Ruby's Head Start
-
-Ruby community has been building gems since 2004
-
-Composer + PSR-0 packages didn't get popular until ~2012
+<!-- .slide: data-background="img/intro-wtf.jpg" data-background-size="contain" -->
 
 ---
 
-## Ruby's Head Start
+## Agenda
 
-Ruby has spent 8 more years building packages than PHP
+1. 📜
 
----
+1. 😍
 
-Ruby had far fewer web frameworks than PHP for this time:
-
-- Sinatra
-- Rails
-- Merb (merged with Rails in 2008)
-- others but not really
-
-???
-so focus was less split than PHP
+1. 😦
 
 ---
 
-PHP of course had:
-
-- CakePHP
-- CodeIgniter
-- Fat-Free
-- FuelPHP 😅
-- Kohana
-- Laravel
-- Lithium
-- Silex
-- Symfony
-- Yii
-- Zend
+## 📜
 
 ---
 
-Sinatra and Rails are both Rack-based, meaning many gems work with both
+## Gems released 2004
 
 ---
 
-- Rack::Attack
-- Rack::Cache
-- Rack::Throttle
-- Rack::Referrals
-- Rack::Turnout
-- Warden
+## PEAR released 1999
 
 ---
+
+## ̴1 million frameworks 2005-2012
+
+---
+
+## Composer released 2009
+
+---
+
+## Framework Package Managers
+
+- CodeIgniter Sparks
+
+- Laravel Bundles
+
+- CakePHP Bakery
+
+- Fuel Cells
+
+- Zend Modules
+
+Note: Ignoring Composer, frameworks build own package managers
+
+---
+
+## PHP Had Frameworks FOR DAYS
+
+CakePHP / CodeIgniter / Fat-Free / FuelPHP (😅)
+Kohana / Laravel / Lithium / Silex / Symfony / Yii / Zend
+
+Note: No similarities between frameworks, nothing worked in more than one
+
+fuel-oauth2-client, codeigniter-oauth2-client, laravel-oauth2-client, etc
+
+---
+
+## Ruby had a few frameworks
+
+Sinatra / Rails / Merb*
+
+Note: merb merged in 2008
+
+focus was less split than PHP
+
+---
+
+## Ruby gems are mostly agnostic
 
 No sinatra-oauth2-client
 
@@ -144,21 +109,150 @@ Just oauth2-client
 
 ---
 
-### No Ruby FIG Required
+# PSR-0 released 2010
 
-Rack means no need for PSR HTTP stuff
-
-Defacto standards, and a willingness to work together early on, meant from the start efforts were joined.
-
-This is the opposite of the FIG, which is trying to bridge the gap between very different projects, so their next versions they can converge a bit.
+Note: Generally ignored by most, me too
 
 ---
 
-League was effort to do this
+## PHP-FIG made agnostic composer packages viable ̴2012
 
-Make good stuff with enough weight that enough people will use
+---
 
-Get abandoned, crappy or gross alts to redirect to us
+### Ruby has spent 8 more years building packages
+
+2004 vs 2012
+
+---
+
+## Ruby didn't need a Ruby-FIG
+
+### Willingness and ability to cooperate
+
+Note: Fewer silos to split work
+
+Defacto standards + willingness to work together early on
+
+Opposite of the FIG, bridge gap very different projects to converge
+
+---
+
+### Gems can change ownership easily
+
+gem "oauth2-client"
+
+Note: Creator isn't important, authors arent held hostage
+
+---
+
+### Composer vendor create "brand oppertunity"
+
+## Many devs want vendorname/fame
+
+Note: That can be seen League reaction
+
+Other ways to do it
+help people / prs / issues
+blog
+
+---
+
+### The PHP League learned a lot from Ruby
+
+A critical mass of users creates a defacto standard
+
+Note: Abandoned alts redirected to us
+
+---
+
+### The PHP League learned a lot from Ruby
+
+The (current) author is not as important as the package
+
+---
+
+### The PHP League learned a lot from Ruby
+
+Tying code to a framework is a waste of everyones time
+
+---
+
+### The PHP League literally ported code from Ruby
+
+🤷‍♂️
+
+---
+
+## Ruby community created Rack
+
+### Rack = PSR-7 + PSR-15 (Draft)
+
+Note: Sinatra and Rails are both Rack-based, meaning many gems work with both
+
+---
+
+### Rack HTTP middlewares helps building APIs
+
+Rack::Attack / Rack::ConditionalGet / Rack::ETag / Rack::Cache / Rack::Proxy / Rack::Referrals / Rack::Throttle / Rack::Turnout
+
+
+Note: Many middlewares really help building APIs
+
+---
+
+## No need for Framework-specific API packages
+
+### e.g: Dingo
+
+---
+
+## What about these amazing API, HTTP & Testing tools?!
+
+---
+
+## 😍
+
+---
+
+Rails has --api mode
+
+Strips out cookies, sessions, views, etc.
+
+---
+
+Rails handles conditional GET (ETag and Last-Modified)
+
+stale?
+
+---
+
+HEAD requests: Rails will transparently convert HEAD requests into GET ones, and return just the headers on the way out. This makes HEAD work reliably in all Rails APIs.
+
+---
+
+Rails implements a lot of functionality as Rack Middleware
+
+(PHP frameworks should do this)
+
+---
+
+## describe-it testing
+
+TODO Show it off
+
+---
+
+## describe-it testing
+
+<dl>
+<dt>Ruby</dt>
+<dd>RSpec</dd>
+</dl>
+
+<dl>
+<dt>PHP</dt>
+<dd>Kahlan</dd>
+</dl>
 
 ---
 
@@ -171,7 +265,7 @@ Get abandoned, crappy or gross alts to redirect to us
 
 ---
 
-## Testing requests doesnt go over "wire"
+## Testing requests doesn't go over "wire"
 
 <dl>
   <dt>Ruby</dt>
@@ -184,15 +278,6 @@ Get abandoned, crappy or gross alts to redirect to us
 
 - Awesome data factories
   - Factory Girl
-
----
-
-- describe-it spec-driven testing tools
-Ruby
-  - RSpec
-
-PHP
-  Kahlan
 
 ---
 
@@ -242,6 +327,10 @@ TODO INSERT VIDEO OF DOPE SO EASY
 
 ---
 
+## 😦
+
+---
+
 ## Rails has no respect
 
 ```
@@ -262,20 +351,56 @@ Rails kills it all.
 
 ---
 
-Rails thinks PUT === PATCH
+## Rails thinks PUT === PATCH
+
+[_They are very different_](https://philsturgeon.uk/api/2016/05/03/put-vs-patch-vs-json-patch/)
 
 ---
 
-Rails defaults 401 messages to plain text:
+## Rails has some weird defaults
 
+![Why the hell is this plain text](img/http-access-denied-text.png)
 
 ---
 
-Only way to deal is to override core methods:
+Sometimes you gotta override core methods
 
 ```
+
 def request_http_token_authentication(realm = "Application")
-  self.headers["WWW-Authenticate"] = %(Token realm="#{realm.gsub(/"/, "")}")
-  render :json => {:error => "HTTP Token: Access denied."}, :status => :unauthorized
+
+  authenticate = %(Token realm="#{realm.gsub(/"/, "")}")
+
+  self.headers["WWW-Authenticate"] = authenticate
+
+  render json: { error: "HTTP Token: Access denied." },
+    status: :unauthorized
+
 end
+
 ```
+
+---
+
+And Other Minor Gripes
+
+![Grumble grumble](img/grumpy.jpg)
+
+---
+
+### Rails is ok
+
+## Ruby is great
+
+---
+
+Play with some gems when you get home
+
+---
+
+Play with _other_ languages when you get home
+
+---
+
+### Take inspiration from these experiences
+## Better the PHP ecosystem
