@@ -319,21 +319,34 @@ PSR-15 standardises passing middlewares around
 
 ## describe-it testing
 
-TODO Show it off
+![](img/khalan.gif)
 
 ---
 
 ## describe-it testing
 
-<dl>
-<dt>Ruby</dt>
-<dd>RSpec</dd>
-</dl>
+BDD but not plain text
 
-<dl>
-<dt>PHP</dt>
-<dd>Kahlan</dd>
-</dl>
+Note: Can't write a rule for everything
+unit / integration / everything can be spec
+
+---
+
+### describe-it testing
+
+## Ruby
+
+- RSpec
+- minitest-spec
+
+---
+
+### describe-it testing
+
+## PHP
+
+- [Kahlan](https://kahlan.github.io/docs/)
+- [Codeception/Specify](https://github.com/Codeception/Specify)
 
 ---
 
@@ -403,35 +416,115 @@ Otherwise... record and replay
 
 ---
 
-<!-- .slide: data-background="https://php-vcr.github.io/img/phpvcr-overview.png" data-background-size="contain" -->
+<!-- .slide: data-background="img/phpvcr-overview.png" data-background-size="contain" -->
+
+---
+
+![](img/phpvcr-arg.png)
+
+---
+
+```
+
+$ rake routes
+
+      Prefix Verb URI Pattern             Controller#Action
+       check POST /check(.:format)        check_v1#procedure {:format=>"json"}
+check_matrix POST /check-matrix(.:format) check_matrix_v1#procedure {:format=>"json"}
+             GET  /                       list_v1#procedure {:format=>"json"}
+
+```
 
 ---
 
 ## Simple State machines
 
-<dl>
-<dt><strong>Ruby</strong></dt>
-<dd>Statesman</dd>
-<dd>AASM</dd>
-</dl>
+```ruby
+class InvoiceStateMachine
+  include Statesman::Machine
 
-<dl>
-<dt><strong>PHP</strong></dt>
-<dd>TODO</dd>
-<dd>&nbsp;</dd>
-</dl>
+  state :draft, initial: true
+  state :published
+  state :sent
+  state :paid
+
+  transition from: :draft,        to: :published
+  transition from: :published,    to: [:draft, :sent, :paid]
+  transition from: :sent,         to: :paid
+
+  # next slide
+end
+```
 
 ---
 
-- Serialization and Deserialization
+## Simple State machines
 
-Ruby
-  - ActiveModel Serializers
-  - OAT
-  - ROAR
+```ruby
+  guard_transition(to: :sent) do |invoice|
+    invoice.has_contact_info?
+  end
 
-PHP
-  - [Hyperspan](https://github.com/vlucas/hyperspan)
+  before_transition(to: :sent) do |invoice, transition|
+    EmailService.new(invoice).send_contact_invoice
+    invoice.touch(:sent_at)
+  end
+
+  after_transition(to: :paid) do |invoice, transition|
+    EmailService.new(invoice).send_owner_success
+    invoice.touch(:paid_at)
+  end
+```
+
+---
+
+## Simple State machines
+
+``` ruby
+invoice.current_state # => "draft"
+invoice.allowed_transitions # => ["pay"]
+invoice.can_transition_to?(:sent) # => true/false
+invoice.transition_to(:paid) # => true/false
+```
+
+---
+
+## This is how you make HATEOAS!
+
+```
+{
+  "data": {
+    "type": "invoice",
+    "id": "093b941d",
+    "attributes": {
+      "bla": "stuff",
+      "status": "draft"
+    }
+  },
+  "links": {
+    "pay": "https://api.acme.com/invoices/093b941d/payment_attempts"
+  }
+}
+```
+
+---
+
+## Serialization and Deserialization
+
+### Ruby
+
+- ActiveModel Serializers
+- [OAT](https://github.com/ismasan/oat)
+- [ROAR](https://github.com/trailblazer/roar)
+
+---
+
+## Serialization and Deserialization
+
+### PHP
+
+- [Fractal 💩](https://github.com/vlucas/hyperspan)
+- [Hyperspan 🎖](https://github.com/vlucas/hyperspan)
 
 ---
 
@@ -468,8 +561,7 @@ it("shows some examples of function stubbing", function() {
 
 ---
 
-<blockquote class="twitter-tweet" data-lang="en"><p lang="en" dir="ltr">PHP Developers. What is your opinion on Kahlan?</p>&mdash; Scarbutt O&#39;Doul (@philsturgeon) <a href="https://twitter.com/philsturgeon/status/895418592916684800">August 9, 2017</a></blockquote>
-<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+![](img/kahlan-poll.png)
 
 ---
 
@@ -497,13 +589,17 @@ end
 
 Form data, JSON param, query string...
 
-Rails kills it all.
+Rails munges it all.
 
 ---
 
 ## Rails thinks PUT === PATCH
 
 [_They are very different_](https://philsturgeon.uk/api/2016/05/03/put-vs-patch-vs-json-patch/)
+
+---
+
+[Too much routing magic](https://philsturgeon.uk/php/2013/07/23/beware-the-route-to-evil/)
 
 ---
 
@@ -538,17 +634,23 @@ And Other Minor Gripes
 
 ---
 
-### Rails is ok
-
-## Ruby is great
+## Rails is ok
 
 ---
 
-Play with some gems when you get home
+# Ruby is great
 
 ---
 
-Play with _other_ languages when you get home
+Their focus on collaboration instead of proving who is _the_ smartest is _awesome_
+
+---
+
+### Play with some gems when you get home
+
+---
+
+### Play with _other_ languages when you get home
 
 ---
 
@@ -557,3 +659,11 @@ Play with _other_ languages when you get home
 ---
 
 ## Better the PHP ecosystem
+
+---
+
+# Cheers!
+
+@philsturgeon
+
+philsturgeon.uk
