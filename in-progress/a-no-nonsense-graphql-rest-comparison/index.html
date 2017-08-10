@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Title</title>
+    <meta charset="utf-8">
+    <style>
+      @import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
+      @import url(https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic);
+      @import url(https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic);
+
+      body { font-family: 'Droid Serif'; }
+      h1, h2, h3 {
+        font-family: 'Yanone Kaffeesatz';
+        font-weight: normal;
+      }
+      .remark-code, .remark-inline-code { font-family: 'Ubuntu Mono'; }
+
+      .remark-slide-content { background-size: contain; }
+
+      .graphql-screenshot-light { background-color: #F5F6F8 }
+      .graphql-screenshot-dark { background-color: #E6E8EC }
+    </style>
+  </head>
+  <body>
+    <textarea id="source">
+
+class: center, middle
+
+# A No Nonsense GraphQL and REST Comparison
+
+### PHPNE 2017 / @philsturgeon
+---
+background-image: url(img/different-shapes-siezed.jpg)
+---
+background-image: url(img/penny-farthing.jpg)
+---
+background-image: url(img/random-bike.jpg)
+---
+background-image: url(img/random-bike-use-cases.jpg)
+---
+background-image: url(img/random-bike-hacks.png)
+---
+background-image: url(img/many-bikes.jpg)
+---
+background-image: url(img/random-bike-issues.jpg)
+---
+class: one-liner
+# Pro-GraphQL, Pro-REST, Pro-RPC
+---
+class: one-liner
+## Anti-Nonsense
+
+???
+I have recommended RPC, REST _and_ GraphQL for different services at WeWork in the last few months.
+
+---
+# "GraphQL is REST 2.0"
+---
+background-image: url(img/nonsense.jpg)
+# "GraphQL is REST 2.0"
+---
+background-image: url(img/random-bikes-obviously-misused.jpg)
+---
+
+GraphQL is a newer concept, being released by Facebook publicly in 2015.
+
+---
+
+REST was a dissertation published by Roy Fielding in 2000, popularized kinda by companies like Twitter in 2006.
+
+---
+
+This article uses the term REST as defined in Roy Fielding's dissertation, RESTish to mean it's somewhere on the Richardson Maturity Model but didn't make it to the top, and endpoint-based APIs to mean any REST/RESTish/RPC/etc. API that uses endpoints instead of POSTing to a single /graphql endpoint.
+
+A lot of people are over-hyping GraphQL for qualities that REST APIs have too, which is annoying.
+
+---
+background-image: url(img/rest-can-do-that-1.png)
+class: graphql-screenshot-light
+---
+# REST Allows That
+TODO slide about doing this in REST
+---
+background-image: url(img/rest-can-do-that-2.png)
+class: graphql-screenshot-light
+---
+# REST Allows That
+TODO slide about doing this in REST
+---
+background-image: url(img/rest-can-do-that-3.png)
+class: graphql-screenshot-dark
+---
+# REST Allows That
+TODO slide about doing this in REST
+---
+background-image: url(img/rest-can-do-that-4.gif)
+class: graphql-screenshot-dark
+---
+# REST Begs You To Do That!
+TODO slide about doing this in REST
+---
+
+Many of these ideas were taken _from_ REST, which is awesome.
+
+Share ideas around, learn and benefit from all.
+
+---
+
+Time Wasting
+
+Rebuilding stuff for one thing, which you could have in REST is wasteful
+
+---
+
+Brain Washing
+
+Switching just becauase hype or cool is a drug you gotta quit
+
+---
+
+1. REST and GraphQL are totally different
+
+2. GraphQL isn't a magic bullet, nor is it "better"
+
+3. You can definitely use both at the same time
+
+4. GraphQL is dope if used for the right thing
+
+---
+
+REST is an architectural concept for network-based software, has no official set of tools, has no specification, doesn't care if you use HTTP, AMQP, etc., and is designed to decouple an API from the client. The focus is on making APIs last for decades, instead of optimizing for performance.
+
+---
+
+GraphQL is a query language, specification, and collection of tools, designed to operate over a single endpoint via HTTP, optimizing for performance and flexibility.
+
+---
+
+## Remember FQL?
+
+```
+GET /fql?q=SELECT%2Buid2%2BFROM%2Bfriend%2BWHERE%2Buid1%3Dme()&access_token=...
+```
+
+Facebook didn't like FQL _and_ RESTish so they combined it
+
+???
+Most of us would never even consider using FQL
+
+---
+
+One of the main tenants of REST is to utilize the uniform interface of the protocols it exists in. When utilizing HTTP, REST can leverage HTTP content-types, caching, status codes, etc., whereas GraphQL invents its own conventions.
+
+---
+
+basic show off how graphql works
+
+---
+
+background-image: url(img/richardson.png)
+
+# Richardson Maturity Model
+
+---
+
+SLIDE WITH SHIT CIRCLED like without HATEOAS RESTISH
+
+---
+
+background-image: url(img/hypermedia-like-no-handlebars.jpg)
+
+# REST /wo HATEOAS = RESTish
+
+---
+
+Everyone thinks RESTish is REST
+
+---
+
+Comparing RESTish to GraphQL is daft
+
+---
+
+```
+RESTish = (REST - HATEOAS + HTTP + (OData | (JSON Schema + JSON-API)) )
+
+GraphQL == RESTish
+```
+
+If your API is not using HATEOAS and you dont want to stitch together a bunch of best practices then GraphQL = A++ (Repeat later)
+
+---
+
+Packaged together in one beautiful website
+
+Compare two websites... easy to see why one feels like a modern replacement for an old idea
+
+---
+
+Basically GraphQL is a special type of RPC
+
+Mutations are very definitively RPC and the queries is like a default GET with params
+
+GraphQL encourages tight Coupling between client-server, making them quicker (dont need more requests) but fragile
+
+---
+
+If your API is not using HATEOAS and you dont want to stitch together a bunch of best practices then GraphQL = A++
+
+---
+
+<blockquote class="twitter-tweet" data-conversation="none" data-lang="en"><p lang="en" dir="ltr">If you control both sides of the wire (client and server) and can deploy simultaneously, most of REST&#39;s constraints are unnecessary work.</p>&mdash; Darrel Miller (@darrel_miller) <a href="https://twitter.com/darrel_miller/status/894638898512621572">August 7, 2017</a></blockquote>
+<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+---
+
+Lose Coupling &amp; Evolution
+
+<img src="img/crash-but-recover.gif">
+
+---
+
+Lose Coupling &amp; Evolution
+
+<img src="img/crash-but-recover-2.gif">
+
+---
+
+Tight Coupling...
+
+<img src="img/crash-unrecoverable.gif">
+
+???
+Need a LOT of developers
+Amazing docs + automated testing
+
+---
+
+RESTish &amp; GraphQL are both about Tight Coupling
+
+---
+
+HATEOAS intends to avoid tight coupling
+
+---
+
+How to HATEOAS
+
+1. Just links (they figure it from Allows: GET, PATCH)
+2. add more meta data to OPTIONS so they figure from that
+3. add controlls in response to avoid figuring
+
+---
+
+do a thing about caching and
+
+TODO
+
+XSD was a layer on top of XML to describe what your data was. More than just the datatypes XML lacked, but min, max, enums, etc
+
+WSDL added to that and showed how the XSD-laden reqs/responses interacted.
+
+
+
+XSD -> JSON Schema
+WSDL -> JSON HyperSchema or HAL/Siren/UBER
+
+XSD -> Types
+WSDL -> Types + Introspection
+
+
+
+
+
+    </textarea>
+    <script src="https://remarkjs.com/downloads/remark-latest.min.js">
+    </script>
+    <script>
+      var slideshow = remark.create();
+    </script>
+  </body>
+</html>
