@@ -4,11 +4,16 @@ theme: league
 revealOptions:
   transition: 'fade'
   slideNumber: true
+  autoPlayMedia: true
 ---
 
 # What <s>Rails</s> Ruby Can Teach PHP About Building APIs
 
 ### PHPNE 2017 / @philsturgeon
+
+---
+
+<!-- .slide: data-background="img/surgery.jpg" data-background-size="contain" -->
 
 ---
 
@@ -129,7 +134,9 @@ Note: Generally ignored by most, me too
 
 ### Willingness and ability to cooperate
 
-Note: Fewer silos to split work
+Note: TODO REDO THIS ITS GARBAGE
+
+Fewer silos to split work
 
 Defacto standards + willingness to work together early on
 
@@ -145,15 +152,19 @@ Note: Creator isn't important, authors arent held hostage
 
 ---
 
-### Composer vendor create "brand oppertunity"
+### Composer vendors create "brand oppertunity"
 
 ## Many devs want vendorname/fame
 
-Note: That can be seen League reaction
+Note: 5min fast / 10min slow
+
+That can be seen League reaction
 
 Other ways to do it
 help people / prs / issues
 blog
+
+async
 
 ---
 
@@ -188,6 +199,8 @@ Tying code to a framework is a waste of everyones time
 ---
 
 ## 😍
+
+Note: TEN IS FAST SLOW THE FUCK DOWN
 
 ---
 
@@ -319,7 +332,31 @@ PSR-15 standardises passing middlewares around
 
 ## describe-it testing
 
-![](img/khalan.gif)
+<video>
+  <source data-src="video/kahlan.mp4" type="video/mp4" autoplay />
+</video>
+
+---
+
+```php
+describe('GET /foo/{id}', function() {
+  context('when a valid token is provided', function() {
+    context('and foo exists', function() {      
+      context('and foo is active', function() {
+        it('do some test', function() {
+          // test that foo is returned
+        });
+      });
+      context('and foo is archived', function(){
+        // test that response is gone (410)
+      })
+    });
+    context('and foo does not exist', function() {
+      // test that foo is not found (404)
+    })
+  });
+});
+```
 
 ---
 
@@ -336,8 +373,8 @@ unit / integration / everything can be spec
 
 ## Ruby
 
-- RSpec
-- minitest-spec
+- [rspec](http://rspec.info)
+- [minitest-spec](https://github.com/seattlerb/minitest)
 
 ---
 
@@ -350,23 +387,35 @@ unit / integration / everything can be spec
 
 ---
 
-## Testing requests doesnt go over "wire"
+### Integration Tests
 
-- You don't want to start a dev server
-- You'd need to spin it up and down hundreds/thousands of times
+## Real Fake Interactions
+
+Note: don't want dev server
+
+You'd need to spin it up and down hundreds/thousands of times
+
+![](http://dylanninin.com/assets/images/2013/rails/rails_mvc_c.png)
+
 - Just unit testing controllers is not realistic
 - Using enough Rack to similate real req/resp
 
 ---
 
-## Testing requests doesn't go over "wire"
+<!-- .slide: data-background="img/phpvcr-overview.png" data-background-size="contain" -->
 
-<dl>
-  <dt>Ruby</dt>
+---
 
-  <dd>ActionDispatch (Rails)</dd>
-  <dd>rack-test (Rack)</dd>
-</dl>
+![](img/phpvcr-arg.png)
+
+---
+
+### Testing requests doesn't go over "wire"
+
+## Ruby
+
+- [ActionDispatch](http://dylanninin.com/blog/2013/11/26/rails4_ad_ac.html) (Rails)
+- [Rack::Test](https://github.com/rack-test/rack-test) (Rack)
 
 ---
 
@@ -413,27 +462,6 @@ Allow exceptions IF YOU MUST
 ### Intercept/block web connections for tests
 
 Otherwise... record and replay
-
----
-
-<!-- .slide: data-background="img/phpvcr-overview.png" data-background-size="contain" -->
-
----
-
-![](img/phpvcr-arg.png)
-
----
-
-```
-
-$ rake routes
-
-      Prefix Verb URI Pattern             Controller#Action
-       check POST /check(.:format)        check_v1#procedure {:format=>"json"}
-check_matrix POST /check-matrix(.:format) check_matrix_v1#procedure {:format=>"json"}
-             GET  /                       list_v1#procedure {:format=>"json"}
-
-```
 
 ---
 
@@ -509,17 +537,78 @@ invoice.transition_to(:paid) # => true/false
 
 ---
 
-## Serialization and Deserialization
+### Simple State Machines
 
-### Ruby
+## Ruby
 
-- ActiveModel Serializers
-- [OAT](https://github.com/ismasan/oat)
-- [ROAR](https://github.com/trailblazer/roar)
+- [aasm](https://github.com/aasm/aasm)
+- [statesman](https://github.com/gocardless/statesman)
+- [state_machine](https://github.com/pluginaweek/state_machine)
 
 ---
 
-## Serialization and Deserialization
+### Simple State Machines
+
+## PHP
+
+- ????
+- [State](https://github.com/sebastianbergmann/state) by Sebastian Bergmann
+
+---
+
+## Serialization
+
+### Like views for your data!
+
+Note: ASK! Down
+
+----
+
+```php
+<?php
+namespace Acme\Transformer;
+
+use Acme\Model\Book;
+use League\Fractal;
+
+class BookTransformer extends Fractal\TransformerAbstract
+{
+	public function transform(Book $book)
+	{
+	    return [
+	        'id'      => (int) $book->id,
+	        'title'   => $book->title,
+	        'year'    => (int) $book->yr,
+            'links'   => [
+                [
+                    'rel' => 'self',
+                    'uri' => '/books/'.$book->id,
+                ]
+            ],
+	    ];
+	}
+}
+```
+
+---
+
+Serialization is one of [the most important](https://philsturgeon.uk/api/2015/05/30/serializing-api-output/) aspects of your API
+
+---
+
+### Ruby
+
+- [ActiveModel Serializers](http://api.rubyonrails.org/classes/ActiveModel/Serialization.html) (Semi Official Rails)
+- [OAT](https://github.com/ismasan/oat) 🎖
+- [ROAR](https://github.com/trailblazer/roar) 🎖
+
+---
+
+ROAR also offers DESERIALIZATION
+
+---
+
+## Serialization
 
 ### PHP
 
@@ -528,9 +617,38 @@ invoice.transition_to(:paid) # => true/false
 
 ---
 
-- Inline REPL debugging
+## Inline REPL debugging
 
-TODO INSERT VIDEO OF DOPE SO EASY
+---
+
+<iframe width="924" height="520" src="https://www.youtube.com/embed/_BKeAOJTQq8" frameborder="0" allowfullscreen></iframe>
+
+[by Steve Goodstein](https://youtu.be/_BKeAOJTQq8)
+
+Note: Works regardless of Editor/IDE
+
+Docker support with zero changes
+
+---
+
+### Inline REPL debugging
+
+## Ruby
+
+- [byebug](https://github.com/deivid-rodriguez/byebug)
+- [pry](https://github.com/pry/pry)
+
+---
+
+### Inline REPL debugging
+
+## PHP
+
+- [PsySH](http://psysh.org/)
+
+---
+
+![](img/yay-psysh.png)
 
 ---
 
@@ -593,6 +711,10 @@ Rails munges it all.
 
 ---
 
+## Rails thinks REST = CRUD over HTTP
+
+---
+
 ## Rails thinks PUT === PATCH
 
 [_They are very different_](https://philsturgeon.uk/api/2016/05/03/put-vs-patch-vs-json-patch/)
@@ -628,6 +750,12 @@ end
 
 ---
 
+### Rails controller tests are pointless garbage
+
+Use requests tests
+
+---
+
 And Other Minor Gripes
 
 ![Grumble grumble](img/grumpy.jpg)
@@ -642,7 +770,7 @@ And Other Minor Gripes
 
 ---
 
-Their focus on collaboration instead of proving who is _the_ smartest is _awesome_
+Their focus on collaboration instead of jostling for greatness is _awesome_
 
 ---
 
@@ -664,6 +792,6 @@ Their focus on collaboration instead of proving who is _the_ smartest is _awesom
 
 # Cheers!
 
-@philsturgeon
+joind.in/talk/ba5fd
 
-philsturgeon.uk
+@philsturgeon
