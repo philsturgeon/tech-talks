@@ -128,11 +128,7 @@ Note: RPC and GraphQL recommended at work
 
 ## GraphQL vs endpoint-based APIs
 
----
-
-### Endpoint-based APIs
-
-## RPC, SOAP, RESTish, REST
+### (RPC, SOAP, RESTish, REST)
 
 ---
 
@@ -144,9 +140,26 @@ Note: RPC and GraphQL recommended at work
 
 ---
 
+```
+POST /graphql HTTP/1.1
+Content-Type: application/graphql
+
+{
+  turtles(id: "123") {
+    length,
+    width,
+    intelligence
+  }
+}
+```
+
+---
+
 # REST Allows That
 
 Sparse Fieldsets / Partials
+
+`GET /turtles/123?fields=length,width,intelligence`
 
 ---
 
@@ -188,19 +201,22 @@ JSON-API / OData
 
 ---
 
-# Query Languages
+## Nothing new about HTTP Query Languages
 
 ---
 
-# FQL
+# FQL (2007)
 
 ```
-GET /fql?q=SELECT uid FROM friend WHERE uid=me()&access_token=...
+GET /fql?q=SELECT status_id,message,time,source FROM `status` WHERE uid = me()
+
 ```
 
 ---
 
-Facebook didn't like FQL _and_ RESTish so they combined it
+Facebook didn't writing 2x code (for FQL _and_ RESTish)
+
+GraphQL = FQL + RESTish
 
 Note: Most of us would never even consider using FQL
 
@@ -302,6 +318,19 @@ HTTP has loads of amazing caching proxies
 ## Customization = Cache Misses
 
 GrahQL cannot use HTTP network caching
+
+---
+
+## RESTish and GraphQL both suffer _MEGA INCLUDES_
+
+GET /me?include=literally,everything,in,
+the,goddam,database,what,is,
+happening,so,slow,help,me,database,
+server,is,on,fire,agggghhhhhh
+
+---
+
+## Multiple handshakes are not going to be _your_ bottleneck
 
 ---
 
@@ -477,6 +506,31 @@ GraphQL cannot help you communicate with other systems
 ---
 
 GraphQL is a great alternative to JSON-API-like RESTish APIs
+
+---
+
+## GraphQL makes Deprecations awesome
+
+```
+POST /graphql HTTP/1.1
+Content-Type: application/graphql
+
+{
+  turtles(id: "123") {
+    length,
+    width,
+    intelligence
+  }
+}
+```
+
+---
+
+Endpoint-based APIs can deprecate whole endpoints
+
+`Sunset: Thu, 13 Jul 2017 15:42:12 GMT`
+
+([IETF Draft](https://tools.ietf.org/html/draft-wilde-sunset-header-03))
 
 ---
 
