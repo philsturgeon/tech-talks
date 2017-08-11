@@ -88,11 +88,36 @@ Switching just becauase hype or cool is a drug you gotta quit
 
 ---
 
-GraphQL is a newer concept, being released by Facebook publicly in 2015.
+## GraphQL is newer
+
+Released by Facebook publicly in 2015.
+
+Note: GraphQL is a query language
+specification
+ collection of tools
+ designed to operate over a single endpoint via HTTP
 
 ---
 
-REST was a dissertation published by Roy Fielding in 2000, popularized kinda by companies like Twitter in 2006.
+REST was a dissertation published by Roy Fielding in 2000
+
+Popularized (kinda) by companies like Twitter in 2006.
+
+Note: REST is an architectural concept for network-based software
+
+no official set of tools, has no specification, doesn't care if you use HTTP, AMQP, etc., and is designed to decouple an API from the client. The focus is on making APIs last for decades, instead of optimizing for performance.
+
+---
+
+## GraphQL is optimized for network performance
+
+---
+
+## REST is optimized for API longevity
+
+---
+
+Totally different goals
 
 ---
 
@@ -104,23 +129,7 @@ REST was a dissertation published by Roy Fielding in 2000, popularized kinda by 
 
 ---
 
-Easy to see why some folks think one is a replacement
-
----
-
-
-REST is an architectural concept for network-based software, has no official set of tools, has no specification, doesn't care if you use HTTP, AMQP, etc., and is designed to decouple an API from the client. The focus is on making APIs last for decades, instead of optimizing for performance.
-
-
----
-
-
-GraphQL is a query language, specification, and collection of tools, designed to operate over a single endpoint via HTTP, optimizing for performance and flexibility.
-
-
----
-
-One of the main tenants of REST is to utilize the uniform interface of the protocols it exists in. When utilizing HTTP, REST can leverage HTTP content-types, caching, status codes, etc., whereas GraphQL invents its own conventions.
+### Ignorance-based false-differenciation
 
 ---
 
@@ -130,8 +139,6 @@ One of the main tenants of REST is to utilize the uniform interface of the proto
 
 # REST Allows That
 
-
-
 ---
 
 <!-- .slide: data-background="img/rest-can-do-that-2.png" data-background-size="contain" data-background-color="#F5F6F8" -->
@@ -139,7 +146,6 @@ One of the main tenants of REST is to utilize the uniform interface of the proto
 ---
 
 # REST Allows That
-TODO slide about doing this in REST
 
 ---
 
@@ -148,7 +154,6 @@ TODO slide about doing this in REST
 ---
 
 # REST Allows That
-TODO slide about doing this in REST
 
 ---
 
@@ -157,19 +162,14 @@ TODO slide about doing this in REST
 ---
 
 # REST Begs You To Do That!
-TODO slide about doing this in REST
 
 ---
 
+# Query Languages
 
+---
 
-
-
-Query Languages
-
-
-
-## Remember FQL?
+# FQL
 
 ```
 GET /fql?q=SELECT uid FROM friend WHERE uid=me()&access_token=...
@@ -180,6 +180,40 @@ GET /fql?q=SELECT uid FROM friend WHERE uid=me()&access_token=...
 Facebook didn't like FQL _and_ RESTish so they combined it
 
 Note: Most of us would never even consider using FQL
+
+---
+
+# SPARQL (2008)
+
+```
+#added before 2016-10
+#Demonstrates "no value" handling
+SELECT ?human ?humanLabel
+WHERE
+{
+	?human wdt:P31 wd:Q5 .       #find humans
+	?human rdf:type wdno:P40 .   #with at least one P40 (child) statement defined to be "no value"
+	SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],en" }
+}
+```
+
+[W3C Recommendation (2013)](https://www.w3.org/TR/sparql11-query/)
+
+---
+
+FIQL (2008)
+
+```
+title==foo*;(updated=lt=-P1D,title==*bar)
+
+will return all entries in a feed that meet the following criteria;
+
+- have a title beginning with "foo", AND
+- have been updated in the last day OR have a title ending with
+ "bar".
+```
+
+[IETF Draft](https://tools.ietf.org/html/draft-nottingham-atompub-fiql-00)
 
 ---
 
@@ -256,61 +290,189 @@ GrahQL cannot use HTTP network caching
 
 ---
 
+<!-- .slide: data-background="img/richardson-not-rest.png" data-background-size="contain" data-background-color="#fff" -->
+
+---
+
+<!-- .slide: data-background="img/richardson-rest.png" data-background-size="contain" data-background-color="#fff" -->
+
+---
+
 <!-- .slide: data-background="img/hypermedia-like-no-handlebars.jpg" data-background-size="contain" data-background-color="#000" -->
 
 ---
 
-RESTish &amp; GraphQL are both about Tight Coupling
+RESTish &amp; GraphQL both promote tight coupling
 
 ---
 
-<blockquote class="twitter-tweet" data-conversation="none" data-lang="en"><p lang="en" dir="ltr">If you control both sides of the wire (client and server) and can deploy simultaneously, most of REST&#39;s constraints are unnecessary work.</p>&mdash; Darrel Miller (@darrel_miller) <a href="https://twitter.com/darrel_miller/status/894638898512621572">August 7, 2017</a></blockquote>
-<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+Timed deployments with changes to all clients, or version creep
 
 ---
 
-
-Lose Coupling &amp; Evolution
-
-<img src="img/crash-but-recover.gif">
-
+Tiny contract changes break clients horribly
 
 ---
 
-
-Lose Coupling &amp; Evolution
-
-<img src="img/crash-but-recover-2.gif">
+![](img/crash-unrecoverable.gif)
 
 ---
 
+## Hypermedia = loose coupling
 
-Tight Coupling...
+![](img/crash-but-recover.gif)
 
-<img src="img/crash-unrecoverable.gif">
+---
+
+## Hypermedia = loose coupling
+
+![](img/crash-but-recover-2.gif)
+
+---
+
+![](img/deploy-simultatnious.png)
 
 Note: Need a LOT of developers
 Amazing docs + automated testing
 
 ---
 
-HATEOAS helps avoid tight Coupling
+## Gimme specifics!
 
 ---
 
-How to HATEOAS
-
-1. Just links (they figure it from Allows: GET, PATCH)
-2. add more meta data to OPTIONS so they figure from that
-3. add controlls in response (Siren) to avoid figuring
+## REST != CRUD over HTTP
 
 ---
 
-GraphQL cannot help you communicate with other systems, HATEOAS ca
+## REST == State Machines over HTTP
+
+```ruby
+class InvoiceStateMachine
+  include Statesman::Machine
+
+  state :draft, initial: true
+  state :published
+  state :sent
+  state :paid
+
+  transition from: :draft,        to: :published
+  transition from: :published,    to: [:draft, :sent, :paid]
+  transition from: :sent,         to: :paid
+
+  # next slide
+end
+```
 
 ---
 
-Packaged together in one system, which is cool
+```ruby
+  guard_transition(to: :sent) do |invoice|
+    invoice.has_contact_info?
+  end
+
+  before_transition(to: :sent) do |invoice, transition|
+    EmailService.new(invoice).send_contact_invoice
+    invoice.touch(:sent_at)
+  end
+
+  after_transition(to: :paid) do |invoice, transition|
+    EmailService.new(invoice).send_owner_success
+    invoice.touch(:paid_at)
+  end
+```
+
+---
+
+## Simple State machines
+
+``` ruby
+invoice.current_state # => "draft"
+invoice.allowed_transitions # => ["pay"]
+invoice.can_transition_to?(:sent) # => true/false
+invoice.transition_to(:paid) # => true/false
+```
+
+---
+
+## Basic HATEOAS!
+
+```
+{
+  "data": {
+    "type": "invoice",
+    "id": "093b941d",
+    "attributes": {
+      "bla": "stuff",
+      "status": "draft"
+    }
+  },
+  "links": {
+    "pay": "https://api.acme.com/invoices/093b941d/payment_attempts"
+  }
+}
+```
+
+---
+
+# Different levels of HATEOAS
+
+---
+
+## 1.) String containing a URL and that's it
+
+- Make that URL respond to `OPTIONS`
+- List `Allow: GET, DELETE`
+
+---
+
+## 2.) Add metadata to that OPTIONS payload
+
+- Use JSON Schema to detail fields
+- Use JSON HyperSchema to detail potential actions
+
+---
+
+## 3.) Add Hypermedia controlls in response
+
+[Siren](https://github.com/kevinswiber/siren) / [HAL](https://tools.ietf.org/html/draft-kelly-json-hal-06)
+
+---
+
+GraphQL cannot help you communicate with other systems
+
+---
+
+"Level 3" Hypermedia can help you submit to anything
+
+---
+
+## Enough, we dont want HATEOAS
+
+---
+
+GraphQL is a great alternative to JSON-API-like RESTish APIs
+
+---
+
+If you don't want to learn:
+
+- Evolution instead of global versioning
+- Serializing data
+- Implement sparse fieldsets
+- GZip contents
+- Outlining data structures with JSON Schema
+- Offer binary alts to JSON like Protobuff or CapnProto
+
+---
+
+### The maybe just use GraphQL
+
+---
+
+It's packaged together in one system, which is cool
+
+**but REST can totally do it**
 
 ---
 
@@ -327,3 +489,29 @@ Quick to build and easy to break?
 Slow to build and more resiliant?
 
 Just data, or file upload/download too?
+
+---
+
+## I would use GraphQL for
+
+A [mostly] read-only Statistics API
+
+---
+
+## I would use GraphQL for
+
+A CRUD API that 100% did not need HATEOAS or file uploads ever
+
+---
+
+## I would use GraphQL for
+
+A CRUD API that the team might make shitty
+
+---
+
+# Thanks!
+
+![Rate this on joind.in](img/qr.png)
+
+[joind.in/talk/736c4](https://joind.in/talk/736c4)
