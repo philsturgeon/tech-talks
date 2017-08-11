@@ -9,13 +9,7 @@ theme: beige
 
 ---
 
-1. REST and GraphQL are totally different
-
-2. GraphQL isn't a magic bullet, nor is it "better"
-
-3. You can definitely use both at the same time
-
-4. GraphQL is dope if used for the right thing
+<!-- .slide: data-background="img/many-bikes.jpg" data-background-size="contain" -->
 
 ---
 
@@ -36,10 +30,6 @@ theme: beige
 ---
 
 <!-- .slide: data-background="img/random-bike-hacks.png" data-background-size="contain" -->
-
----
-
-<!-- .slide: data-background="img/many-bikes.jpg" data-background-size="contain" -->
 
 ---
 
@@ -75,22 +65,21 @@ Note: I have recommended RPC, REST _and_ GraphQL for different services at WeWor
 
 ---
 
-
 ## Time Wasting
 
 Rebuilding stuff for one thing, which you could have in REST is wasteful
 
 ---
 
-## Brain Washing
+## Make Educated Decisions
 
-Switching just becauase hype or cool is a drug you gotta quit
+Switching just because hype or cool is just dumb
 
 ---
 
 ## GraphQL is newer
 
-Released by Facebook publicly in 2015.
+Released by Facebook publicly in 2015
 
 Note: GraphQL is a query language
 specification
@@ -99,11 +88,21 @@ specification
 
 ---
 
+<!-- .slide: data-background="img/graphql-org.png" -->
+
+---
+
+## REST is older and nerdier
+
 REST was a dissertation published by Roy Fielding in 2000
 
-Popularized (kinda) by companies like Twitter in 2006.
+---
+
+<!-- .slide: data-background="img/rest-disert.png" -->
 
 Note: REST is an architectural concept for network-based software
+
+Popularized (kinda) by companies like Twitter in 2006.
 
 no official set of tools, has no specification, doesn't care if you use HTTP, AMQP, etc., and is designed to decouple an API from the client. The focus is on making APIs last for decades, instead of optimizing for performance.
 
@@ -121,11 +120,19 @@ Totally different goals
 
 ---
 
-<!-- .slide: data-background="img/graphql-org.png" -->
+You should use different approaches for different services
+
+Note: RPC and GraphQL recommended at work
 
 ---
 
-<!-- .slide: data-background="img/rest-disert.png" -->
+## GraphQL vs endpoint-based APIs
+
+---
+
+### Endpoint-based APIs
+
+## RPC, SOAP, RESTish, REST
 
 ---
 
@@ -139,6 +146,8 @@ Totally different goals
 
 # REST Allows That
 
+Sparse Fieldsets / Partials
+
 ---
 
 <!-- .slide: data-background="img/rest-can-do-that-2.png" data-background-size="contain" data-background-color="#F5F6F8" -->
@@ -146,6 +155,10 @@ Totally different goals
 ---
 
 # REST Allows That
+
+JSON-based: JSON Schema / JSON-LD
+
+Binary Based: Protobuff / CapnProto
 
 ---
 
@@ -155,13 +168,23 @@ Totally different goals
 
 # REST Allows That
 
+Compound Documents
+
+JSON-API / OData
+
 ---
 
 <!-- .slide: data-background="img/rest-can-do-that-4.gif" data-background-size="contain" data-background-color="#E6E8EC" -->
 
 ---
 
-# REST Begs You To Do That!
+# REST Begs For That!
+
+### API Evolution
+
+---
+
+![](img/roy-evolution.png)
 
 ---
 
@@ -205,13 +228,13 @@ FIQL (2008)
 
 ```
 title==foo*;(updated=lt=-P1D,title==*bar)
+```
 
 will return all entries in a feed that meet the following criteria;
 
 - have a title beginning with "foo", AND
 - have been updated in the last day OR have a title ending with
  "bar".
-```
 
 [IETF Draft](https://tools.ietf.org/html/draft-nottingham-atompub-fiql-00)
 
@@ -437,6 +460,8 @@ invoice.transition_to(:paid) # => true/false
 
 [Siren](https://github.com/kevinswiber/siren) / [HAL](https://tools.ietf.org/html/draft-kelly-json-hal-06)
 
+_[Many others](https://sookocheff.com/post/api/on-choosing-a-hypermedia-format/)_
+
 ---
 
 GraphQL cannot help you communicate with other systems
@@ -480,17 +505,36 @@ It's packaged together in one system, which is cool
 
 Are you ok letting go of HTTP?
 
+---
+
+### Ask yourself
 How different are your clients from each other?
 
+---
+
+### Ask yourself
 Do you trust your clients to handle caching?
 
+---
+
+### Ask yourself
 Quick to build and easy to break?
 
+---
+
+### Ask yourself
 Slow to build and more resiliant?
 
+---
+
+### Ask yourself
 Just data, or file upload/download too?
 
 ---
+
+## I would use GraphQL for
+
+A highly query-able API, with wide array of clients that need small and different data, and data is inexpensive to query...
 
 ## I would use GraphQL for
 
