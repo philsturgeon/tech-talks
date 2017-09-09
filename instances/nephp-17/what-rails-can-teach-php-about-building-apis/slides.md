@@ -396,7 +396,7 @@ You'd need to spin it up and down hundreds/thousands of times
 
 ---
 
-![](http://dylanninin.com/assets/images/2013/rails/rails_mvc_c.png)
+![](img/rails_mvc_c.png)
 
 Note: Just unit testing controllers is not realistic
 
