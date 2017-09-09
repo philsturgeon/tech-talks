@@ -43,11 +43,7 @@ Note: Some are hacks that legimately work
 ## Pro-REST
 ## Pro-RPC
 
----
-
-## Anti-Nonsense
-
-Note: I have recommended RPC, REST _and_ GraphQL for different services at WeWork in the last few months.
+Note: recommended RPC, REST _and_ GraphQL at WeWork
 
 ---
 
@@ -64,6 +60,18 @@ Note: I have recommended RPC, REST _and_ GraphQL for different services at WeWor
 ---
 
 <!-- .slide: data-background="img/nonsense.jpg" -->
+
+---
+
+## Mismarketing and Hype
+
+People are excited about GraphQL and misrepresent it
+
+---
+
+## Mismarketing and Hype
+
+People used to be excited about REST and misrepresent it
 
 ---
 
@@ -451,13 +459,15 @@ That's not something you should take lightly
 
 ---
 
-_You won't have an efficient customizable API without restructing your data_
+_You won't have an efficient GraphQL API without restructing your data_
 
 ---
 
-## RESTish and GraphQL both suffer _MEGA INCLUDES_
+GitHub, Facebook, etc. have a few more resources than the rest of us
 
-JSON-API-style includes cause as much suffering:
+---
+
+## JSON-API-style **mega-includes** same
 
 GET /me?include=literally,everything,in,
 the,goddam,database,what,is,
@@ -561,6 +571,8 @@ invoice.transition_to(:paid) # => true/false
 
 ## State Machines can power Hypermedia Controls!
 
+Original approach...
+
 ```
 {
   "data": {
@@ -583,7 +595,7 @@ invoice.transition_to(:paid) # => true/false
 
 ---
 
-## 1.) String containing a URL and that's it
+## 1.) String containing just URL
 
 ```
 "links": {
@@ -591,8 +603,17 @@ invoice.transition_to(:paid) # => true/false
 }
 ```
 
-- Make that URL respond to `OPTIONS`
-- List `Allow: GET, DELETE`
+- If link exists clients can "click it"
+- (No guarentee of success)
+- Make URL respond to `OPTIONS`
+- Use `Allow: GET, PATCH` to show available actions
+
+---
+
+**Downsides**
+
+1. Working out what GET and PATCH are exactly for
+2. What fields should be sent to PATCH
 
 ---
 
@@ -600,6 +621,13 @@ invoice.transition_to(:paid) # => true/false
 
 - Use JSON Schema to detail fields
 - Use JSON HyperSchema to detail potential actions
+- Entirely optional extra layer of strictness
+
+---
+
+**Downsides**
+
+Optional nature means some clients will ignore/not notice
 
 ---
 
@@ -628,15 +656,9 @@ _[Many others](https://sookocheff.com/post/api/on-choosing-a-hypermedia-format/)
 
 ---
 
-### HATEOAS Pitch
+**Downsides**
 
-GraphQL cannot help you communicate with other systems
-
----
-
-### HATEOAS Pitch
-
-"Level 3" Hypermedia can help you submit to anything
+Increases size of response message
 
 ---
 
@@ -650,7 +672,19 @@ HATEOAS can help clients build "Actions" dropdowns dynamically!
 
 ### HATEOAS Pitch
 
-iOS, Web and Tablet will no longer mismatch state
+GraphQL cannot help you communicate with other systems
+
+---
+
+### HATEOAS Pitch
+
+Hypermedia can help you make cross-API requests
+
+---
+
+### HATEOAS Pitch
+
+iOS, Web and XBox apps _cannot_ mismatch state
 
 Note: One client offers link another doesnt
 
@@ -708,12 +742,12 @@ Endpoint-based APIs can deprecate whole endpoints
 
 If you don't want to learn:
 
-- Evolution instead of global versioning
 - Serializing data
 - Implement sparse fieldsets
 - GZiping contents
 - Outlining data structures with JSON Schema
 - Offer binary alts to JSON like Protobuff or CapnProto
+- Evolution instead of global versioning
 
 ---
 
@@ -733,6 +767,11 @@ Are you ok letting go of HTTP?
 
 ### Ask yourself
 How different are your clients from each other?
+
+---
+
+### Ask yourself
+Do you trust your clients to handle caching without any hints from the server?
 
 ---
 
