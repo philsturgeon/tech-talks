@@ -3,29 +3,21 @@ title: "HTTP Caching: It's Easy & Saves the Polar Bears"
 theme: sky
 ---
 
-# HTTP Caching
+## HTTP Caching
 
-## Stop Melting The Ice Caps
+### Stop Melting The Ice Caps
 
-### PHP South West / @philsturgeon
+PHP South West / @philsturgeon
 
 ---
 
 Stuff like GraphQL optimizes for _network speed_
 
----
-
-i.e: Each interaction must be the quickest possible
+Note: Each interaction must be the quickest possible
 
 ---
 
 <!-- .slide: data-background="img/shrink-graphql.png" data-background-size="contain" data-background-color="#F5F6F8" -->
-
----
-
-This only really helps if any of those fields are _computed_
-
-_(Don't compute read data on-the-fly!!)_
 
 ---
 
@@ -39,7 +31,9 @@ REST optimizes for _network efficiency_ over _network speed_
 
 ### Efficiency > Speed
 
-Making unnecessary requests "quicker" is **not** efficient (or clever)
+Why are you doing pointless stuff quickly?
+
+Just... stop doing pointless stuff!!
 
 ---
 
@@ -51,17 +45,33 @@ Making unnecessary requests "quicker" is **not** efficient (or clever)
 
 ---
 
-<!-- .slide: data-background="img/richardson-cache.png" data-background-size="contain" data-background-color="#F5F6F8" -->
+<!-- .slide: data-background="img/richardson-cache.png" data-background-size="contain" data-background-color="#fff" -->
 
 ---
 
-> Um, like, REST didn't invent caching, we already cache our responses in Redis!
+> "Um, like, REST didn't invent caching, we already cache our applications with Redis!" says **Imaginary Narrative Device**
 
 ---
 
-## Naive Client Caching
+Wrong type of caching there bud.
 
-```
+---
+
+Even if your application/API/server/service responds in 1ms, network latency is ~100ms
+
+---
+
+<!-- .slide: data-background="img/pucklechurch-latency.png" data-background-size="contain" data-background-color="#fff" -->
+
+---
+
+> **IND:** Oh, you're talking about caching responses, which we also do with Redis?
+
+---
+
+## This Junk
+
+``` ruby
 Rails.cache.fetch("users/#{uuid}", expires_in: 12.hours.from_now) do
   UserAPI.find_user(uuid)
 end
@@ -69,24 +79,52 @@ end
 
 ---
 
+Something that GraphQL actually _recommends_
+
+---
+
+<!-- .slide: data-background="img/lol-graphql-caching.png" data-background-size="contain" data-background-color="#fff" -->
+
+---
+
+<!-- .slide: data-background="img/wtf-no-graphql-caching.png" data-background-size="contain" data-background-color="#fff" -->
+
+
+---
+
+<!-- .slide: data-background="img/graphql-caching-from-uuids.jpg" data-background-size="cover" data-background-color="#000" -->
+
+---
+
+GraphQL and endpoint-APIs which fail to offer cacheability all force "naive client caching"
+
+---
+
 ## Expiry Guessing
 ### Problem 1
 
-12 is an arbitrary number plucked out my... brain
+12 hours is an **arbitrary number** plucked out my...
+
+brain 🤔
+
+Note: Why is the client setting rules for data owned by the server?
 
 ---
 
 ## Expiry Changing
 ### Problem 2
 
-12 might be a good idea now, but might not be next month
+12 might be a good idea now, but could become incorrect over time
+
+Note: origin server decreases retention to 3 hours + improves performance to get closer to real time
+You have old data, other clients have new data!
 
 ---
 
 ## Invalidations
 ### Problem 3
 
-Your client has to subscribe to AMQP/WebSockets/something to invalidate
+Client must subscribe to AMQP, WebSockets, etc. to invalidate
 
 ---
 
@@ -94,7 +132,7 @@ REST says these problems should be a concern of the **server**
 
 ---
 
-Endpoint-based APIs can utilize all of [RFC 7234](https://tools.ietf.org/html/rfc7234)
+"Endpoint-based APIs" can utilize all of [RFC 7234](https://tools.ietf.org/html/rfc7234)
 
 - `Expires`
 - `Cache-Control`
@@ -121,7 +159,15 @@ Cache-Control: public, max-age=25200
 
 ---
 
-Pur
+REST **does not force caching**, but you should **declare cacheability**
+
+---
+
+## Uncacheable Response
+
+```
+Cache-Control: no-cache, no-store, must-revalidate
+```
 
 ---
 
@@ -174,87 +220,38 @@ Client doesn't have to wait for that JSON to download
 
 ---
 
-<!-- .slide: data-background="img/content-download.png" data-background-size="contain" data-background-color="#F5F6F8" -->
+<!-- .slide: data-background="img/content-download.png" data-background-size="contain" data-background-color="#fff" -->
 
 ---
 
-### Customization vs Caching
-
-`GET /turtles/123?fields=name,lifespan`
+Clients can completely ignore expiry headers if they want to
 
 ---
 
-`/turtles/123?fields=name,lifespan,weight`
-
-≠
-
-`/turtles/123?fields=name,weight,lifespan`
+<!-- .slide: data-background="img/ignore-expiry-headers-if-you-want.jpg" data-background-size="contain" data-background-color="#fff" -->
 
 ---
 
-Why even bother?!
+### Common response cache strategy
+
+- Before going to network, check for fresh content in cache
+
+- If stale content is found, a conditional request will be created
+
+- If no content, a normal request is created
 
 ---
 
-**Client A**
 
-`GET /turtles?fields=name,lifespan`
-
-200ms
+> **INB:** This sounds like hard work
 
 ---
 
-**Client B**
-
-`GET /turtles?fields=name`
-
-192ms
+Writing all the code is hard, so don't do it
 
 ---
 
-%4 speedup by missing the cache to skip one field
-
----
-
-**Client A**
-
-`GET /turtles`
-
-220ms
-
----
-
-**Client B**
-
-`GET /turtles`
-
-118ms
-
----
-
-10% slow down requesting all the things
-
-_buuuut_
-
-46% speedup by hitting that shared cache
-
----
-
-## Compromise
-
-Use [partials](https://blog.apisyouwonthate.com/a-happy-compromise-between-customization-and-cacheability-e48dc083ed10) as a middleground
-
-```
-GET /turtles?partial=dimensions
-```
-
-<small>is.gd/api_partials</small>
-
----
-
-# MIDDLEWARES
-
-Let somebody else do literally all the work and implement RFC 7234 for you.
+Any RFC 7234 compatible middleware/implementation is fine
 
 ---
 
@@ -287,26 +284,52 @@ $client = new Client(['handler' => $stack]);
 
 ---
 
-
-BUT I STIL HAVE TO INVALIDATE BC SOME REQUESTS...
-
-Request cache control
-
-https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cache-Control
+> **IND:** Agh that's scary, it's going to add caching to all requests that use that HTTP client?!?!?1
 
 ---
 
-
-# Different Strategies
-
-1. Check resource `Expires` or `Cache-Control` headers and set expiry in cache
-1. Store the headers in the cache
-1. Redis/Memcache will expire entry once it is not "fresh"
-1. If no fresh
+<!-- .slide: data-background="img/thats-great.gif" data-background-size="contain" data-background-color="#000" -->
 
 ---
 
-Every client has its own cache bluuugh diagram
+> **IND:** I don't like the idea of the server taking away my freedoms. I want control over using cached data or not!
+
+Note: Just edited something, want to 100% absolutely use newest thing?
+
+---
+
+## Easy Enough
+
+```
+GET /turtles/123
+Cache-Control: no-cache
+```
+
+<small>More on [developer.mozilla.org](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cache-Control)</small>
+
+---
+
+> no-cache doesn't mean "don't cache", it means it must check (or "revalidate" as it calls it) with the server before using the cached resource. no-store tells the browser not to cache it at all.
+
+**Source:** [jakearchibald.com](https://jakearchibald.com/2016/caching-best-practices/)
+
+😅
+
+---
+
+> Also must-revalidate doesn't mean "must revalidate", it means the local resource can be used if it's younger than the provided max-age, otherwise it must revalidate. Yeah. I know.
+
+**Source:** [jakearchibald.com](https://jakearchibald.com/2016/caching-best-practices/)
+
+🤣
+
+---
+
+<!-- .slide: data-background="img/local-cache.png" data-background-size="contain" -->
+
+---
+
+<!-- .slide: data-background="img/network-cache.png" data-background-size="contain" -->
 
 ---
 
@@ -325,19 +348,112 @@ HTTP has loads of amazing caching proxies:
 
 ---
 
-## HTTP/1.1 Network Hacks
+### Customization vs Caching
 
-Network hacks made us forget about cacheability
-
----
-
-GraphQL cannot use existing HTTP network caching tools
+`GET /turtles/123?fields=name,lifespan`
 
 ---
 
-## Multiple handshakes are not going to be _your_ bottleneck
+`/turtles/123`
 
-_And HTTP/2 solves the multiple handshake issue anyway_
+≠
+
+`/turtles/123?fields=name,lifespan`
+
+≠
+
+`/turtles/123?fields=name,lifespan,weight`
+
+≠
+
+`/turtles/123?fields=name,weight,lifespan`
+
+---
+
+Why even bother?!
+
+---
+
+A scenario where Clients A and B both care about trimming their response, on a network cached API
+
+---
+
+**Client A**
+
+`GET /turtles?fields=name,lifespan`
+
+200ms
+
+---
+
+**Client B**
+
+`GET /turtles?fields=name`
+
+192ms
+
+---
+
+Yay 4% speedup by missing the cache to skip one field
+
+---
+
+**Client A**
+
+`GET /turtles`
+
+220ms
+
+---
+
+**Client B**
+
+`GET /turtles`
+
+118ms
+
+---
+
+10% slow down requesting all the things
+
+_buuuut_
+
+46% speedup by hitting that shared cache
+
+---
+
+Client A and Client B then both add client caches 👍🏼
+
+---
+
+🎊 118ms becomes 4ms as they hit a local memcache on internal DNS 🎊
+
+---
+
+## Compromise
+
+Use [partials](https://blog.apisyouwonthate.com/a-happy-compromise-between-customization-and-cacheability-e48dc083ed10) as a middleground
+
+```
+GET /turtles?partial=dimensions
+```
+
+<small>is.gd/api_partials</small>
+
+---
+
+That said if you're using partials/fields, you probably just want smaller resources and make more HTTP/2 requests, but...
+
+---
+
+![](img/book.jpg)
+
+leanpub.com/talking-to-other-peoples-web-apis/c/BRIZZLE
+
+---
+
+<!-- .slide: data-background="img/shrink-graphql.png" data-background-size="contain" data-background-color="#F5F6F8" -->
+
 
 ---
 
