@@ -13,6 +13,14 @@ PHP South West
 
 ---
 
+Who leads? Client or Server?
+
+---
+
+Caching is for the client (consumer)
+
+---
+
 JSON-API/GraphQL optimize for _network speed_
 
 Note: Each interaction must be the quickest possible

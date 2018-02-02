@@ -1,6 +1,5 @@
 {
   "dependencies": {
-    "hercule": "^4.1.0",
     "reveal-md": "^0.4.0"
   }
 }
