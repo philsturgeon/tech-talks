@@ -127,6 +127,13 @@ BUT MORE IMPORTANTLY
 
 ---
 
+JSON Schema had two vocabularies:
+
+- Core
+- Validation
+
+---
+
 ## Client-side Payload Validation
 
 Clients need to validate requests before form submission
@@ -198,14 +205,14 @@ const input = {
  id: "ABC-123",
  name: "Fluffy",
  price: 10
-}
+};
 
 // Is the whole input valid?
-validate(hatSchema, input) // true
+validate(hatSchema, input); // true
 
 // Ok screw up validation...
-input['price'] = -1
-validate(hatSchema, input) // [ { keyword: 'exclusiveMinimum', dataPath: '.price', ...
+input['price'] = -1;
+validate(hatSchema, input); // [ { keyword: 'exclusiveMinimum', dataPath: '.price', ...
 ```
 
 ---
@@ -325,29 +332,89 @@ JSON Schema enabled evolution without the **Validation Hell**
 
 ## Form Generation
 
-TODO Show JSON Schema UI
+- [mozilla-services/react-jsonschema-form](https://github.com/mozilla-services/react-jsonschema-form)
+- [json-schema-form/json-schema-form-core](https://github.com/json-schema-form/json-schema-form-core)
+- soon... official JSON Schema UI vocabulary
 
 ---
 
-## Server-side validation
+```
+{
+  "boolean": {
+    "radio": {
+      "ui:widget": "radio"
+    },
+    "select": {
+      "ui:widget": "select"
+    }
+  },
+  "string": {
+    "textarea":  {
+      "ui:widget": "textarea",
+      "ui:options": {
+        "rows": 5
+      }
+    },
+    "color": {
+      "ui:widget": "color"
+    }
+  },
+  "secret": {
+    "ui:widget": "hidden"
+  },
+  "disabled": {
+    "ui:disabled": true
+  },
+  "readonly": {
+    "ui:readonly": true
+  },
+  "widgetOptions": {
+    "ui:options": {
+      "backgroundColor": "yellow"
+    }
+  },
+  "selectWidgetOptions": {
+    "ui:options": {
+      "backgroundColor": "pink"
+    }
+  }
+}
+```
+
+---
+
+<!-- .slide: data-background="img/json-schema-form-1.png" data-background-size="contain" data-background-color="#fff" -->
+
+---
+
+<!-- .slide: data-background="img/json-schema-form-2.png" data-background-size="contain" data-background-color="#fff" -->
+
+---
+
+## Server-side Validation
 
 Exactly the same JSON Schema validation can be used in app
 
 ---
 
-## Server-side validation
+## Server-side Validation
 
-Delete 345974358289 lines of controller/model validations
+Delete 345974989 lines of controller/model validations
 
 ---
 
 ## Server Implementations
 
-[github.com/apioo/fusio](https://github.com/apioo/fusio)
+- [apioo/fusio](https://github.com/apioo/fusio)
+- [hskrasek/laravel-jsonschema-validation-example](https://github.com/hskrasek/laravel-jsonschema-validation-example)
 
 ---
 
-## API Gateway validation
+<!-- .slide: data-background="img/server-validation.gif" data-background-size="contain" data-background-color="#000" -->
+
+---
+
+## API Gateway Validation
 
 Don't even bother the application server unless the payload is valid.
 
@@ -368,13 +435,6 @@ Describe JSON anywhere, e.g: AMQP messages
 ---
 
 <!-- .slide: data-background="img/data-model-service-model.png" data-background-size="contain" -->
-
----
-
-Until recently, JSON Schema had two vocabularies:
-
-- Core
-- Validation
 
 ---
 
@@ -402,10 +462,6 @@ OpenAPI can handle the service + data
 
 ---
 
-Or, write JSON Schema data models and `$ref` them from the OpenAPI service model
-
----
-
 ## Basic OpenAPI
 
 ```
@@ -415,9 +471,9 @@ info:
   version: 1.0.0
   description: The API for selling hats with pictures of cats.
 servers:
-  - url: https://hats.example.com
+  - url: "https://hats.example.com"
     description: Production server
-  - url: https://hats-staging.example.com
+  - url: "https://hats-staging.example.com"
     description: Staging server
 
 ... continued ...
@@ -462,7 +518,11 @@ components:
 
 ---
 
-Notice that structure? It's basically JSON Schema.
+Notice that structure? It's basically JSON Schema in YAML...
+
+---
+
+You can actually write JSON Schema data models and `$ref` them from the OpenAPI service model
 
 ---
 
@@ -475,6 +535,14 @@ These schemas can be JSON Schema (draft v4) files, with caveats...
 ---
 
 <!-- .slide: data-background="img/osa-json-demo.gif" data-background-size="contain" -->
+
+---
+
+[hskrasek/jsonschema-input-validator](https://github.com/hskrasek/jsonschema-input-validator)
+
+---
+
+OpenAPI has the best API Reference tools currently
 
 ---
 
@@ -508,7 +576,7 @@ These schemas can be JSON Schema (draft v4) files, with caveats...
 
 ---
 
-## JSON Schema moves to Service Model
+## JSON Schema gets a Service Model
 
 The 3rd (newest) JSON Schema vocabulary is HyperSchema
 
@@ -526,12 +594,14 @@ Links send a user agent from `/` to `/hats` or `/cats`
 
 ---
 
-When landing in `GET /hats/123` it offers a `purchase` link (with metadata), so long as `in_stock: true`
+When landing on `GET /hats/123` it offers a `purchase` link
+... so long as `in_stock: true`
 
 ---
 
 ``` json
 {
+  "$id": "hat",
   "if": {
     "required": ["in_stock"],
     "properties": {
@@ -548,6 +618,8 @@ When landing in `GET /hats/123` it offers a `purchase` link (with metadata), so 
     }]
   }
 }
+```
+
 ---
 
 I'm talking about *hypermedia* folks!
@@ -558,12 +630,50 @@ Unlike Siren/HAL/JSON-API, etc., the links and the metadata are not in the paylo
 
 ---
 
-# JSON HyperSchema API Reference
+Optional hypermedia controls are great. Clients can use em if they want, skip em if they don't.
+
+---
+
+## JSON HyperSchema API Reference
 
 [Doca](https://github.com/cloudflare/doca) can generate docs from HyperSchema
 
 ---
 
-![](img/book.jpg)
+RPC? OpenAPI
 
-<small><a href="https://leanpub.com/surviving-other-peoples-web-apis">leanpub.com/surviving-other-peoples-web-apis</a></small>
+---
+
+REST? OpenAPI
+
+or JSON Schema + JSON HyperSchema
+
+or Both!
+
+---
+
+OpenAPI v3.1 might support JSON Schema *proper* as an "Alternative Syntax"
+
+(Remove the need for conversion and discrepancies)
+
+---
+
+Get started with either of them. There are so many amazing benefits.
+
+---
+
+<!-- .slide: data-background="img/book.jpg" data-background-size="contain" -->
+
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<small><strong><a href="https://apisyouwonthate.com">apisyouwonthate.com</a></strong></small>
