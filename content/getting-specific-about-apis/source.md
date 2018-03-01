@@ -121,6 +121,7 @@ BUT MORE IMPORTANTLY
 - Server-side payload validation
 - Contract testing
 - Form Generation
+- Code Generation
 - SDKs
 - Mock Servers
 
@@ -527,6 +528,26 @@ Links send a user agent from `/` to `/hats` or `/cats`
 
 When landing in `GET /hats/123` it offers a `purchase` link (with metadata), so long as `in_stock: true`
 
+---
+
+``` json
+{
+  "if": {
+    "required": ["in_stock"],
+    "properties": {
+      "in_stock": {"const": true}
+    }
+  },
+  "then": {
+    "links": [{
+      "rel": "buy",
+      "href": "cart",
+      "submissionSchema": {
+        "$ref": "./cart.json#/add"
+      }
+    }]
+  }
+}
 ---
 
 I'm talking about *hypermedia* folks!
