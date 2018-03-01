@@ -17,12 +17,6 @@ NYPHP
 
 ---
 
-[json-schema.org/specification.html](http://json-schema.org/specification.html)
-
-draft 07 right meow
-
----
-
 ```
 {
     "id": 12,
@@ -75,11 +69,16 @@ Crap Documentation is written in...
 
 ---
 
+[json-schema.org/specification.html](http://json-schema.org/specification.html)
+
+draft 07 right meow
+
+---
+
 ## JSON Schema
 
 ```
 {
-    "title": "Hat"
     "type": "object",
     "properties": {
         "id": {
@@ -110,7 +109,7 @@ Crap Documentation is written in...
 
 ---
 
-This metadata can be used to generate API Reference docs
+This can be used to generate API Reference docs
 
 ---
 
@@ -136,6 +135,14 @@ Heck no am I waiting for the server to respond for per-field as-you-type validat
 ---
 
 Duplicating validation logic on server and various clients is dangerous and **boring**
+
+---
+
+## Validation Hell
+
+E.g: A "name" string changes max length from 20 to 40
+
+Note: The API devs decide making validation rules lenient != breaking. they deploy the change with a max length of 40 characters, and one client-app deploys an update to match, increasing the validation to 40. Despite various client applications still having the hardcoded max length at 20 characters, everyone feels pretty happy about this.
 
 ---
 
@@ -301,7 +308,9 @@ Don't stop at string errors. Update the UI.
 
 ---
 
-Can even add tooltips based on example values
+![](img/tooltips.png)
+
+Can even add tooltips based on format/example values
 
 ---
 
@@ -313,17 +322,15 @@ JSON Schema enabled evolution without the **Validation Hell**
 
 ---
 
-## Validation Hell
+## Form Generation
 
-E.g: A "name" string changes max length from 20 to 40
-
-Note: The API devs decide making validation rules lenient != breaking. they deploy the change with a max length of 40 characters, and one client-app deploys an update to match, increasing the validation to 40. Despite various client applications still having the hardcoded max length at 20 characters, everyone feels pretty happy about this.
+TODO Show JSON Schema UI
 
 ---
 
 ## Server-side validation
 
-Exactly the same JSON Schema can be used in app
+Exactly the same JSON Schema validation can be used in app
 
 ---
 
@@ -333,28 +340,23 @@ Delete 345974358289 lines of controller/model validations
 
 ---
 
-api gateway validation
+## Server Implementations
+
+[github.com/apioo/fusio](https://github.com/apioo/fusio)
 
 ---
 
-<!-- .slide: data-background="img/tyk.png" data-background-size="contain" data-background-color="#fff" -->
+## API Gateway validation
+
+Don't even bother the application server unless the payload is valid.
 
 ---
 
-form generation
+<!-- .slide: data-background="img/api-gateway-json-schema.png" data-background-size="contain" data-background-color="#fff" -->
 
 ---
 
-sdks
-
----
-
-mirror to postman
-
----
-
-mock Api servers
-
+<!-- .slide: data-background="img/tyk.png" -->
 
 ---
 
@@ -471,19 +473,43 @@ These schemas can be JSON Schema (draft v4) files, with caveats...
 
 ---
 
+<!-- .slide: data-background="img/osa-json-demo.gif" data-background-size="contain" -->
+
+---
+
+<!-- .slide: data-background="img/human-gross.png" data-background-size="contain" data-background-color="#fff" -->
+
+---
+
+<!-- .slide: data-background="img/human-nice.png" data-background-size="contain" -->
+
+---
+
+## SDK Generation
+
+- apimatic.io
+- stoplight.io
+
+---
+
+## Mirror to Postman
+
+1. apimatic.io/transformer
+1. Postman Pro API
+
+---
+
+## Mock API servers
+
+- [prism](http://stoplight.io/platform/prism/)
+- stoplight.io
+- Postman Mock Server
+
+---
+
+## JSON Schema moves to Service Model
+
 The 3rd (newest) JSON Schema vocabulary is HyperSchema
-
----
-
-Instead of focusing on "paths", it's links from one thing to another
-
----
-
-Links send a user agent from `/` to `/hats` or `/cats`
-
----
-
-I'm talking about hypermedia folks!
 
 ---
 
@@ -491,11 +517,29 @@ I'm talking about hypermedia folks!
 
 ---
 
-https://github.com/cloudflare/doca
+Instead of focusing on "paths", HyperSchema links from one thing to another
 
 ---
 
-https://spacetelescope.github.io/understanding-json-schema/
+Links send a user agent from `/` to `/hats` or `/cats`
+
+---
+
+When landing in `GET /hats/123` it offers a `purchase` link (with metadata), so long as `in_stock: true`
+
+---
+
+I'm talking about *hypermedia* folks!
+
+---
+
+Unlike Siren/HAL/JSON-API, etc., the links and the metadata are not in the payload
+
+---
+
+# JSON HyperSchema API Reference
+
+[Doca](https://github.com/cloudflare/doca) can generate docs from HyperSchema
 
 ---
 
