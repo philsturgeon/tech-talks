@@ -17,6 +17,10 @@ NYPHP
 
 ---
 
+<!-- .slide: data-background="img/build-apis-you-wont-hate.jpg" data-background-size="contain" data-background-color="#000" -->
+
+---
+
 ```
 {
     "id": 12,
@@ -32,6 +36,8 @@ NYPHP
     }]
 }
 ```
+
+[pokeapi.co](https://pokeapi.co/)
 
 ---
 
@@ -64,8 +70,8 @@ Crap Documentation is written in...
 - Markdown Tables 🤔
 - HTML 😴
 - Word Documents 😖
-- Excel Spreadsheets 🤣
 - Wikis 😩
+- Excel Spreadsheets 🤣
 
 ---
 
@@ -233,7 +239,6 @@ Lets look at a more advanced example.
 {
   "$id": "http://example.com/schemas/user.json",
   "type": "object",
-  "definitions": {},
   "$schema": "http://json-schema.org/draft-07/schema#",
   "properties": {
     "name": {
@@ -594,7 +599,7 @@ Links send a user agent from `/` to `/hats` or `/cats`
 
 ---
 
-When landing on `GET /hats/123` it offers a `purchase` link
+When landing on `GET /hats/123` it offers a `buy` link
 ... so long as `in_stock: true`
 
 ---
@@ -640,13 +645,17 @@ Optional hypermedia controls are great. Clients can use em if they want, skip em
 
 ---
 
+<!-- .slide: data-background="img/doca.png" data-background-size="contain" -->
+
+---
+
 RPC? OpenAPI
 
 ---
 
-REST? OpenAPI
+REST? OpenAPI... maybe...
 
-or JSON Schema + JSON HyperSchema
+probably JSON Schema + JSON HyperSchema
 
 or Both!
 
