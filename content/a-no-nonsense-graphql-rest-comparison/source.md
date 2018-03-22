@@ -5,7 +5,7 @@ theme: beige
 
 # A No Nonsense GraphQL and REST Comparison
 
-### RubyConf Colombia 2017 / @philsturgeon
+### @philsturgeon
 
 ---
 
@@ -15,7 +15,31 @@ Note: Define better. They each aim at different things.
 
 ---
 
-<!-- .slide: data-background="img/many-bikes.jpg" data-background-size="contain" -->
+<!-- .slide: data-background="img/my-bikes-1.png" -->
+
+Note: I am all for appropriate tool
+
+---
+
+<!-- .slide: data-background="img/my-bikes-2.png" -->
+
+Note: I am all for appropriate tool
+
+---
+
+<!-- .slide: data-background="img/my-bikes-3.png" -->
+
+Note: I am all for appropriate tool
+
+---
+
+<!-- .slide: data-background="img/my-bikes-4.png" -->
+
+Note: I am all for appropriate tool
+
+---
+
+<!-- .slide: data-background="img/my-bikes-5.png" -->
 
 Note: I am all for appropriate tool
 
@@ -81,15 +105,15 @@ Rebuilding stuff to utilize an "out of the box" feature, which you cold have in 
 
 ---
 
-<!-- .slide: data-background="img/random-bikes-obviously-misused.jpg" data-background-size="contain" -->
-
-Note: Doesnt matter what bike, misuse is no good
-
----
-
 ## Make Educated Decisions
 
 Switching just because hype or cool is an expensive time sink
+
+---
+
+<!-- .slide: data-background="img/random-bikes-obviously-misused.jpg" data-background-size="contain" -->
+
+Note: Doesn't matter what bike, misuse is no good
 
 ---
 
@@ -268,6 +292,12 @@ JSON-API / OData
 ---
 
 ![](img/roy-evolution.png)
+
+---
+
+[![](img/learn-about-versioning.png)](https://blog.apisyouwonthate.com/api-versioning-has-no-right-way-f3c75457c0b7)
+
+blog.apisyouwonthate.com/api-versioning-has-no-right-way-f3c75457c0b7
 
 ---
 
@@ -776,11 +806,6 @@ Do you trust your clients to handle caching without any hints from the server?
 ---
 
 ### Ask yourself
-Do you trust your clients to handle caching without any hints from the server?
-
----
-
-### Ask yourself
 Do we _defitely_ never _ever_ want HATEOAS?
 
 ---
@@ -809,8 +834,14 @@ A CRUD API that the team might make shitty
 
 ---
 
+<!-- .slide: data-background="img/surviving-other-peoples-apis.jpg" data-background-size="contain" data-background-color="#333" -->
+
+---
+
+Books and blogs on [apisyouwonthate.com](https://apisyouwonthate.com)
+
+---
+
 # Thanks!
 
 Slides are up on [philsturgeon.uk/speaking](http://philsturgeon.uk/speaking)
-
-Go to [blog.apisyouwonthate.com](http://blog.apisyouwonthate.com) for more APIs
