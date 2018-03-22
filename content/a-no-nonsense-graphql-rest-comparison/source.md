@@ -59,7 +59,7 @@ Note: some unexpected
 
 <!-- .slide: data-background="img/random-bike-hacks.png" data-background-size="contain" -->
 
-Note: Some are hacks that legimately work
+Note: Some are hacks that legitimately work
 
 ---
 
