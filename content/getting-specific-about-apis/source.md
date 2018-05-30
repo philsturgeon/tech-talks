@@ -317,6 +317,82 @@ validation is much more
 
 ---
 
+> How can we keep our documentation / specifications up to date?
+
+🚫
+
+---
+
+> How can we ensure our code conforms to our contracts?
+
+👍
+
+---
+
+```
+before do
+  subject { create(:hat) }
+
+  it 'should return HTTP OK (200)' do
+    get "/hats/#{subject.id}"
+    expect(response).to have_http_status(:ok)
+  end
+end
+```
+
+OK it WORKED, but... the shape!?
+
+---
+
+```
+it 'should match expected JSON' do
+  get "/hats/#{subject.id}"
+    expect(subject).to include_json(
+    id: 25,
+    name: "Some Hat"
+  )
+end
+```
+
+Meh kinda ok those values match but... im copying my contract (the rules I accept) to a lot of tests!!
+
+---
+
+``` ruby
+require "json_matchers/rspec"
+
+JsonMatchers.schema_root = "./schemas"
+```
+
+``` ruby
+it 'should conform to hat schema' do
+  get "/hats/#{subject.id}"
+  expect(response).to match_json_schema('hat')
+end
+```
+
+---
+
+And of course, in OpenAPI, we can reference this `hat.json` :D
+
+```
+responses:
+  200:
+    description: OK
+    content:
+      application/json:
+        schema:
+          $ref: ./schemas/hat.json
+```
+
+---
+
+JSON Schema is making sure our code isn't lying or changing, and we can reuse the contracts for docs!
+
+<span style="font-size: 100pt">🙌</span>
+
+---
+
 ## Client-side Validation
 
 Clients need to validate requests before form submission
@@ -513,6 +589,8 @@ Can even add tooltips based on format/example values
 ---
 
 JSON Schema enabled evolution without the **Validation Hell**
+
+<span style="font-size: 100pt">🙌</span>
 
 ---
 
