@@ -11,13 +11,19 @@ revealOptions:
 
 ### Label your hecking units
 
-NYPHP
+CapitalOne DevExchange
 
 <small>@philsturgeon</small>
 
 ---
 
 <!-- .slide: data-background="img/build-apis-you-wont-hate.jpg" data-background-size="contain" data-background-color="#000" -->
+
+---
+
+<!-- .slide: data-background="img/wework.jpg" -->
+
+<img src="img/wework-logo.jpg" style="margin-top: -30%; width:50%; ">
 
 ---
 
@@ -45,7 +51,11 @@ NYPHP
 
 ---
 
-<!-- .slide: data-background="img/lol.jpg" data-background-size="contain" data-background-color="#000" -->
+<!-- .slide: data-background="img/lol1.png" data-background-size="contain" data-background-color="#fff" -->
+
+---
+
+<!-- .slide: data-background="img/lol2.jpg" data-background-size="contain" data-background-color="#000" -->
 
 ---
 
@@ -65,19 +75,200 @@ NYPHP
 
 ---
 
-Crap Documentation is written in...
+metadata / types / specifications / schemas / contracts
 
-- Markdown Tables 🤔
-- HTML 😴
-- Word Documents 😖
-- Wikis 😩
-- Excel Spreadsheets 🤣
 
 ---
 
-[json-schema.org/specification.html](http://json-schema.org/specification.html)
+This can be used to generate API Reference docs
 
-draft 07 right meow
+---
+
+_But more importantly..._
+
+---
+
+- Client-side validation
+- Server-side validation
+- Client-library Generation (SDKs)
+- UI Generation
+- Server/Application generation
+- Mock servers
+- Contract testing
+
+---
+
+Not a new concept
+
+---
+
+<!-- .slide: data-background="img/data-model-service-model.png" data-background-size="contain" -->
+
+---
+
+<!-- .slide: data-background="img/data-model-service-model-wsdl.png" data-background-size="contain" -->
+
+---
+
+"REST is the new SOAP"
+
+Hahahaha no but data / service modeling has made a comeback
+
+---
+
+<!-- .slide: data-background="img/data-model-service-model-openapi.png" data-background-size="contain" -->
+
+---
+
+## Basic OpenAPI
+
+```
+openapi: 3.0.1
+info:
+  title: Cat on the Hat API
+  version: 1.0.0
+  description: The API for selling hats with pictures of cats.
+servers:
+  - url: "https://hats.example.com"
+    description: Production server
+  - url: "https://hats-staging.example.com"
+    description: Staging server
+
+... continued ...
+```
+
+---
+
+```
+paths:
+  /hats:
+    get:
+      description: Returns all hats from the system that the user has access to
+      responses:
+        '200':
+          description: A list of hats.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/hat'
+```
+
+---
+
+```
+components:
+  schemas:
+    hat:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: enum
+          enum:
+            - bowler
+            - top
+            - fedora
+```
+
+---
+
+TODO show workflow and some zoom ins
+
+---
+
+Everything in `schema` is _kinda_ JSON Schema (draft v4), with caveats...
+
+---
+
+<!-- .slide: data-background="img/json-schema-oai-differences.png" data-background-size="contain" -->
+
+---
+
+Avoid the caveats by writing straight up JSON Schema
+
+---
+
+Right now OpenAPI has a draft thats being worked out to support "alternate schemas"
+
+TODO alt example
+
+---
+
+TODO Speccy example hack
+
+---
+
+### OpenAPI is good at
+
+- ✅ Documentation
+- 🚫 Client-side validation
+- ✅ Server-side validation
+- ✅ Client-library Generation (SDKs)
+- 🚫 UI Generation
+- ✅ Server/Application generation
+- ✅ Mock servers
+- 🚫 Contract testing
+
+---
+
+<!-- .slide: data-background="img/human-gross.png" data-background-size="contain" data-background-color="#fff" -->
+
+---
+
+<!-- .slide: data-background="img/human-nice.png" data-background-size="contain" -->
+
+---
+
+```
+npm install -g speccy
+speccy serve http://foo.com/openapi.yaml
+```
+
+---
+
+## SDK Generation
+
+- [OpenAPITools/openapi-generator](https://github.com/OpenAPITools/openapi-generator)
+- [apimatic.io](https://apimatic.io/)
+- [stoplight.io](https://stoplight.io/)
+
+---
+
+## Mock API servers
+
+- stoplight.io
+- restpoint.io
+- getsandbox.com
+- Postman Mock Server
+
+---
+
+
+## Mirror to Postman
+
+1. apimatic.io/transformer
+1. Postman Pro API
+
+---
+
+### JSON Schema is good at
+
+- 🚫 Documentation
+- ✅ Client-side validation
+- ✅ Server-side validation
+- 🚫 Client-library Generation (SDKs)
+- ✅ UI Generation
+- 🚫 Server/Application generation
+- 🚫 Mock servers
+- ✅ Contract testing
+
+---
+
+JSON Schema is at [draft 07](http://json-schema.org/specification.html)
 
 ---
 
@@ -110,45 +301,37 @@ draft 07 right meow
 "default": "Default value",
 "readOnly": true,
 "maximum": 10,
-"examples": ["foo", "bar"]
+"example": "foo"
 ```
 
 ---
 
-This can be used to generate API Reference docs
-
----
-
-BUT MORE IMPORTANTLY
-
----
-
-- Client-side payload validation
-- Server-side payload validation
-- Contract testing
-- Form Generation
-- Code Generation
-- SDKs
-- Mock Servers
-
----
-
-JSON Schema had two vocabularies:
+Early on, JSON Schema only had two vocabularies:
 
 - Core
 - Validation
 
+Note: core is similar to graphql/proto
+
+validation is much more
+
 ---
 
-## Client-side Payload Validation
+## Client-side Validation
 
 Clients need to validate requests before form submission
 
-Heck no am I waiting for the server to respond for per-field as-you-type validation)
+> "I'm not waiting for the server for per-field as-you-type validation!"
 
 ---
 
 Duplicating validation logic on server and various clients is dangerous and **boring**
+
+---
+
+## Validation Hell
+
+E.g: A "description" string changes max length from 100 to 50
 
 ---
 
@@ -214,11 +397,13 @@ const input = {
 };
 
 // Is the whole input valid?
-validate(hatSchema, input); // true
+validate(hatSchema, input);
+// returns: true
 
 // Ok screw up validation...
 input['price'] = -1;
-validate(hatSchema, input); // [ { keyword: 'exclusiveMinimum', dataPath: '.price', ...
+validate(hatSchema, input);
+// returns: [ { keyword: 'exclusiveMinimum', dataPath: '.price', ...
 ```
 
 ---
@@ -227,7 +412,7 @@ We got either a true or an array of errors, which is pretty handy
 
 ---
 
-JSON Schema validators are currently pretty bad at generating human errors
+JSON Schema validators are _not great_ at generating human errors
 
 ---
 
@@ -327,23 +512,97 @@ Can even add tooltips based on format/example values
 
 ---
 
-Use i18n to give errors in multiple languages
-
----
-
 JSON Schema enabled evolution without the **Validation Hell**
 
 ---
 
-## Form Generation
+## Server-side Validation
 
-- [mozilla-services/react-jsonschema-form](https://github.com/mozilla-services/react-jsonschema-form)
-- [json-schema-form/json-schema-form-core](https://github.com/json-schema-form/json-schema-form-core)
-- soon... official JSON Schema UI vocabulary
+Exactly the same JSON Schema validation can be used server-side
 
 ---
 
+Delete 34589 lines of controller/model validation
+
+---
+
+## Server-side Validation
+
+``` php
+use HSkrasek\JSONSchema\Validator;
+
+$schema = file_get_contents('./schemas/hat.json');
+$validator = new Validator($data, $schema);
+
+if ($validator->fails()) {
+    $problemDetails = $validator->getProblemDetails();
+    return json_encode($problemDetails);
+}
+
+// continue
 ```
+
+---
+
+``` js
+[
+  'title' => 'Provided data didn\'t validate',
+  'status' => 400,
+  'invalid-params' => [
+      [
+          'name'        => '/foo',
+          'reason'      => 'The data must be a(n) string.',
+          'schema_path' => '/properties/foo/type',
+      ],
+      [
+          'name'        => '/bar',
+          'reason'      => 'The data must be a(n) integer.',
+          'schema_path' => '/properties/bar/type',
+      ],
+      [
+          'name'        => '/bar',
+          'reason'      => 'The number must be less than 5.',
+          'schema_path' => '/properties/bar/maximum',
+      ]
+]
+```
+
+---
+
+[hskrasek/jsonschema-input-validator](https://github.com/hskrasek/jsonschema-input-validator)
+[thephpleague/json-guard](https://github.com/thephpleague/json-guard)
+
+---
+
+A whoooole bunch of validators out there
+
+[json-schema.org/implementations.html](http://json-schema.org/implementations.html#validators)
+
+---
+
+## API Gateway Validation
+
+Don't even bother the application server unless the payload is valid.
+
+---
+
+<!-- .slide: data-background="img/api-gateway-json-schema.png" data-background-size="contain" data-background-color="#fff" -->
+
+---
+
+<!-- .slide: data-background="img/tyk.png" -->
+
+---
+
+## UI Generation (Forms)
+
+- [mozilla-services/react-jsonschema-form](https://github.com/mozilla-services/react-jsonschema-form)
+- [json-schema-form/json-schema-form-core](https://github.com/json-schema-form/json-schema-form-core)
+- eventually... an official JSON Schema UI vocabulary
+
+---
+
+``` json
 {
   "boolean": {
     "radio": {
@@ -396,194 +655,9 @@ JSON Schema enabled evolution without the **Validation Hell**
 
 ---
 
-## Server-side Validation
+## JSON Schema now has a Service Model 😲
 
-Exactly the same JSON Schema validation can be used in app
-
----
-
-## Server-side Validation
-
-Delete 345974989 lines of controller/model validations
-
----
-
-## Server Implementations
-
-- [apioo/fusio](https://github.com/apioo/fusio)
-- [hskrasek/laravel-jsonschema-validation-example](https://github.com/hskrasek/laravel-jsonschema-validation-example)
-
----
-
-<!-- .slide: data-background="img/server-validation.gif" data-background-size="contain" data-background-color="#000" -->
-
----
-
-## API Gateway Validation
-
-Don't even bother the application server unless the payload is valid.
-
----
-
-<!-- .slide: data-background="img/api-gateway-json-schema.png" data-background-size="contain" data-background-color="#fff" -->
-
----
-
-<!-- .slide: data-background="img/tyk.png" -->
-
----
-
-JSON Schema is for more than HTTP APIs
-
-Describe JSON anywhere, e.g: AMQP messages
-
----
-
-<!-- .slide: data-background="img/data-model-service-model.png" data-background-size="contain" -->
-
----
-
-JSON Schema is similar (but not the same as) XML Schema
-
-Both only document data model
-
----
-
-<!-- .slide: data-background="img/data-model-service-model-wsdl.png" data-background-size="contain" -->
-
----
-
-"REST is the new SOAP"
-
-Hahahaha no but data / service modeling has made a comeback
-
----
-
-<!-- .slide: data-background="img/data-model-service-model-openapi.png" data-background-size="contain" -->
-
----
-
-OpenAPI can handle the service + data
-
----
-
-## Basic OpenAPI
-
-```
-openapi: 3.0.0
-info:
-  title: Cat on the Hat API
-  version: 1.0.0
-  description: The API for selling hats with pictures of cats.
-servers:
-  - url: "https://hats.example.com"
-    description: Production server
-  - url: "https://hats-staging.example.com"
-    description: Staging server
-
-... continued ...
-```
-
----
-
-```
-paths:
-  /hats:
-    get:
-      description: Returns all hats from the system that the user has access to
-      responses:
-        '200':
-          description: A list of hats.
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/hat'
-```
-
----
-
-```
-components:
-  schemas:
-    hat:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-        name:
-          type: enum
-          enum:
-            - bowler
-            - top
-            - fedora
-```
-
----
-
-Notice that structure? It's basically JSON Schema in YAML...
-
----
-
-You can actually write JSON Schema data models and `$ref` them from the OpenAPI service model
-
----
-
-These schemas can be JSON Schema (draft v4) files, with caveats...
-
----
-
-<!-- .slide: data-background="img/json-schema-oai-differences.png" data-background-size="contain" -->
-
----
-
-<!-- .slide: data-background="img/osa-json-demo.gif" data-background-size="contain" -->
-
----
-
-[hskrasek/jsonschema-input-validator](https://github.com/hskrasek/jsonschema-input-validator)
-
----
-
-OpenAPI has the best API Reference tools currently
-
----
-
-<!-- .slide: data-background="img/human-gross.png" data-background-size="contain" data-background-color="#fff" -->
-
----
-
-<!-- .slide: data-background="img/human-nice.png" data-background-size="contain" -->
-
----
-
-## SDK Generation
-
-- apimatic.io
-- stoplight.io
-
----
-
-## Mirror to Postman
-
-1. apimatic.io/transformer
-1. Postman Pro API
-
----
-
-## Mock API servers
-
-- [prism](http://stoplight.io/platform/prism/)
-- stoplight.io
-- Postman Mock Server
-
----
-
-## JSON Schema gets a Service Model
-
-The 3rd (newest) JSON Schema vocabulary is HyperSchema
+The 3rd vocabulary is **HyperSchema**
 
 ---
 
@@ -649,25 +723,29 @@ Optional hypermedia controls are great. Clients can use em if they want, skip em
 
 ---
 
-RPC? OpenAPI
+Buuuuut there are no SDK generators, application generators, etc
+
+Aaaaand your API has to be 100% Actual REST™ to use it
 
 ---
 
-REST? OpenAPI... maybe...
+## REST API
 
-probably JSON Schema + JSON HyperSchema
+a) JSON Schema /w HyperSchema
 
-or Both!
-
----
-
-OpenAPI v3.1 might support JSON Schema *proper* as an "Alternative Syntax"
-
-(Remove the need for conversion and discrepancies)
+b) JSON Schema + OpenAPI
 
 ---
 
-Get started with either of them. There are so many amazing benefits.
+## RESTish or RPC API
+
+a) JSON Schema + OpenAPI
+
+b) 100% OpenAPI
+
+---
+
+Get started with either, and switch if you need to.
 
 ---
 
