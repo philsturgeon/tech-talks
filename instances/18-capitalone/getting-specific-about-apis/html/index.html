@@ -335,7 +335,7 @@ GET /hats
 Link: <http://example.com/schemas/hats.json#>; rel=”describedby”
 ```
 
-Now you know what a collection of hats look like...
+Now clients know what a collection of hats look like...
 </script></section><section  data-markdown><script type="text/template">
 ```
 {
@@ -346,7 +346,7 @@ Now you know what a collection of hats look like...
 }
 ```
 
-And you know what a hat looks like...
+And now clients know what a hat looks like...
 </script></section><section  data-markdown><script type="text/template">
 ``` js
 const Ajv = require('ajv');
@@ -652,13 +652,59 @@ Get started with either, and switch if you need to.
 Avoid writing careful OpenAPI-flavoured JSON Schema
 
 Just write proper JSON Schema™!
+
+[wework/json-schema-to-openapi-schema](https://github.com/wework/json-schema-to-openapi-schema)
 </script></section><section  data-markdown><script type="text/template">
+```
+const toOpenApi = require('json-schema-to-openapi-schema');
 
+const schema = {
+  '$schema': 'http://json-schema.org/draft-04/schema#',
+  type: ['string', 'null'],
+  format: 'date-time',
+};
 
-TODO alt example
+console.log(toOpenApi(schema));
+```
+
+```
+{
+  type: 'string',
+  format: 'date-time',
+  nullable: true
+}
+```
 </script></section><section  data-markdown><script type="text/template">
-TODO Speccy example hack
+Validators like speccy fail...
 
+```
+$ speccy lint docs/openapi.yml
+Specification schema is invalid.
+
+#/paths/~1invalidations/post/requestBody/content/application~1json/properties/user_uuid
+expected Array [ 'string', 'null' ] to be a string
+    expected Array [ 'string', 'null' ] to have type string
+        expected 'object' to be 'string'
+```
+</script></section><section  data-markdown><script type="text/template">
+But speccy has a `--json-schema` switch
+
+```
+$ speccy lint docs/openapi.yml --json-schema
+Specification is valid, with 0 lint errors
+```
+</script></section><section  data-markdown><script type="text/template">
+OpenAPI have a feature in "draft"
+
+```
+schema:
+  alternativeSchema:
+    type: jsonSchema
+    location: ./real-jsonschema.json
+```
+
+(probably going in v3.1)
+</script></section><section  data-markdown><script type="text/template">
 <!-- .slide: data-background="img/book.jpg" data-background-size="contain" -->
 
 <br/>
