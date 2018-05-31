@@ -342,14 +342,14 @@ before do
 end
 ```
 
-OK it WORKED, but... the shape!?
+It responeded ok, but... what about the shape!?
 
 ---
 
 ```
 it 'should match expected JSON' do
   get "/hats/#{subject.id}"
-    expect(subject).to include_json(
+  expect(subject).to include_json(
     id: 25,
     name: "Some Hat"
   )
@@ -417,7 +417,7 @@ E.g: A "description" string changes max length from 100 to 50
 
 E.g: A "name" string changes max length from 20 to 40
 
-Note: The API devs decide making validation rules lenient != breaking. they deploy the change with a max length of 40 characters, and one client-app deploys an update to match, increasing the validation to 40. Despite various client applications still having the hardcoded max length at 20 characters, everyone feels pretty happy about this.
+Note: The API devs decide making validation rules lenient != breaking. they deploy the change with a max length of 40 characters, and one client-app deploys an update to match, increasing the validation to 40. Despite various client applications still having the hardcoded max length at 20 characters
 
 ---
 
