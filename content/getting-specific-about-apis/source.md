@@ -27,26 +27,6 @@ CapitalOne DevExchange
 
 ---
 
-```
-{
-    "id": 12,
-    "name": "butterfree",
-    "base_experience": 178,
-    "height": 11,
-    "is_default": true,
-    "order": 16,
-    "weight": 320,
-    "abilities": [{
-        "is_hidden": true,
-        "slot": 3
-    }]
-}
-```
-
-[pokeapi.co](https://pokeapi.co/)
-
----
-
 <!-- .slide: data-background="img/mars-1.jpg" -->
 
 ---
@@ -68,6 +48,26 @@ CapitalOne DevExchange
 ---
 
 > "That is so dumb," said John Logsdon, director of George Washington University's space policy institute.
+
+---
+
+```
+{
+    "id": 12,
+    "name": "butterfree",
+    "base_experience": 178,
+    "height": 11,
+    "is_default": true,
+    "order": 16,
+    "weight": 320,
+    "abilities": [{
+        "is_hidden": true,
+        "slot": 3
+    }]
+}
+```
+
+[pokeapi.co](https://pokeapi.co/)
 
 ---
 
@@ -150,9 +150,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/hat'
+                $ref: '#/components/schemas/hats'
 ```
 
 ---
@@ -160,6 +158,11 @@ paths:
 ```
 components:
   schemas:
+    hats:
+      type: array
+      items:
+        $ref: "#/components/schemas/hat"
+
     hat:
       type: object
       properties:
@@ -176,29 +179,17 @@ components:
 
 ---
 
-TODO show workflow and some zoom ins
+<!-- .slide: data-background="img/openapi-workflow.jpg" data-background-size="contain" data-background-color="#fff" -->
 
 ---
 
-Everything in `schema` is _kinda_ JSON Schema (draft v4), with caveats...
+<!-- .slide: data-background-color="#fff" -->
+
+![](img/openapi-workflow-waaa.jpg)
 
 ---
 
-<!-- .slide: data-background="img/json-schema-oai-differences.png" data-background-size="contain" -->
-
----
-
-Avoid the caveats by writing straight up JSON Schema
-
----
-
-Right now OpenAPI has a draft thats being worked out to support "alternate schemas"
-
-TODO alt example
-
----
-
-TODO Speccy example hack
+<!-- .slide: data-background="img/editors.png" data-background-size="contain" data-background-color="#fff" -->
 
 ---
 
@@ -211,7 +202,7 @@ TODO Speccy example hack
 - 🚫 UI Generation
 - ✅ Server/Application generation
 - ✅ Mock servers
-- 🚫 Contract testing
+- 🤷‍♀️ Contract testing
 
 ---
 
@@ -240,18 +231,33 @@ speccy serve http://foo.com/openapi.yaml
 
 ## Mock API servers
 
-- stoplight.io
-- restpoint.io
-- getsandbox.com
+- [stoplight.io](https://stoplight.io/)
+- [restpoint.io](http://restpoint.io)
+- [getsandbox.com](http://getsandbox.com)
 - Postman Mock Server
 
 ---
-
 
 ## Mirror to Postman
 
 1. apimatic.io/transformer
 1. Postman Pro API
+
+---
+
+What about the other bits?
+
+- 🚫 Client-side validation
+- 🚫 UI Generation
+- 🤷‍♀️ Contract testing
+
+---
+
+Everything in `schema` is _kinda_ JSON Schema (draft v4), with caveats...
+
+---
+
+<!-- .slide: data-background="img/json-schema-oai-differences.png" data-background-size="contain" -->
 
 ---
 
@@ -265,10 +271,6 @@ speccy serve http://foo.com/openapi.yaml
 - 🚫 Server/Application generation
 - 🚫 Mock servers
 - ✅ Contract testing
-
----
-
-JSON Schema is at [draft 07](http://json-schema.org/specification.html)
 
 ---
 
@@ -826,6 +828,22 @@ b) 100% OpenAPI
 Get started with either, and switch if you need to.
 
 ---
+
+### Those Caveats Though...
+
+Avoid writing careful OpenAPI-flavoured JSON Schema
+
+Just write proper JSON Schema™!
+
+---
+
+
+
+TODO alt example
+
+---
+
+TODO Speccy example hack
 
 <!-- .slide: data-background="img/book.jpg" data-background-size="contain" -->
 
