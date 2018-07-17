@@ -7,17 +7,13 @@ theme: sky
 
 ### Stop Melting The Ice Caps
 
-PHP South West
+APIs You Won't Hate
 
 <small>@philsturgeon</small>
 
 ---
 
-Who leads? Client or Server?
-
----
-
-Caching is for the client (consumer)
+Caching is not about performance. But...
 
 ---
 
@@ -31,7 +27,7 @@ Note: Each interaction must be the quickest possible
 
 ---
 
-REST optimizes for _network efficiency_ over _network speed_
+HTTP Caching helps optimizes for _network efficiency_
 
 ---
 
@@ -113,7 +109,7 @@ GraphQL and endpoint-APIs which fail to offer cacheability all force "naive clie
 ## Expiry Guessing
 ### Problem 1
 
-12 hours is an **arbitrary number** plucked out my...
+12 hours is an **arbitrary number** I plucked out my...
 
 brain 🤔
 
@@ -138,7 +134,7 @@ Client must subscribe to AMQP, WebSockets, etc. to invalidate
 
 ---
 
-REST says these problems should be a concern of the **server**
+REST says these problems should be a concern of the **server** not the **client**
 
 ---
 
@@ -203,7 +199,7 @@ HTTP/1.1 304 Not Modified
 
 ---
 
-Not Modified means "Use the response you already have"
+Not Modified tells the client to use the response they already have
 
 ---
 
@@ -214,7 +210,7 @@ Server doesn't need to serialize JSON
 ``` ruby
 class TurtlesController < BaseController
   def show
-    turtle = ...
+    turtle = Turtle.find(params[:id])
 
     expires_in(15.minutes, public: true)
     if stale?(turtle)
