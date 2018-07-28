@@ -5,7 +5,7 @@ theme: beige
 
 ## A No Nonsense GraphQL, GRPC and REST Comparison
 
-### @philsturgeon
+@philsturgeon / apisyouwonthate.com
 
 ---
 
@@ -17,25 +17,17 @@ Note: Define better. They each aim at different things.
 
 <!-- .slide: data-background="img/my-bikes-1.png" -->
 
-Note: I am all for appropriate tool
-
 ---
 
-<!-- .slide: data-background="img/my-bikes-2.png" -->
-
-Note: I am all for appropriate tool
+<!-- .slide: data-background="img/my-bikes-2.jpg" -->
 
 ---
 
 <!-- .slide: data-background="img/my-bikes-3.png" -->
 
-Note: I am all for appropriate tool
-
 ---
 
 <!-- .slide: data-background="img/my-bikes-4.png" -->
-
-Note: I am all for appropriate tool
 
 ---
 
@@ -93,13 +85,13 @@ Note: recommended RPC, REST _and_ GraphQL at WeWork
 
 ## Mismarketing and Hype
 
-People are excited about GraphQL and misrepresent it
+People get excited about GraphQL/gRPC and misrepresent the facts
 
 ---
 
 ## Mismarketing and Hype
 
-People used to be excited about REST and misrepresent it
+People used to be excited about REST and misrepresented the facts
 
 ---
 
@@ -121,6 +113,34 @@ Note: Doesn't matter what bike, misuse is no good
 
 ---
 
+1. Paradigms
+2. Specifications (Standards, Recommendations)
+3. Implementations
+
+---
+
+## Example: SOAP
+
+SOAP is a W3C recommendation, following the RPC paradigm, with implementations like gSOAP
+
+---
+
+## Example: gRPC
+
+gRPC is a implementation, following the RPC paradigm, which has no standard or specification by any working group, but authors Google Inc. did document the protocol
+
+---
+
+## Example: REST
+
+REST is a paradigm, which has never been turned into a specification, and has no official implementations, but building a REST API is usually just a case of picking appropriate standards and tooling
+
+---
+
+Comparing gRPC, GraphQL and REST feels a bit funny, but we're gonna do it anyway
+
+---
+
 ## GraphQL is new
 
 Released by Facebook publicly in 2015
@@ -129,6 +149,10 @@ Note: GraphQL is a query language operating over RPC
 specification
  collection of tools
  designed to operate over a single endpoint via HTTP
+
+---
+
+<!-- .slide: data-background="img/graphql-org.png" -->
 
 ---
 
@@ -142,29 +166,27 @@ C, Java, Go, Node.js, Pythonm, Ruby
 
 ---
 
-<!-- .slide: data-background="img/graphql-org.png" -->
+<!-- .slide: data-background="img/grpc.png" -->
 
 ---
 
 ## REST is older and nerdier
 
-REST was a dissertation published by Roy Fielding in 2000
+REST is a dissertation published by Roy Fielding in 2000
 
 ---
 
 <!-- .slide: data-background="img/rest-disert.png" -->
 
-Note: REST is an architectural concept for network-based software
+Note: REST as an architectural concept for network-based software
 
 Popularized (kinda) by companies like Twitter in 2006.
 
-no official set of tools, specification
-
-focus on making APIs last for decades
+Focus on making APIs last for decades
 
 ---
 
-REST is a series of abstraction layers applied on top of RPC, that you may or may not need
+REST suggests several abstraction layers on top of RPC, that you may or may not need
 
 ---
 
@@ -180,11 +202,15 @@ REST is a series of abstraction layers applied on top of RPC, that you may or ma
 
 ---
 
-Comparisons get tricky, as gRPC and GraphQL are _implementations_, and REST is an architectural concept
+As gRPC and GraphQL are _implementations_, and REST is a paradigm, comparisons get skewed
 
 ---
 
-Think of REST like the concept of a "personal bike"
+Comparing gRPC, GraphQL, and REST is like comparing McDonalds, a steak house, and an advanced cooking class.
+
+---
+
+A better way to think of REST, is the concept of a "personal bike"
 
 ---
 
@@ -345,7 +371,7 @@ JSON-API / OData
 
 ---
 
-[![](img/learn-about-versioning.png)](https://blog.apisyouwonthate.com/api-versioning-has-no-right-way-f3c75457c0b7)
+[![](img/learn-about-versioning.png)](https://blog.apisyouwonthate.com/picking-the-right-api-paradigm-d476f1a622e8)
 
 ---
 
@@ -563,11 +589,11 @@ GET /turtles?partial=dimensions
 
 ---
 
-GrahQL/RPC cannot use existing HTTP network caching tools
+GraphQL/gRPC cannot use existing HTTP network caching tools
 
 ---
 
-Appolo are hacking in extension support for server caching in GraphQL
+Appolo are hacking in extension support for HTTP-esque server caching in GraphQL
 
 ```
 {
@@ -589,21 +615,7 @@ Appolo are hacking in extension support for server caching in GraphQL
 
 ---
 
-## GraphQL sucks at:
-
-Optimization, as potentially unlimited queries can exist
-
----
-
-_You won't have an efficient GraphQL API without restructuring your data_
-
----
-
-GitHub, Facebook, etc. have a few more resources than the rest of us
-
----
-
-## JSON-API-style **mega-includes** in REST
+## **mega-includes** in REST also suffer
 
 GET /me?include=literally,everything,in,
 the,goddam,database,what,is,
@@ -745,21 +757,7 @@ Original approach...
 
 ---
 
-## 2.) Add metadata to that OPTIONS payload
-
-- Use JSON Schema to detail fields
-- Use JSON HyperSchema to detail potential actions
-- Entirely optional extra layer of strictness
-
----
-
-**Downsides**
-
-Optional nature means some clients will ignore/not notice
-
----
-
-## 3.) Add Hypermedia controls in response
+## 2.) Add Hypermedia controls in response
 
 ```
   "actions": [
@@ -790,9 +788,23 @@ Increases size of response message
 
 ---
 
+## 3.) JSON HyperSchema
+
+- Use JSON Schema to detail fields, adding JSON HyperSchema to outline actions
+- Entirely optional extra layer of strictness
+- Keeps payloads to just data, reducing importants 
+
+---
+
+**Downsides**
+
+Optional nature means some clients will ignore/not notice
+
+---
+
 ### Hypermedia Controls Pitch
 
-Hypermedia Controls can help clients build "Actions" dropdowns dynamically!
+Hypermedia Controls can from trusted servers (BFFs) can help clients dynamically build parts of interfaces!
 
 ![](img/dynamic-actions.png)
 
@@ -846,53 +858,7 @@ Note: One client offers link another doesnt
 
 ---
 
-Is this API going to be used by mobile or web clients?
-
----
-
-Does your API and all of its clients live in a monorepo?
-
----
-
-Can deployments be coordinated between API and all its clients?
-
----
-
-Will this APIs clients be similar to each other, or vary drastically? (i.e: Is it a BFF?)
-
----
-
-Do you trust your clients to handle caching without any hints from the server?
-
----
-
-Should the type system be required, or optional?
-
----
-
-Is base speed the utmost importance, or longevity via evolution, hypermedia, etc?
-
----
-
-## Which is more important?
-
-Trimming bits from response
-
----
-
-## Which is more important?
-
-Firing off actions and getting async responses as fast as possible?
-
----
-
-## Which is more important?
-
-Letting potentially unknown clients work for a long time, with minimal changes?
-
----
-
-Can you restructure all of your data in a way that unlimited possible queries will still be performant?
+[![](img/picking-paradigm.png)](https://blog.apisyouwonthate.com/picking-the-right-api-paradigm-d476f1a622e8)
 
 ---
 
