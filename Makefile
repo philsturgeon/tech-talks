@@ -3,7 +3,7 @@ default: deploy
 deploy:
 	s3cmd sync ./ s3://talks.philsturgeon.uk \
 		--delete-removed --follow-symlinks --acl-public \
-		--progress --human-readable-sizes \
+		--progress --human-readable-sizes --verbose \
 		--exclude=.git/ \
 		--exclude=./node_modules/ \
 		--cache-file=.s3-cache
