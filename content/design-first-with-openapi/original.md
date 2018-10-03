@@ -27,6 +27,58 @@ CapitalOne DevExchange
 
 ---
 
+<!-- .slide: data-background="img/mars-1.jpg" -->
+
+---
+
+<!-- .slide: data-background="img/lol1.png" data-background-size="contain" data-background-color="#fff" -->
+
+---
+
+<!-- .slide: data-background="img/lol2.jpg" data-background-size="contain" data-background-color="#000" -->
+
+---
+
+<!-- .slide: data-background="img/mars-article.png" data-background-size="contain" data-background-color="#fff" -->
+
+---
+
+<!-- .slide: data-background="img/mars_climate_orbiter.png" data-background-size="contain" data-background-color="#000" -->
+
+---
+
+> "That is so dumb," said John Logsdon, director of George Washington University's space policy institute.
+
+---
+
+```
+{
+    "id": 12,
+    "name": "butterfree",
+    "base_experience": 178,
+    "height": 11,
+    "is_default": true,
+    "order": 16,
+    "weight": 320,
+    "abilities": [{
+        "is_hidden": true,
+        "slot": 3
+    }]
+}
+```
+
+[pokeapi.co](https://pokeapi.co/)
+
+---
+
+<!-- .slide: data-background="img/pokeapi.png" data-background-size="contain" data-background-color="#fff" -->
+
+---
+
+metadata / types / specifications / schemas / contracts
+
+
+---
 
 This can be used to generate API Reference docs
 

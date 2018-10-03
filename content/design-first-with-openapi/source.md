@@ -7,11 +7,11 @@ revealOptions:
   autoPlayMedia: true
 ---
 
-## Getting Specific About APIs
+## Design-First API Specification Workflow
 
 ### Label your hecking units
 
-CapitalOne DevExchange
+API City 2018
 
 <small>@philsturgeon</small>
 
@@ -24,6 +24,26 @@ CapitalOne DevExchange
 <!-- .slide: data-background="img/wework.jpg" -->
 
 <img src="img/wework-logo.jpg" style="margin-top: -30%; width:50%; ">
+
+---
+
+```
+{
+    "id": 12,
+    "name": "butterfree",
+    "base_experience": 178,
+    "height": 11,
+    "is_default": true,
+    "order": 16,
+    "weight": 320,
+    "abilities": [{
+        "is_hidden": true,
+        "slot": 3
+    }]
+}
+```
+
+[pokeapi.co](https://pokeapi.co/)
 
 ---
 
@@ -51,23 +71,7 @@ CapitalOne DevExchange
 
 ---
 
-```
-{
-    "id": 12,
-    "name": "butterfree",
-    "base_experience": 178,
-    "height": 11,
-    "is_default": true,
-    "order": 16,
-    "weight": 320,
-    "abilities": [{
-        "is_hidden": true,
-        "slot": 3
-    }]
-}
-```
-
-[pokeapi.co](https://pokeapi.co/)
+So people write "API Reference docs"
 
 ---
 
@@ -75,18 +79,13 @@ CapitalOne DevExchange
 
 ---
 
-metadata / types / specifications / schemas / contracts
+Or you can write API specifications
 
-
----
-
-This can be used to generate API Reference docs
+_a.k.a: metadata / types / schemas / contracts_
 
 ---
 
-_But more importantly..._
-
----
+### API Specs > API Docs
 
 - Client-side validation
 - Server-side validation
@@ -98,11 +97,52 @@ _But more importantly..._
 
 ---
 
-Not a new concept
+There are a lot of "API Specification Languages" systems out there:
+
+- API Blueprint
+- HAR
+- JSON Schema
+- OpenAPI
+- RAML 
+- WSDL
+
+---
+
+### Chasing a Workflow
+
+Took me a year to figure out a workflow
+
+---
+
+### Workflow Requirements 
+
+1.) One single source of truth
+
+---
+
+### Workflow Requirements 
+
+2.) Cannot get "out of date" 
+
+---
+
+### Workflow Requirements 
+
+3.) No build step in application
+
+---
+
+### Workflow Requirements 
+
+4.) Must cover "service model" and "data model"
 
 ---
 
 <!-- .slide: data-background="img/data-model-service-model.png" data-background-size="contain" -->
+
+---
+
+Not a new concept, this is WSDL - from such movies as SOAP
 
 ---
 
@@ -116,13 +156,15 @@ Hahahaha no but data / service modeling has made a comeback
 
 ---
 
+<!-- .slide: data-background="img/unspecified-json.jpeg" data-background-size="contain" data-background-color="#fff" -->
+
+---
+
 <!-- .slide: data-background="img/data-model-service-model-openapi.png" data-background-size="contain" -->
 
 ---
 
-## Basic OpenAPI
-
-```
+``` yaml
 openapi: 3.0.1
 info:
   title: Cat on the Hat API
@@ -139,7 +181,7 @@ servers:
 
 ---
 
-```
+``` yaml
 paths:
   /hats:
     get:
@@ -179,30 +221,16 @@ components:
 
 ---
 
-<!-- .slide: data-background="img/openapi-workflow.jpg" data-background-size="contain" data-background-color="#fff" -->
-
----
-
-<!-- .slide: data-background-color="#fff" -->
-
-![](img/openapi-workflow-waaa.jpg)
-
----
-
-<!-- .slide: data-background="img/editors.png" data-background-size="contain" data-background-color="#fff" -->
-
----
-
 ### OpenAPI is good at
 
 - ✅ Documentation
+- 🌦 Contract testing
 - 🚫 Client-side validation
 - ✅ Server-side validation
 - ✅ Client-library Generation (SDKs)
-- 🚫 UI Generation
+- 🚫 UI Generation (E.g: HTML Forms)
 - ✅ Server/Application generation
 - ✅ Mock servers
-- 🤷‍♀️ Contract testing
 
 ---
 
@@ -214,50 +242,285 @@ components:
 
 ---
 
+### Devs Dislike Writing Docs
+
+> How can we keep our documentation / specifications up to date?
+
+🚫
+
+---
+
+### Don't Write Docs
+
+> How can we ensure our code conforms to our contracts?
+
+👍
+
+---
+
+Support API Spec-based **Contract Testing**, so planning becomes amazing tests
+
+---
+
+These tests are **better**, and **faster to write** than testing to confirming shapes in other ways
+
+---
+
+Then sprinkle in extra functionality until most devs are **excited**
+
+---
+
+<!-- .slide: data-background="img/openapi-workflow.jpg" data-background-size="contain" data-background-color="#fff" -->
+
+---
+
+### What is "Design-First"?
+
+We all know we should plan before we code, but often we jump the gun
+
+---
+
+### What is "Design-First"?
+
+Write API specs before you write any code
+
+---
+
+### Benefits
+
+- get feedback from clients early
+
+- change things until you're happy
+
+- implement feedback without rewriting code
+
+---
+
+### Benefits
+
+- upload specs to the JIRA issue for a developer to know exactly how to write their code
+
+- bonus: code can be generated from api specs once you've locked it down
+
+---
+
+### Annotations 💩 
+
+OK in "strict languages"
+
+Awful in dynamic languages
+
+---
+
+``` php
+/**
+  * @OA\Property(
+  *     default="placed",
+  *     title="Order status",
+  *     description="Order status",
+  *     enum={"placed", "approved", "delivered"},
+  *     title="Pet ID",
+  * )
+  *
+  * @var string
+  */
+private $status;
 ```
-npm install -g speccy
-speccy serve http://foo.com/openapi.yaml
+
+---
+
+Comments can get out of sync, so you **still need to contract test**
+
+---
+
+No time machines here!
+
+---
+
+## One-off Import: Traffic Sniffers
+
+[Swagger Inspector](https://inspector.swagger.io/builder)
+
+---
+
+### One-off Import: Static Data
+
+[jsonschema.net](http://jsonschema.net)
+
+---
+
+<!-- .slide: data-background="img/jsonschemanet.png" data-background-size="contain" data-background-color="#fff" -->
+
+---
+
+### One-off Import: Postman Export
+
+Run a Postman Collection through Apimatic Transformer
+
+_Examples will have basic schemas generated_
+
+---
+
+### One-off Import: Code
+
+```
+swagger generate spec -o ./swagger.json
 ```
 
 ---
 
-## SDK Generation
-
-- [OpenAPITools/openapi-generator](https://github.com/OpenAPITools/openapi-generator)
-- [apimatic.io](https://apimatic.io/)
-- [stoplight.io](https://stoplight.io/)
+Can still use "design first" for new functionality
 
 ---
 
-## Mock API servers
-
-- [stoplight.io](https://stoplight.io/)
-- [restpoint.io](http://restpoint.io)
-- [getsandbox.com](http://getsandbox.com)
-- Postman Mock Server
+<!-- .slide: data-background="img/openapi-workflow.jpg" data-background-size="contain" data-background-color="#fff" -->
 
 ---
 
-## Mirror to Postman
+## Development
 
-1. apimatic.io/transformer
-1. Postman Pro API
-
----
-
-What about the other bits?
-
-- 🚫 Client-side validation
-- 🚫 UI Generation
-- 🤷‍♀️ Contract testing
+![](img/openapi-workflow-waaa.png)
 
 ---
 
-Everything in `schema` is _kinda_ JSON Schema (draft v4), with caveats...
+### OpenAPI GUIs
+
+- [Stoplight.io](htpt://stoplight.io/)
+- [Rapido](https://rapidodesigner.com/)
+
+---
+
+OpenAPI IDE/Editor Plugins
+
+- Atom
+- VS Code
+- Eclipse
+- JetBrains suite
+
+---
+
+### Lint with Speccy
+
+![Speccy to the rescue](img/speccy.png)
+
+---
+
+## Continous Integration
+
+speccy liniting to enforce advice at CI build pass/fail
+
+---
+
+### Contract Testing
+
+```Feature: User API
+
+Scenario: Show action
+    When I visit "/users/1"
+    Then the JSON response at "first_name" should be "Steve"
+    And the JSON response at "last_name" should be "Richert"
+    And the JSON response should have "username"
+    And the JSON response at "username" should be a string
+    And the JSON response should have "created_at"
+    And the JSON response at "created_at" should be a string
+    And the JSON response should have "updated_at"
+    And the JSON response at "updated_at" should be a string
+    .... ugh it goes on and on ...
+```
+
+---
+
+⛔️ Contract duplication ⛔️ 
+
+---
+
+You _could_ validate the data against a schema using an OpenAPI data validator
+
+But they dont really exist *
+
+---
+
+json schema for contract testing
+    lots of json schema validators
+
+---
+
+
+---
+
+``` ruby
+require "json_matchers/rspec"
+
+JsonMatchers.schema_root = "./schemas"
+```
+
+``` ruby
+it 'should conform to hat schema' do
+  get "/hats/#{subject.id}"
+  expect(response).to match_json_schema('hat')
+end
+```
+---
+
+``` yaml
+responses:
+  '200':
+    description: A list of hats.
+    content:
+      application/json:
+        schema:
+          # remove local reference
+          # $ref: '#/components/schemas/hats'
+          # Use a remote reference
+          $ref: ./components/schemas/hat.json
+
+```
 
 ---
 
 <!-- .slide: data-background="img/json-schema-oai-differences.png" data-background-size="contain" -->
+
+---
+
+The most frustrating: `type: ["string", "null"]` would be invalid OpenAPI, but it is valid JSON Schema. 
+
+---
+
+```
+$ speccy lint docs/openapi.yml
+Specification schema is invalid.
+
+#/paths/~1foo/post/requestBody/content/application~1json/properties/user_uuid
+expected Array [ 'string', 'null' ] to be a string
+    expected Array [ 'string', 'null' ] to have type string
+        expected 'object' to be 'string'
+```
+
+---
+
+You'd need to change it to:
+
+```
+type: string
+nullable: true
+```
+
+---
+
+Technically valid, but if a null shows up, a JSON Schema validator will report it as a mistake
+
+---
+
+```
+$ speccy lint docs/openapi.yml --json-schema
+Specification is valid, with 0 lint errors
+```
+
+Now teams can chose to use JSON Schema and OpenAPI, or _just_ OpenAPI.
+
+---
+
+<!-- .slide: data-background="img/data-model-service-model-openapi.png" data-background-size="contain" -->
 
 ---
 
@@ -274,626 +537,140 @@ Everything in `schema` is _kinda_ JSON Schema (draft v4), with caveats...
 
 ---
 
-## JSON Schema
+Doing this gets teams to build docs whilst really just being interested in the contract testing
+
+---
+
+## Aggregator
 
 ```
-{
-    "type": "object",
-    "properties": {
-        "id": {
-            "type": "number"
-        },
-        "name": {
-            "type": "string"
-        },
-        "price": {
-          "type": "number",
-          "exclusiveMinimum": 0
-        }
+service-a:
+  name: Service Name
+  description: Short blurb about the thing
+  repo: “git@github.com:wework/service-name.git”
+  spec_dir: api/
+  entry_file: openapi.yml
+
+service-b:
+  ...
+```
+
+---
+
+```
+$ speccy resolve api/openapi.yml --json-schema
+```
+
+---
+
+```
+[
+  {
+    "name": "Service A",
+    "slug": "service-a",
+    "contact": {
+      "team": "Some Team",
+      "email": "some-team@example.com"
     },
-    "required": ["id", "name", "price"]
-}
-```
-
----
-
-``` json
-"title": "Some Field",
-"description": "Explain the thing in longer form.",
-"default": "Default value",
-"readOnly": true,
-"maximum": 10,
-"example": "foo"
-```
-
----
-
-Early on, JSON Schema only had two vocabularies:
-
-- Core
-- Validation
-
-Note: core is similar to graphql/proto
-
-validation is much more
-
----
-
-> How can we keep our documentation / specifications up to date?
-
-🚫
-
----
-
-> How can we ensure our code conforms to our contracts?
-
-👍
-
----
-
-```
-before do
-  subject { create(:hat) }
-
-  it 'should return HTTP OK (200)' do
-    get "/hats/#{subject.id}"
-    expect(response).to have_http_status(:ok)
-  end
-end
-```
-
-It responeded ok, but... what about the shape!?
-
----
-
-```
-it 'should match expected JSON' do
-  get "/hats/#{subject.id}"
-  expect(subject).to include_json(
-    id: 25,
-    name: "Some Hat"
-  )
-end
-```
-
-Meh kinda ok those values match but... im copying my contract (the rules I accept) to a lot of tests!!
-
----
-
-``` ruby
-require "json_matchers/rspec"
-
-JsonMatchers.schema_root = "./schemas"
-```
-
-``` ruby
-it 'should conform to hat schema' do
-  get "/hats/#{subject.id}"
-  expect(response).to match_json_schema('hat')
-end
-```
-
----
-
-And of course, in OpenAPI, we can reference this `hat.json` :D
-
-```
-responses:
-  200:
-    description: OK
-    content:
-      application/json:
-        schema:
-          $ref: ./schemas/hat.json
-```
-
----
-
-JSON Schema is making sure our code isn't lying or changing, and we can reuse the contracts for docs!
-
-<span style="font-size: 100pt">🙌</span>
-
----
-
-## Client-side Validation
-
-Clients need to validate requests before form submission
-
-> "I'm not waiting for the server for per-field as-you-type validation!"
-
----
-
-Duplicating validation logic on server and various clients is dangerous and **boring**
-
----
-
-## Validation Hell
-
-E.g: A "description" string changes max length from 100 to 50
-
----
-
-## Validation Hell
-
-E.g: A "name" string changes max length from 20 to 40
-
-Note: The API devs decide making validation rules lenient != breaking. they deploy the change with a max length of 40 characters, and one client-app deploys an update to match, increasing the validation to 40. Despite various client applications still having the hardcoded max length at 20 characters
-
----
-
-Expose the JSON Schema's in the `Link` header
-
-```
-GET /hats
-```
-
-```
-Link: <http://example.com/schemas/hats.json#>; rel=”describedby”
-```
-
-Now clients know what a collection of hats look like...
-
----
-
-```
-{
-  ... snip ...
-  "items": {
-    "$ref": "http://example.com/schemas/hat.json"
-  }
-}
-```
-
-And now clients know what a hat looks like...
-
----
-
-``` js
-const Ajv = require('ajv');
-const ajv = new Ajv();
-
-// Fetch the JSON content that was downloaded from URL
-const hatSchema = require('./cached-hat.json')
-
-// Make a little helper for validating
-function validate(schema, data) {
-  return ajv.validate(schema, data)
-    ? true : ajv.errors;
-}
-
-// ... continued
-```
-
----
-
-``` js
-// Pretend we've submitted a form
-const input = {
- id: "ABC-123",
- name: "Fluffy",
- price: 10
-};
-
-// Is the whole input valid?
-validate(hatSchema, input);
-// returns: true
-
-// Ok screw up validation...
-input['price'] = -1;
-validate(hatSchema, input);
-// returns: [ { keyword: 'exclusiveMinimum', dataPath: '.price', ...
-```
-
----
-
-We got either a true or an array of errors, which is pretty handy
-
----
-
-JSON Schema validators are _not great_ at generating human errors
-
----
-
-Lets look at a more advanced example.
-
----
-
-```
-{
-  "$id": "http://example.com/schemas/user.json",
-  "type": "object",
-  "$schema": "http://json-schema.org/draft-07/schema#",
-  "properties": {
-    "name": {
-      "title": "Name",
-      "type": "string",
-      "description": "Users full name supporting unicode but no emojis.",
-      "maxLength": 20
-    },
-    "email": {
-      "title": "Email",
-      "description": "Like a postal address but for computers.",
-      "type": "string",
-      "format": "email"
-    },
-    "date_of_birth": {
-      "title": "Date Of Birth",
-      "type": "string",
-      "description": "Date of uses birth in the one and only date standard: ISO 8601.",
-      "format": "date",
-      "example": "1990–12–28"
-    }
+    "openapi_url": "http://apis.example.com/specs/service-a/openapi",
+    "postman_url": "http://apis.example.com/specs/service-a/postman-collection",
+    "mock_server_url": "http://apis.example.com/mocks/service-name/"
   },
-  "required": [
-    "name"
-  ]
-}
-```
-
----
-
-And let's write some over the top code to make human errors
-
----
-
-```
-function buildHumanErrors(errors) {
-  return errors.map(function(error) {
-    if (error.params.missingProperty) {
-      const property = pointer.get(userSchema, '/properties/' + error.params.missingProperty);
-      return property.title + ' is a required field';
-    }
-    const property = pointer.get(userSchema, '/properties' + error.dataPath);
-    if (error.keyword == 'format' && property.example) {
-      return property.title + ' is in an invalid format, e.g: ' + property.example;
-    }
-    return property.title + ' ' + error.message;
-  });
-}
-```
-
----
-
-```
-[
-  { },
-  { name: "Lucrezia Nethersole", email: "not-an-email" },
-  { name: "Lucrezia Nethersole", date_of_birth: 'n/a' },
-  { name: "Lucrezia Nethersole Has Many Many Names" }
-].forEach(function(input) {
-  console.log(
-    buildHumanErrors(validate(userSchema, input))
-  );
-});
-```
-
----
-
-```
-[ 'Name is a required field' ]
-[ 'Email should match format "email"' ]
-[ 'Date Of Birth is in an invalid format, e.g: 1990–12–28' ]
-[ 'Name should NOT be longer than 20 characters' ]
-```
-
----
-
-Don't stop at string errors. Update the UI.
-
-![](img/red-boxes.png)
-
----
-
-![](img/tooltips.png)
-
-Can even add tooltips based on format/example values
-
----
-
-JSON Schema enabled evolution without the **Validation Hell**
-
-<span style="font-size: 100pt">🙌</span>
-
----
-
-## Server-side Validation
-
-Exactly the same JSON Schema validation can be used server-side
-
----
-
-Delete 34589 lines of controller/model validation
-
----
-
-## Server-side Validation
-
-``` php
-use HSkrasek\JSONSchema\Validator;
-
-$schema = file_get_contents('./schemas/hat.json');
-$validator = new Validator($data, $schema);
-
-if ($validator->fails()) {
-    $problemDetails = $validator->getProblemDetails();
-    return json_encode($problemDetails);
-}
-
-// continue
-```
-
----
-
-``` js
-[
-  'title' => 'Provided data didn\'t validate',
-  'status' => 400,
-  'invalid-params' => [
-      [
-          'name'        => '/foo',
-          'reason'      => 'The data must be a(n) string.',
-          'schema_path' => '/properties/foo/type',
-      ],
-      [
-          'name'        => '/bar',
-          'reason'      => 'The data must be a(n) integer.',
-          'schema_path' => '/properties/bar/type',
-      ],
-      [
-          'name'        => '/bar',
-          'reason'      => 'The number must be less than 5.',
-          'schema_path' => '/properties/bar/maximum',
-      ]
+  {
+    ...
+  }
 ]
 ```
 
 ---
 
-[hskrasek/jsonschema-input-validator](https://github.com/hskrasek/jsonschema-input-validator)
-[thephpleague/json-guard](https://github.com/thephpleague/json-guard)
+Now things can read this list of APIs and build things! 
 
 ---
 
-A whoooole bunch of validators out there
+### Mock Server
 
-[json-schema.org/implementations.html](http://json-schema.org/implementations.html#validators)
-
----
-
-## API Gateway Validation
-
-Don't even bother the application server unless the payload is valid.
+- [Prism](https://github.com/stoplightio/prism) (v3 Coming Soon™)
+- [API Sprout]()
 
 ---
 
-<!-- .slide: data-background="img/api-gateway-json-schema.png" data-background-size="contain" data-background-color="#fff" -->
+### Hosted Mock Servers
+
+- [stoplight.io](https://stoplight.io/)
+- [restpoint.io](http://restpoint.io)
+- [getsandbox.com](http://getsandbox.com)
+- Postman Mock Server
 
 ---
 
-<!-- .slide: data-background="img/tyk.png" -->
+### SDK Geneerator
 
 ---
 
-## UI Generation (Forms)
+### Postman Collections
 
-- [mozilla-services/react-jsonschema-form](https://github.com/mozilla-services/react-jsonschema-form)
-- [json-schema-form/json-schema-form-core](https://github.com/json-schema-form/json-schema-form-core)
-- eventually... an official JSON Schema UI vocabulary
+Postman Collections via Apimatic Transformer
 
----
-
-``` json
-{
-  "boolean": {
-    "radio": {
-      "ui:widget": "radio"
-    },
-    "select": {
-      "ui:widget": "select"
-    }
-  },
-  "string": {
-    "textarea":  {
-      "ui:widget": "textarea",
-      "ui:options": {
-        "rows": 5
-      }
-    },
-    "color": {
-      "ui:widget": "color"
-    }
-  },
-  "secret": {
-    "ui:widget": "hidden"
-  },
-  "disabled": {
-    "ui:disabled": true
-  },
-  "readonly": {
-    "ui:readonly": true
-  },
-  "widgetOptions": {
-    "ui:options": {
-      "backgroundColor": "yellow"
-    }
-  },
-  "selectWidgetOptions": {
-    "ui:options": {
-      "backgroundColor": "pink"
-    }
-  }
-}
-```
+Postman GUI will have updated to contain any new endpoints, improved examples, etc.
 
 ---
 
-<!-- .slide: data-background="img/json-schema-form-1.png" data-background-size="contain" data-background-color="#fff" -->
+### Documentation
+
+passes each openapi_url through ReDoc. The static HTML is put in the public/ folder along with all our other technical documentation, and job done.
 
 ---
 
-<!-- .slide: data-background="img/json-schema-form-2.png" data-background-size="contain" data-background-color="#fff" -->
+### E2E Acceptance Testing
+
+similar in functionality to [Stoplight: Scenarios](https://stoplight.io/platform/scenarios/
+
+https://www.frisbyjs.com/
 
 ---
 
-## JSON Schema now has a Service Model 😲
+RSpec + Faraday + an OpenAPI Validation Service
 
-The 3rd vocabulary is **HyperSchema**
-
----
-
-<!-- .slide: data-background="img/data-model-service-model-json-hyper.png" data-background-size="contain" -->
+AJV based
 
 ---
 
-Instead of focusing on "paths", HyperSchema links from one thing to another
+TODI diagram of 
+
 
 ---
 
-Links send a user agent from `/` to `/hats` or `/cats`
 
----
+## Further Possibilities
 
-When landing on `GET /hats/123` it offers a `buy` link
-... so long as `in_stock: true`
 
----
-
-``` json
-{
-  "$id": "hat",
-  "if": {
-    "required": ["in_stock"],
-    "properties": {
-      "in_stock": {"const": true}
-    }
-  },
-  "then": {
-    "links": [{
-      "rel": "buy",
-      "href": "cart",
-      "submissionSchema": {
-        "$ref": "./cart.json#/add"
-      }
-    }]
-  }
-}
-```
-
----
-
-I'm talking about *hypermedia* folks!
-
----
-
-Unlike Siren/HAL/JSON-API, etc., the links and the metadata are not in the payload
-
----
-
-Optional hypermedia controls are great. Clients can use em if they want, skip em if they don't.
-
----
-
-## JSON HyperSchema API Reference
-
-[Doca](https://github.com/cloudflare/doca) can generate docs from HyperSchema
-
----
-
-<!-- .slide: data-background="img/doca.png" data-background-size="contain" -->
-
----
-
-Buuuuut there are no SDK generators, application generators, etc
-
-Aaaaand your API has to be 100% Actual REST™ to use it
-
----
-
-## REST API
-
-a) JSON Schema /w HyperSchema
-
-b) JSON Schema + OpenAPI
-
----
-
-## RESTish or RPC API
-
-a) JSON Schema + OpenAPI
-
-b) 100% OpenAPI
-
----
-
-Get started with either, and switch if you need to.
-
----
-
-### Those Caveats Though...
-
-Avoid writing careful OpenAPI-flavoured JSON Schema
-
-Just write proper JSON Schema™!
-
-[wework/json-schema-to-openapi-schema](https://github.com/wework/json-schema-to-openapi-schema)
-
----
+Make JSON Schema files available via `Link` headers for clients to use! 
 
 ```
-const toOpenApi = require('json-schema-to-openapi-schema');
-
-const schema = {
-  '$schema': 'http://json-schema.org/draft-04/schema#',
-  type: ['string', 'null'],
-  format: 'date-time',
-};
-
-console.log(toOpenApi(schema));
+Link: <http://example.com/schemas/v1.0.0/user.json#>; rel=”describedby”
 ```
 
-```
-{
-  type: 'string',
-  format: 'date-time',
-  nullable: true
-}
-```
+--- 
+
+JSON Schema validators
 
 ---
 
-Validators like speccy fail...
-
-```
-$ speccy lint docs/openapi.yml
-Specification schema is invalid.
-
-#/paths/~1invalidations/post/requestBody/content/application~1json/properties/user_uuid
-expected Array [ 'string', 'null' ] to be a string
-    expected Array [ 'string', 'null' ] to have type string
-        expected 'object' to be 'string'
-```
+JSON Schema UI 
 
 ---
 
-But speccy has a `--json-schema` switch
-
-```
-$ speccy lint docs/openapi.yml --json-schema
-Specification is valid, with 0 lint errors
-```
+JSON HyperSchema for HATEOAS in your API
 
 ---
 
-OpenAPI have a feature in "draft"
+Stoplight can do a _lot_ of this
 
-```
-schema:
-  alternativeSchema:
-    type: jsonSchema
-    location: ./real-jsonschema.json
-```
+---
 
-(probably going in v3.1)
+<blockquote class="twitter-tweet" data-lang="en"><p lang="en" dir="ltr">We 💖 hearing about different teams API workflows and how they are built on top of specifications. Here&#39;s a great example of that from the WeWork Technology team written by <a href="https://twitter.com/philsturgeon?ref_src=twsrc%5Etfw">@philsturgeon</a>: <a href="https://t.co/3YsGglBhpQ">https://t.co/3YsGglBhpQ</a> <a href="https://t.co/k6DHju0Xvp">pic.twitter.com/k6DHju0Xvp</a></p>&mdash; Stoplight (@stoplightio) <a href="https://twitter.com/stoplightio/status/1037399476237991938?ref_src=twsrc%5Etfw">September 5, 2018</a></blockquote>
+<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 
 ---
 
