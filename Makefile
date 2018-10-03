@@ -6,7 +6,8 @@ deploy:
 		--progress --human-readable-sizes --verbose \
 		--exclude=.git/ \
 		--exclude=./node_modules/ \
-		--cache-file=.s3-cache
+		--cache-file=.s3-cache \
+		--host-bucket=talks.philsturgeon.uk
 
 wipe-cache:
 	rm .s3-cache
