@@ -30,14 +30,25 @@
       <div class="slides">{{{slides}}}</div>
       <div id="crashy-footer" class="footer">
         <span class="element">stoplight.io</span>
+        <span class="element">phil.tech/speaking</span>
         <span class="element">@philsturgeon</span>
-        <span class="element">#ApiCityConf</span>
       </div>
     </div>
 
     <script src="{{{base}}}/js/reveal.js"></script>
 
     <style>
+      .slides {
+        height:100%;
+        width:100%;  
+      }
+
+      .caption {
+        bottom:0px;
+        right:0px;
+        position:absolute;
+      }
+
       .footer {
         position: absolute;
         display: table;
