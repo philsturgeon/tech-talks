@@ -16,19 +16,21 @@ revealOptions:
 
 ---
 
+<!-- .slide: data-background="img/wework.jpg" data-background-size="contain" -->
+
+<img height="100" src="img/wework-logo.jpg">
+
+---
+
 <!-- .slide: data-background="img/trip.jpg" -->
 
 ---
 
-<!-- .slide: data-background="img/offset-earth.png" -->
+<!-- .slide: data-background="img/unicorn.jpg" data-background-size="contain" -->
 
 ---
 
-<!-- .slide: data-background="img/dino.png" data-background-size="contain" -->
-
----
-
-## 2018 Questions
+## 2017-2018 Questions
 
 1. Design First or Code First? 
 1. What tooling supports OpenAPI v3.0? <!-- .element: class="fragment" -->
@@ -37,18 +39,6 @@ revealOptions:
 1. How/when do we create mocks?  <!-- .element: class="fragment" -->
 1. How can we enforce style guides for docs?  <!-- .element: class="fragment" -->
 1. How do we keep code and docs in sync?  <!-- .element: class="fragment" -->
-
----
-
-<!-- .slide: data-background="img/workflow.jpeg" data-background-size="contain" data-background-color="#fff" -->
-
----
-
-<!-- .slide: data-background="img/workflow2.jpeg" data-background-size="contain" data-background-color="#fff" -->
-
----
-
-<img src="img/logo.dark.png" style="border:0; background:transparent;box-shadow:0">
 
 ---
 
@@ -61,6 +51,18 @@ https://openapi.tools <!-- .element: class="fragment" -->
 ---
 
 <!-- .slide: data-background="img/tools.png" data-background-size="contain" -->
+
+---
+
+<!-- .slide: data-background="img/workflow.jpeg" data-background-size="contain" data-background-color="#fff" -->
+
+---
+
+<!-- .slide: data-background="img/workflow2.jpeg" data-background-size="contain" data-background-color="#fff" -->
+
+---
+
+<img src="img/logo.dark.png" style="border:0; background:transparent;box-shadow:0">
 
 ---
 
@@ -151,11 +153,13 @@ https://stoplight.io/studio <!-- .element: class="fragment" -->
 
 <!-- .slide: data-background="img/studio.png" data-background-size="contain" data-background-color="#000" -->
 
-<!-- TODO Add file system image -->
+---
+
+<!-- .slide: data-background="img/studio-files.png" data-background-size="contain" data-background-color="#eee" -->
 
 ---
 
-<!-- .slide: data-background="img/studio-adv.png" data-background-size="contain" data-background-color="#000" -->
+<!-- .slide: data-background="img/studio-adv.png" data-background-size="contain" data-background-color="#666" -->
 
 ---
 
@@ -185,13 +189,11 @@ Hosted Mock Server coming soon... ⏳ <!-- .element: class="fragment" -->
 
 ---
 
-- ⛔ Documentation
-- ⛔ API Specifications <!-- .element: class="fragment" -->
-- ✅ API Description Documents <!-- .element: class="fragment" -->
+⛔ Documentation
 
 ---
 
-✅ **How to use API descriptions as code!**
+✅ **How to use API descriptions to simplify code!**
 
 ---
 
