@@ -129,6 +129,10 @@ _<small>Vinai Kopp, A talk at #MM18IT</small>_
 
 ---
 
+<!-- .slide: data-background="img/wf-4.png" data-background-size="contain" data-background-color="#eee" -->
+
+---
+
 <!-- .slide: data-background="img/lifecycle.png" data-background-size="contain" data-background-color="#eee" -->
 
 ---
