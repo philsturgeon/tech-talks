@@ -16,9 +16,7 @@ revealOptions:
 
 ---
 
-<!-- .slide: data-background="img/wework.jpg" data-background-size="contain" -->
-
-<img height="100" src="img/wework-logo.jpg">
+<!-- .slide: data-background="img/wework.jpg" -->
 
 ---
 
@@ -26,7 +24,7 @@ revealOptions:
 
 ---
 
-<!-- .slide: data-background="img/unicorn.jpg" data-background-size="contain" -->
+<!-- .slide: data-background="img/paris.png" -->
 
 ---
 
@@ -34,10 +32,9 @@ revealOptions:
 
 1. Design First or Code First? 
 1. What tooling supports OpenAPI v3.0? <!-- .element: class="fragment" -->
-1. Why are there no editors? <!-- .element: class="fragment" -->
+1. Why are there no visual editors? <!-- .element: class="fragment" -->
 1. How/when do we create documentation? <!-- .element: class="fragment" -->
 1. How/when do we create mocks?  <!-- .element: class="fragment" -->
-1. How can we enforce style guides for docs?  <!-- .element: class="fragment" -->
 1. How do we keep code and docs in sync?  <!-- .element: class="fragment" -->
 
 ---
@@ -54,17 +51,6 @@ https://openapi.tools <!-- .element: class="fragment" -->
 
 ---
 
-<!-- .slide: data-background="img/workflow.jpeg" data-background-size="contain" data-background-color="#fff" -->
-
----
-
-<!-- .slide: data-background="img/workflow2.jpeg" data-background-size="contain" data-background-color="#fff" -->
-
----
-
-<img src="img/logo.dark.png" style="border:0; background:transparent;box-shadow:0">
-
----
 
 **Design First or Code First?**
 
@@ -139,13 +125,26 @@ _<small>Vinai Kopp, A talk at #MM18IT</small>_
 
 ---
 
+<!-- .slide: data-background="img/workflow.jpeg" data-background-size="contain" data-background-color="#fff" -->
+
+---
+
+<!-- .slide: data-background="img/workflow2.jpeg" data-background-size="contain" data-background-color="#fff" -->
+
+---
+
 > While OpenAPI is great for describing APIs, ... **it's definitely not a great experience to write OpenAPI documents from scratch**.
 
 _<small>Sebastien Armand, "Making OpenAPI Bearable With Your Own DSL"</small>_
 
 ---
 
-**Why are there no editors?**
+**Why are there no visual editors?**
+
+
+---
+
+<img src="img/logo.dark.png" style="border:0; background:transparent;box-shadow:0">
 
 https://stoplight.io/studio <!-- .element: class="fragment" -->
 
@@ -167,6 +166,16 @@ https://stoplight.io/studio <!-- .element: class="fragment" -->
 
 ---
 
+**How/when do we create mocks?**
+
+http://stoplight.io/prism <!-- .element: class="fragment" -->
+
+Studio has Prism built in 🙌 <!-- .element: class="fragment" -->
+
+Hosted Prism coming soon... ⏳ <!-- .element: class="fragment" -->
+
+---
+
 **How/when do we create documentation?**
 
 https://stoplight.io/docs <!-- .element: class="fragment" -->
@@ -177,23 +186,16 @@ https://stoplight.io/docs <!-- .element: class="fragment" -->
 
 ---
 
-**How/when do we create mocks?**
-
-Studio has a mock server built right in 🙌 <!-- .element: class="fragment" -->
-
-Hosted Mock Server coming soon... ⏳ <!-- .element: class="fragment" -->
-
----
-
 ⛔️ **How do we keep code and API docs in sync?**
 
 ---
 
 ⛔ Documentation
+✅ API Descriptions <!-- .element: class="fragment" -->
 
 ---
 
-✅ **How to use API descriptions to simplify code!**
+✅ **How to re-use API descriptions as code!**
 
 ---
 
@@ -302,8 +304,9 @@ config.middleware.use Committee::Middleware::RequestValidation,
 ---
 
 - **Ruby:** [committee](https://github.com/interagent/committee)
-- **PHP:** [openapi-psr7-validator](https://github.com/lezhnev74/openapi-psr7-validator)
+- **PHP:** [league/openapi-psr7-validator](https://github.com/thephpleague/openapi-psr7-validator)
 - **NodeJS:** [fastify](https://github.com/fastify/fastify/blob/master/docs/Validation-and-Serialization.md) or [express-ajv-swagger-validation](https://github.com/Zooz/express-ajv-swagger-validation)
+- **Java/Kotlin:** [openapi-spring-webflux-validator](https://github.com/cdimascio/openapi-spring-webflux-validator)
 - **Python:** [connexion](https://github.com/zalando/connexion)
 - **Mojolicious:** [Mojolicious](https://metacpan.org/pod/Mojolicious::Plugin::OpenAPI)
 
@@ -339,11 +342,11 @@ If this is a new application, you **don't need to write it**.
 
 ---
 
-Your test suite is proving the requests work properly
+Your test suite uses descriptions to acceptance test **requests**.
 
 ---
 
-Your test suite can use the descriptions to prove the responses work properly
+Your test suite uses descriptions to contract test **responses**.
 
 ---
 
@@ -381,6 +384,7 @@ Note: like cache servers
 - AWS Gateway
 - Azure Gateway
 - [Express Gateway](https://www.express-gateway.io/docs/policies/customization/conditions/#json-schema)
+- Kong
 - Tyk
 
 ---
@@ -389,7 +393,7 @@ Register a middleware in dev?
 
 Register a gateway plugin in prod?
 
-<small>Standards compliance means dev/prod parity.*</small>
+<small>Standards compliance should mean dev/prod parity.*</small>
 
 ---
 
@@ -455,7 +459,7 @@ validate(userSchema, { ...input, email: 123 );
 
 ---
 
-```
+```js
 [ 'Name is a required field' ]
 [ 'Email should match format “email”' ]
 [ 'Date Of Birth is in an invalid format, e.g: 1990–12–28' ]
@@ -464,56 +468,18 @@ validate(userSchema, { ...input, email: 123 );
 
 ---
 
-**How can we enforce style guides for docs?**
-
-https://stoplight.io/spectral <!-- .element: class="fragment" -->
+<!-- .slide: data-background="img/single-source.jpg" data-background-size="contain" data-background-color="#fff" -->
 
 ---
 
-```yaml
-rules:
-  schema-names-pascal-case:
-    description: Schema names MUST be written in PascalCase
-    message: '{{property}} is not PascalCase: {{error}}'
-    recommended: true
-    type: style
-    given: '$.components.schemas.*~'
-    then:
-      function: pattern
-      functionOptions:
-        match: '^[A-Z][a-zA-Z0-9]*$'
-```
+<!-- .slide: data-background="img/wf-4.png" data-background-size="contain" data-background-color="#eee" -->
 
 ---
 
-<!-- .slide: data-background="img/studio-spectral.png" data-background-size="contain" -->
+<!-- .slide: data-background="img/questions.jpg" style="text-align: left" -->
 
----
+# Thank You! 
 
-**Reference Company-Wide Style Guides**
+[ApisYouWontHate.com](foo.com) <!-- .element: style="font-size: 38pt; color: #eee" -->
 
-```yaml
-extends:
-  - "https://api.acme.com/style-guide.yml"
-```
-
----
-
-- Editor (Studio, VS Code coming...)
-- CLI
-- Git Hooks
-- Continuous Integration
-
----
-
-Consistent APIs = ⏰ 💰 🥳
-
----
-
-<span style="font-size: 60pt">apisyouwonthate.com</span>
-
-Join our [Slack](http://slack.apisyouwonthate.com/)
-
-Subscribe to the [Podcast](https://apisyouwonthate.com/podcast)
-
-Read the [Blog](https://apisyouwonthate.com/blog)
+[Stoplight.io](foo.com) <!-- .element: style="font-size: 38pt; color: #eee" -->
