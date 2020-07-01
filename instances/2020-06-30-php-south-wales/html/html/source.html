@@ -1,11 +1,19 @@
----
-title: "API Design First Workflow"
-theme: league
-revealOptions:
-  transition: 'fade'
-  controls: false
-  progress: false
----
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
+    <title>API Design First Workflow</title>
+    <link rel="stylesheet" href="./css/reveal.css" />
+    <link rel="stylesheet" href="./css/theme/league.css" id="theme" />
+    <link rel="stylesheet" href="./css/highlight/zenburn.css" />
+    <link rel="stylesheet" href="./css/print/paper.css" type="text/css" media="print" />
+
+  </head>
+  <body>
+    <div class="reveal">
+      <div class="slides"><section  data-markdown><script type="text/template">
 
 <!-- .slide: data-background="img/bg.jpeg" -->
 
@@ -13,35 +21,21 @@ revealOptions:
 <br>
 <br>
 <span style="font-size: 60pt; color: black">API Design First<br>and Always</span>
-
----
-
+</script></section><section  data-markdown><script type="text/template">
 <!-- .slide: data-background="img/intro.png" data-background-color="#eee" -->
-
----
-
+</script></section><section  data-markdown><script type="text/template">
 <!-- .slide: data-background="img/wework.jpg" -->
 
 <img src="img/wework-logo.jpg" style="width:300px">
-
----
-
+</script></section><section  data-markdown><script type="text/template">
 <!-- .slide: data-background="img/lifecycle.png" data-background-size="contain" data-background-color="#eee" -->
-
----
-
+</script></section><section  data-markdown><script type="text/template">
 <!-- .slide: data-background="img/lifecycle1.png" data-background-size="contain" data-background-color="#eee" -->
-
----
-
+</script></section><section  data-markdown><script type="text/template">
 <!-- .slide: data-background="img/lifecycle2.png" data-background-size="contain" data-background-color="#eee" -->
-
----
-
+</script></section><section  data-markdown><script type="text/template">
 <!-- .slide: data-background="img/lifecycle3.png" data-background-size="contain" data-background-color="#eee" -->
-
----
-
+</script></section><section  data-markdown><script type="text/template">
 ## API Workflow Questions
 
 1. Swagger, OpenAPI v3, API Blueprint, RAML? 
@@ -51,28 +45,20 @@ revealOptions:
 5. How/when do we create documentation? <!-- .element: class="fragment" -->
 6. How/when do we create mocks?  <!-- .element: class="fragment" -->
 7. How do we keep code and docs in sync?  <!-- .element: class="fragment" -->
-
----
-
+</script></section><section  data-markdown><script type="text/template">
 ## The API Description Format <!-- .element: style="color: black" -->
 
 
 <!-- .slide: data-background-color="#fff" -->
 
 ![](./img/openapi-logo.png)
-
----
-
+</script></section><section  data-markdown><script type="text/template">
 OpenAPI is an API Description Format for creating HTTP API Descriptions.
-
----
-
+</script></section><section  data-markdown><script type="text/template">
 You can describe your API with a Description Document.
 
 e.g.: `openapi.yaml`
-
----
-
+</script></section><section  data-markdown><script type="text/template">
 ```yaml
 openapi: 3.0.3
 
@@ -160,9 +146,7 @@ components:
       - description
       - url
 ```
-
----
-
+</script></section><section  data-markdown><script type="text/template">
 ```yaml
 type: object
 properties:
@@ -185,17 +169,11 @@ properties:
 required:
 - name
 ```
-
----
-
+</script></section><section  data-markdown><script type="text/template">
 <!-- .slide: data-background="img/oas-members.png" data-background-size="contain" data-background-color="#f6f6f6" -->
-
----
-
+</script></section><section  data-markdown><script type="text/template">
 ## Annotations or YAML?
-
----
-
+</script></section><section  data-markdown><script type="text/template">
 ```java
 class UserController {
   @OpenApi(
@@ -208,9 +186,7 @@ class UserController {
   }
 }
 ```
-
----
-
+</script></section><section  data-markdown><script type="text/template">
 ```php
 /**
   * @OA\Get(path="/2.0/users/{username}",
@@ -232,9 +208,7 @@ public function getUserByName($username, $newparam)
 {
 }
 ```
-
----
-
+</script></section><section  data-markdown><script type="text/template">
 ```js
 /**
  * @swagger
@@ -254,62 +228,36 @@ public function getUserByName($username, $newparam)
 app.get('/users', (req, res) => {
 });
 ```
-
----
-
+</script></section><section  data-markdown><script type="text/template">
 > Code comments are just facts waiting to become lies.
 
 _<small>Vinai Kopp, A talk at #MM18IT</small>_
-
----
-
+</script></section><section  data-markdown><script type="text/template">
 <!-- .slide: data-background="img/code-comments.jpg" data-background-size="contain" data-background-color="#121212" -->
-
----
-
+</script></section><section  data-markdown><script type="text/template">
 ## Code First vs Design First
-
----
-
+</script></section><section  data-markdown><script type="text/template">
 <!-- .slide: data-background="img/poll.png" data-background-size="contain" data-background-color="#fff" -->
 
-
----
-
+</script></section><section  data-markdown><script type="text/template">
 <!-- .slide: data-background="img/wf-1.png" data-background-size="contain" data-background-color="#eee" -->
-
----
-
+</script></section><section  data-markdown><script type="text/template">
 <!-- .slide: data-background="img/wf-2.png" data-background-size="contain" data-background-color="#eee" -->
-
----
-
+</script></section><section  data-markdown><script type="text/template">
 <!-- .slide: data-background="img/blueprint.jpeg" -->
-
----
-
+</script></section><section  data-markdown><script type="text/template">
 <!-- .slide: data-background="img/wf-3.png" data-background-size="contain" data-background-color="#eee" -->
-
----
-
+</script></section><section  data-markdown><script type="text/template">
 <!-- .slide: data-background="img/wf-4.png" data-background-size="contain" data-background-color="#eee" -->
-
----
-
+</script></section><section  data-markdown><script type="text/template">
 <!-- .slide: data-background="img/workflow.jpeg" data-background-size="contain" data-background-color="#fff" -->
-
----
-
+</script></section><section  data-markdown><script type="text/template">
 <!-- .slide: data-background="img/workflow2.jpeg" data-background-size="contain" data-background-color="#fff" -->
-
----
-
+</script></section><section  data-markdown><script type="text/template">
 > While OpenAPI is great for describing APIs, ... **it's definitely not a great experience to write OpenAPI documents from scratch**.
 
 _<small>Sebastien Armand, "Making OpenAPI Bearable With Your Own DSL"</small>_
-
----
-
+</script></section><section  data-markdown><script type="text/template">
 ```
 ;;; ENTITIES
 (define pet-entity
@@ -344,131 +292,79 @@ _<small>Sebastien Armand, "Making OpenAPI Bearable With Your Own DSL"</small>_
               'parameters (list xsrf-token)
               'responses (with-standard-post-responses 200 single-pet-response)))
 ```
-
----
-
+</script></section><section  data-markdown><script type="text/template">
 **Where are the visual editors?**
-
----
-
+</script></section><section  data-markdown><script type="text/template">
 https://openapi.tools/#gui-editors
-
----
-
+</script></section><section  data-markdown><script type="text/template">
 <!-- .slide: data-background-color="#fff" -->
 
 ![](img/logo.light.png)
-
----
-
+</script></section><section  data-markdown><script type="text/template">
 <!-- .slide: data-background="img/stoplight.png" data-background-size="contain" data-background-color="#fff" -->
-
----
-
+</script></section><section  data-markdown><script type="text/template">
 <!-- .slide: data-background="img/stoplight-workflow.jpeg" data-background-size="contain" data-background-color="#fff" -->
-
----
-
+</script></section><section  data-markdown><script type="text/template">
 <!-- .slide: data-background="img/studio-editor.png" data-background-size="contain" data-background-color="#000" -->
-
----
-
+</script></section><section  data-markdown><script type="text/template">
 <!-- .slide: data-background="img/git.png" data-background-size="contain" data-background-color="#f5f7f9" -->
-
----
-
+</script></section><section  data-markdown><script type="text/template">
 <!-- .slide: data-background="img/studio-files.png" data-background-size="contain" data-background-color="#eee" -->
-
----
-
+</script></section><section  data-markdown><script type="text/template">
 <!-- .slide: data-background="img/studio-adv.png" data-background-size="contain" data-background-color="#000" -->
-
----
-
+</script></section><section  data-markdown><script type="text/template">
 <!-- .slide: data-background="img/studio-md.svg" data-background-size="contain" data-background-color="#fff" -->
-
----
-
+</script></section><section  data-markdown><script type="text/template">
 <!-- .slide: data-background="img/studio-spectral.png" data-background-size="contain" data-background-color="#f5f7f9" -->
-
----
-
+</script></section><section  data-markdown><script type="text/template">
 <!-- .slide: data-background="img/styleguides.svg" data-background-size="contain" data-background-color="#f5f7f9" -->
-
----
-
+</script></section><section  data-markdown><script type="text/template">
 ## API Description Linting
 
 a.k.a "API Style Guides"
-
----
-
+</script></section><section  data-markdown><script type="text/template">
 <!-- .slide: data-background="img/workflow-lint.jpeg" data-background-size="contain" data-background-color="#000" -->
-
----
-
+</script></section><section  data-markdown><script type="text/template">
 <!-- .slide: data-background="img/lint-cli-vscode.jpg" data-background-size="contain" data-background-color="#000" -->
-
----
-
+</script></section><section  data-markdown><script type="text/template">
 <!-- .slide: data-background="img/lint-errors.jpg" data-background-size="contain" data-background-color="#000" -->
-
----
-
+</script></section><section  data-markdown><script type="text/template">
 **How/when do we create mocks?**
 
 1. Local Mock Servers
 2. Hosted Mock Servers 
 
 http://openapi.tools/#mock
-
----
-
+</script></section><section  data-markdown><script type="text/template">
 **Local Mock Server**
 
 ![](img/prism_validation.png)
-
----
-
+</script></section><section  data-markdown><script type="text/template">
 **Hosted Mock Server**
 
 `https://acme.stoplight.io/mocks/widgets`
 
 ![](img/mock-feedback.svg)
-
----
-
+</script></section><section  data-markdown><script type="text/template">
 **How/when do we create documentation?**
 
 1. CI deploys HTML to S3
 2. Read from Git repo on push
-
----
-
+</script></section><section  data-markdown><script type="text/template">
 Automatic generated API Reference docs
 
 ![](img/docs.svg)
-
----
-
+</script></section><section  data-markdown><script type="text/template">
 Automatic generated Code Samples
 
 ![](img/codesamples.svg)
-
----
-
+</script></section><section  data-markdown><script type="text/template">
 ⛔️ **How do we keep code and API docs in sync?**
-
----
-
+</script></section><section  data-markdown><script type="text/template">
 <!-- .slide: data-background="img/docs-api.jpg" data-background-size="contain" data-background-color="#fff" -->
-
----
-
+</script></section><section  data-markdown><script type="text/template">
 ✅ **How to re-use API descriptions as code!**
-
----
-
+</script></section><section  data-markdown><script type="text/template">
 ## Server-side Validation
 
 - Model?
@@ -476,9 +372,7 @@ Automatic generated Code Samples
 - View? 😱 <!-- .element: class="fragment" -->
 - Service? <!-- .element: class="fragment" -->
 - Contract? <!-- .element: class="fragment" -->
-
----
-
+</script></section><section  data-markdown><script type="text/template">
 ## Server-side Ruby Validation
 
 ``` ruby
@@ -499,9 +393,7 @@ class NewUserContract < Dry::Validation::Contract
   end
 end
 ```
-
----
-
+</script></section><section  data-markdown><script type="text/template">
 ## Server-side JavaScript Validation
 
 ```js
@@ -518,10 +410,8 @@ export default {
 };
 ```
 
-Note: Most JS examples are so gross they dont fit on screen
-
----
-
+<aside class="notes"><p>Most JS examples are so gross they dont fit on screen</p>
+</aside></script></section><section  data-markdown><script type="text/template">
 ## Looks like an API Description
 
 ``` yaml
@@ -539,31 +429,19 @@ required:
 - email
 - age
 ```
-
----
-
+</script></section><section  data-markdown><script type="text/template">
 Multiple Sources Of Truth = Checking For LIES
-
----
-
+</script></section><section  data-markdown><script type="text/template">
 Dredd, takes a lot of work and breaks so much teams just turn it off
 
 https://dredd.org/
-
----
-
+</script></section><section  data-markdown><script type="text/template">
 ## Reuse API Descriptions for Validation
-
----
-
+</script></section><section  data-markdown><script type="text/template">
 <!-- .slide: data-background="img/docs-api-reuse.jpg" data-background-size="contain" data-background-color="#fff" -->
-
----
-
+</script></section><section  data-markdown><script type="text/template">
 OpenAPI Validation Middlewares can reject invalid requests with "no code".
-
----
-
+</script></section><section  data-markdown><script type="text/template">
 ```php
 use League\OpenAPIValidation\PSR15\ValidationMiddlewareBuilder;
 use League\OpenAPIValidation\PSR15\SlimAdapter;
@@ -575,18 +453,14 @@ $psr15Middleware = (new ValidationMiddlewareBuilder)
 /** @var \Slim\App $app */
 $app->add(new SlimAdapter($slimMiddleware));
 ```
-
----
-
+</script></section><section  data-markdown><script type="text/template">
 ```ruby
 # config/application.rb
 
 config.middleware.use Committee::Middleware::RequestValidation,
   schema_path: 'openapi.yaml'
 ```
-
----
-
+</script></section><section  data-markdown><script type="text/template">
 ```js
 {
   "errors": [
@@ -600,46 +474,30 @@ config.middleware.use Committee::Middleware::RequestValidation,
   ]
 }
 ```
-
----
-
+</script></section><section  data-markdown><script type="text/template">
 - **Ruby:** [committee](https://github.com/interagent/committee)
 - **PHP:** [league/openapi-psr7-validator](https://github.com/thephpleague/openapi-psr7-validator)
 - **NodeJS:** [fastify](https://github.com/fastify/fastify/blob/master/docs/Validation-and-Serialization.md) or [express-ajv-swagger-validation](https://github.com/Zooz/express-ajv-swagger-validation)
 - **Java/Kotlin:** [openapi-spring-webflux-validator](https://github.com/cdimascio/openapi-spring-webflux-validator)
 - **Python:** [connexion](https://github.com/zalando/connexion)
 - **Mojolicious:** [Mojolicious](https://metacpan.org/pod/Mojolicious::Plugin::OpenAPI)
-
----
-
+</script></section><section  data-markdown><script type="text/template">
 If you have validation code, you can delete it.
 
 If this is a new application, you **don't need to write it**.
-
----
-
+</script></section><section  data-markdown><script type="text/template">
 "Data-store Validations" like "is email unique" still need to happen 👍
-
----
-
+</script></section><section  data-markdown><script type="text/template">
 Your integration/e2e test suite proves the **requests** work as expected.
 
 Documented requests are now _proven_ to be correct.
-
----
-
+</script></section><section  data-markdown><script type="text/template">
 What about responses?
-
----
-
+</script></section><section  data-markdown><script type="text/template">
 Middlewares _can_ validate responses, but why waste time in prod?
-
----
-
+</script></section><section  data-markdown><script type="text/template">
 Your test suite can contract test **responses** with OpenAPI.
-
----
-
+</script></section><section  data-markdown><script type="text/template">
 ```rb
 JsonMatchers.schema_root = "api/models/"
 
@@ -650,69 +508,47 @@ end
 ```
 
 <small>https://apisyouwonthate.com/blog/writing-documentation-via-contract-testing</small>
-
----
-
+</script></section><section  data-markdown><script type="text/template">
 ## Request Validation at API Gateway
 
 Middleware a bit slow in prod?
 
 Can't find a middleware?
-
----
-
+</script></section><section  data-markdown><script type="text/template">
 - AWS API Gateway
 - Azure Gateway
 - [Express Gateway](https://www.express-gateway.io/docs/policies/customization/conditions/#json-schema)
 - Kong
 - Tyk
-
----
-
+</script></section><section  data-markdown><script type="text/template">
 API Gateways can validate your payloads before your application server is called
-
----
-
+</script></section><section  data-markdown><script type="text/template">
 <!-- .slide: data-background="img/gateway.png" data-background-size="contain" data-background-color="#fff" -->
 
-Note: like cache servers
-
----
-
+<aside class="notes"><p>like cache servers</p>
+</aside></script></section><section  data-markdown><script type="text/template">
 Register a middleware in dev?
 
 Register a gateway plugin in prod?
 
 <small>Standards compliance _should_ mean dev/prod parity.*</small>
-
----
-
+</script></section><section  data-markdown><script type="text/template">
 _Another (third) source of truth for validation... the client!_
-
----
-
+</script></section><section  data-markdown><script type="text/template">
 <!-- .slide: data-background="img/validation/client.jpg" data-background-size="contain" data-background-color="#fff" -->
-
----
-
+</script></section><section  data-markdown><script type="text/template">
 <!-- .slide: data-background="img/validation/client-api-change.jpg" data-background-size="contain" data-background-color="#fff" -->
 
-Note: Increased length is ok right?
-
----
-
+<aside class="notes"><p>Increased length is ok right?</p>
+</aside></script></section><section  data-markdown><script type="text/template">
 <!-- .slide: data-background="img/validation/client-fire.jpg" data-background-size="contain" data-background-color="#fff" -->
-
----
-
+</script></section><section  data-markdown><script type="text/template">
 JSON Schema at runtime
 
 ```text
 Link: <http://example.com/schemas/user.json#>; rel="describedby"
 ```
-
----
-
+</script></section><section  data-markdown><script type="text/template">
 ```js
 const ajv = new Ajv();
 const userSchema = require('./cached-schema.json')
@@ -730,9 +566,7 @@ const input = {
 
 validate(userSchema, input); // true
 ```
-
----
-
+</script></section><section  data-markdown><script type="text/template">
 ```js
 validate(userSchema, { ...input, email: 123 );
 
@@ -746,30 +580,20 @@ validate(userSchema, { ...input, email: 123 );
   }
 ]
  ```
-
----
-
+</script></section><section  data-markdown><script type="text/template">
 ```js
 [ 'Name is a required field' ]
 [ 'Email should match format “email”' ]
 [ 'Date Of Birth is in an invalid format, e.g: 1990–12–28' ]
 [ 'Name should NOT be longer than 20 characters' ]
 ```
-
----
-
+</script></section><section  data-markdown><script type="text/template">
 <!-- .slide: data-background="img/single-source.jpg" data-background-size="contain" data-background-color="#fff" -->
-
----
-
+</script></section><section  data-markdown><script type="text/template">
 <!-- .slide: data-background="img/wf-4.png" data-background-size="contain" data-background-color="#eee" -->
-
----
-
+</script></section><section  data-markdown><script type="text/template">
 <!-- .slide: data-background="img/lifecycle.png" data-background-size="contain" data-background-color="#eee" -->
-
----
-
+</script></section><section  data-markdown><script type="text/template">
 <!-- .slide: data-background="img/questions.jpg" style="text-align: left" -->
 
 # Thank You! 
@@ -777,3 +601,54 @@ validate(userSchema, { ...input, email: 123 );
 [ApisYouWontHate.com](https://apisyouwonthate.com) <!-- .element: style="font-size: 38pt; color: #eee" -->
 
 [Stoplight.io](https://stoplight.io) <!-- .element: style="font-size: 38pt; color: #eee" -->
+</script></section></div>
+    </div>
+
+    <script src="./js/reveal.js"></script>
+
+    <script>
+      function extend() {
+        var target = {};
+        for (var i = 0; i < arguments.length; i++) {
+          var source = arguments[i];
+          for (var key in source) {
+            if (source.hasOwnProperty(key)) {
+              target[key] = source[key];
+            }
+          }
+        }
+        return target;
+      }
+
+      // Optional libraries used to extend on reveal.js
+      var deps = [
+        { src: './plugin/markdown/marked.js', condition: function() { return !!document.querySelector('[data-markdown]'); } },
+        { src: './plugin/markdown/markdown.js', condition: function() { return !!document.querySelector('[data-markdown]'); } },
+        { src: './plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+        { src: './plugin/zoom-js/zoom.js', async: true },
+        { src: './plugin/notes/notes.js', async: true },
+        { src: './plugin/math/math.js', async: true }
+      ];
+
+      // default options to init reveal.js
+      var defaultOptions = {
+        controls: true,
+        progress: true,
+        history: true,
+        center: true,
+        transition: 'default', // none/fade/slide/convex/concave/zoom
+        dependencies: deps
+      };
+
+      // options from URL query string
+      var queryOptions = Reveal.getQueryHash() || {};
+
+      var options = extend(defaultOptions, {"transition":"fade","controls":false,"progress":false}, queryOptions);
+    </script>
+
+
+    <script>
+      Reveal.initialize(options);
+    </script>
+  </body>
+</html>
