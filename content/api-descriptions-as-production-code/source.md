@@ -1,5 +1,5 @@
 ---
-title: "API Descriptions as Production Code"
+title: "API Design First Workflow"
 theme: league
 revealOptions:
   transition: 'fade'
@@ -12,47 +12,187 @@ revealOptions:
 <br>
 <br>
 <br>
-<span style="font-size: 60pt; color: black">API Descriptions as Production Code</span>
+<span style="font-size: 60pt; color: black">API Design First<br>and Always</span>
+
+---
+
+<!-- .slide: data-background="img/intro.png" data-background-color="#eee" -->
 
 ---
 
 <!-- .slide: data-background="img/wework.jpg" -->
 
----
-
-<!-- .slide: data-background="img/trip.jpg" -->
+<img src="img/wework-logo.jpg" style="width:300px">
 
 ---
 
-<!-- .slide: data-background="img/paris.png" -->
+<!-- .slide: data-background="img/lifecycle.png" data-background-size="contain" data-background-color="#eee" -->
 
 ---
 
-## 2017-2018 Questions
-
-1. Design First or Code First? 
-1. What tooling supports OpenAPI v3.0? <!-- .element: class="fragment" -->
-1. Why are there no visual editors? <!-- .element: class="fragment" -->
-1. How/when do we create documentation? <!-- .element: class="fragment" -->
-1. How/when do we create mocks?  <!-- .element: class="fragment" -->
-1. How do we keep code and docs in sync?  <!-- .element: class="fragment" -->
+<!-- .slide: data-background="img/lifecycle1.png" data-background-size="contain" data-background-color="#eee" -->
 
 ---
 
-**What tooling supports OpenAPI v3.0?**
-
-most of it <!-- .element: class="fragment" -->
-
-https://openapi.tools <!-- .element: class="fragment" -->
+<!-- .slide: data-background="img/lifecycle2.png" data-background-size="contain" data-background-color="#eee" -->
 
 ---
 
-<!-- .slide: data-background="img/tools.png" data-background-size="contain" -->
+<!-- .slide: data-background="img/lifecycle3.png" data-background-size="contain" data-background-color="#eee" -->
 
 ---
 
+## API Workflow Questions
 
-**Design First or Code First?**
+1. Swagger, OpenAPI v3, API Blueprint, RAML? 
+2. Annotations or YAML? <!-- .element: class="fragment" -->
+3. Design First or Code First? <!-- .element: class="fragment" -->
+4. Where are the visual editors? <!-- .element: class="fragment" -->
+5. How/when do we create documentation? <!-- .element: class="fragment" -->
+6. How/when do we create mocks?  <!-- .element: class="fragment" -->
+7. How do we keep code and docs in sync?  <!-- .element: class="fragment" -->
+
+---
+
+## The API Description Format <!-- .element: style="color: black" -->
+
+
+<!-- .slide: data-background-color="#fff" -->
+
+![](./img/openapi-logo.png)
+
+---
+
+OpenAPI is an API Description Format for creating HTTP API Descriptions.
+
+---
+
+You can describe your API with a Description Document.
+
+e.g.: `openapi.yaml`
+
+---
+
+```yaml
+openapi: 3.0.3
+
+info:
+  version: v1.0
+  title: RemoteOk Jobs API
+  contact:
+    email: support@remoteok.io
+  description: >
+    Remotely interested in an a job? This is a JSON feed from RemoteOk.io with
+    all the latest jobs. You can't search by category or tag as far as we can
+    tell, but... you can sift through!
+
+servers:
+  - url: 'https://remoteok.io/api'
+    description: Production
+  - url: 'https://sandbox.remoteok.io/api'
+    description: Sandbox
+
+paths:
+  /:
+    get:
+      operationId: get-listings
+      summary: All Listings
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Listings'
+
+components:
+  schemas:
+    Listings:
+      type: array
+      items:
+        $ref: '#/components/schemas/Listing'
+    Listing:
+      type: object
+      additionalProperties: false
+      properties:
+        slug:
+          type: string
+        id:
+          type: string
+          format: integer
+        epoch:
+          type: string
+          format: integer
+        date:
+          type: string
+          format: date-time
+        company:
+          type: string
+        company_logo:
+          type: string
+        position:
+          type: string
+        tags:
+          type: array
+          items:
+            type: string
+        description:
+          type: string
+        url:
+          type: string
+          format: uri
+        logo:
+          type: string
+          format: uri
+        original:
+          type: boolean
+        verified:
+          type: boolean
+      required: 
+      - slug
+      - id
+      - epoch
+      - date
+      - company
+      - company_logo
+      - position
+      - tags
+      - description
+      - url
+```
+
+---
+
+```yaml
+type: object
+properties:
+  name:
+    title: Name
+    type: string
+    description: Users full name supporting unicode but no emojis.
+    maxLength: 20
+  email:
+    title: Email
+    description: Like a postal address but for computers.
+    type: string
+    format: email
+  date_of_birth:
+    title: Date Of Birth
+    type: string
+    description: 'Date of users birth in the one and only date standard: ISO 8601.'
+    format: date
+    example: 1990–12–28
+required:
+- name
+```
+
+---
+
+<!-- .slide: data-background="img/oas-members.png" data-background-size="contain" data-background-color="#f6f6f6" -->
+
+---
+
+## Annotations or YAML?
 
 ---
 
@@ -95,13 +235,44 @@ public function getUserByName($username, $newparam)
 
 ---
 
+```js
+/**
+ * @swagger
+ * /users:
+ *   get:
+ *     description: Returns users
+ *     produces:
+ *      - application/json
+ *     responses:
+ *       200:
+ *         description: users
+ *         schema:
+ *           type: array
+ *           items:
+ *             $ref: '#/definitions/User'
+ */
+app.get('/users', (req, res) => {
+});
+```
+
+---
+
 > Code comments are just facts waiting to become lies.
 
 _<small>Vinai Kopp, A talk at #MM18IT</small>_
 
 ---
 
-<!-- .slide: data-background="img/code-comments.jpg" data-background-size="contain" -->
+<!-- .slide: data-background="img/code-comments.jpg" data-background-size="contain" data-background-color="#121212" -->
+
+---
+
+## Code First vs Design First
+
+---
+
+<!-- .slide: data-background="img/poll.png" data-background-size="contain" data-background-color="#fff" -->
+
 
 ---
 
@@ -113,15 +284,15 @@ _<small>Vinai Kopp, A talk at #MM18IT</small>_
 
 ---
 
+<!-- .slide: data-background="img/blueprint.jpeg" -->
+
+---
+
 <!-- .slide: data-background="img/wf-3.png" data-background-size="contain" data-background-color="#eee" -->
 
 ---
 
 <!-- .slide: data-background="img/wf-4.png" data-background-size="contain" data-background-color="#eee" -->
-
----
-
-<!-- .slide: data-background="img/lifecycle.png" data-background-size="contain" data-background-color="#eee" -->
 
 ---
 
@@ -139,18 +310,70 @@ _<small>Sebastien Armand, "Making OpenAPI Bearable With Your Own DSL"</small>_
 
 ---
 
-**Why are there no visual editors?**
+```
+;;; ENTITIES
+(define pet-entity
+ (entity "Pet"
+    'race (string "What kind of dog / cat this is (labrador, golden retriever, siamese, etc...)" "Labrador")
+    'origin (string "Country of origin" "Egypt")
+    'birthday (datetime "Birth date of the pet" "2017-10-20T00:14:02+0000")
+    'species (string "What kind of animal is this" "dog" #:enum '("dog" "cat"))))
+(define $pet (schema-reference 'Pet pet-entity))
 
+;;; RESPONSES
+(define list-pets-response (jsonapi-paginated-response "List of pets" ($pet)))
+ 
+;;; REQUESTS
+(define pet-request (json-request "Pet Request Body" ($pet)))
+ 
+;;; MAIN DOC
+(define swagger
+ (my-service-api-doc "Pet Store" "Per store pets management"
+   (path "/pets") (endpoint-group
+      'tags pet-tags
+      'parameters (list store-id-param)
+      'get (endpoint
+              'operationId "listPets"
+              'summary "Retrieve all the pets for this store"
+              'parameters pagination-params
+              'responses (with-standard-get-responses 200 list-pets-response))
+      'post (endpoint
+              'operationId "createPet"
+              'summary "Create a new Pet record"
+              'requestBody pet-request
+              'parameters (list xsrf-token)
+              'responses (with-standard-post-responses 200 single-pet-response)))
+```
 
 ---
 
-<img src="img/logo.dark.png" style="border:0; background:transparent;box-shadow:0">
-
-https://stoplight.io/studio <!-- .element: class="fragment" -->
+**Where are the visual editors?**
 
 ---
 
-<!-- .slide: data-background="img/studio.png" data-background-size="contain" data-background-color="#000" -->
+https://openapi.tools/#gui-editors
+
+---
+
+<!-- .slide: data-background-color="#fff" -->
+
+![](img/logo.light.png)
+
+---
+
+<!-- .slide: data-background="img/stoplight.png" data-background-size="contain" data-background-color="#fff" -->
+
+---
+
+<!-- .slide: data-background="img/stoplight-workflow.jpeg" data-background-size="contain" data-background-color="#fff" -->
+
+---
+
+<!-- .slide: data-background="img/studio-editor.png" data-background-size="contain" data-background-color="#000" -->
+
+---
+
+<!-- .slide: data-background="img/git.png" data-background-size="contain" data-background-color="#f5f7f9" -->
 
 ---
 
@@ -158,31 +381,79 @@ https://stoplight.io/studio <!-- .element: class="fragment" -->
 
 ---
 
-<!-- .slide: data-background="img/studio-adv.png" data-background-size="contain" data-background-color="#666" -->
+<!-- .slide: data-background="img/studio-adv.png" data-background-size="contain" data-background-color="#000" -->
 
 ---
 
-<!-- .slide: data-background="img/studio-md.png" data-background-size="contain" data-background-color="#fff" -->
+<!-- .slide: data-background="img/studio-md.svg" data-background-size="contain" data-background-color="#fff" -->
+
+---
+
+<!-- .slide: data-background="img/studio-spectral.png" data-background-size="contain" data-background-color="#f5f7f9" -->
+
+---
+
+<!-- .slide: data-background="img/styleguides.svg" data-background-size="contain" data-background-color="#f5f7f9" -->
+
+---
+
+## API Description Linting
+
+a.k.a "API Style Guides"
+
+---
+
+<!-- .slide: data-background="img/workflow-lint.jpeg" data-background-size="contain" data-background-color="#000" -->
+
+---
+
+<!-- .slide: data-background="img/lint-cli-vscode.jpg" data-background-size="contain" data-background-color="#000" -->
+
+---
+
+<!-- .slide: data-background="img/lint-errors.jpg" data-background-size="contain" data-background-color="#000" -->
 
 ---
 
 **How/when do we create mocks?**
 
-http://stoplight.io/prism <!-- .element: class="fragment" -->
+1. Local Mock Servers
+2. Hosted Mock Servers 
 
-Studio has Prism built in 🙌 <!-- .element: class="fragment" -->
+http://openapi.tools/#mock
 
-Hosted Prism coming soon... ⏳ <!-- .element: class="fragment" -->
+---
+
+**Local Mock Server**
+
+![](img/prism_validation.png)
+
+---
+
+**Hosted Mock Server**
+
+`https://acme.stoplight.io/mocks/widgets`
+
+![](img/mock-feedback.svg)
 
 ---
 
 **How/when do we create documentation?**
 
-https://stoplight.io/docs <!-- .element: class="fragment" -->
+1. CI deploys HTML to S3
+2. Read from Git repo on push
 
 ---
 
-<!-- .slide: data-background="img/docs.png" data-background-size="contain" data-background-color="#fff" -->
+Automatic generated API Reference docs
+
+![](img/docs.svg)
+
+---
+
+Automatic generated Code Samples
+
+![](img/codesamples.svg)
 
 ---
 
@@ -190,20 +461,11 @@ https://stoplight.io/docs <!-- .element: class="fragment" -->
 
 ---
 
-⛔ Documentation
-✅ API Descriptions <!-- .element: class="fragment" -->
+<!-- .slide: data-background="img/docs-api.jpg" data-background-size="contain" data-background-color="#fff" -->
 
 ---
 
 ✅ **How to re-use API descriptions as code!**
-
----
-
-Code Generation is another talk... 
-
----
-
-<!-- .slide: data-background="img/docs-api.jpg" data-background-size="contain" data-background-color="#fff" -->
 
 ---
 
@@ -292,13 +554,51 @@ https://dredd.org/
 
 ## Reuse API Descriptions for Validation
 
-No need to write any code
+---
+
+<!-- .slide: data-background="img/docs-api-reuse.jpg" data-background-size="contain" data-background-color="#fff" -->
+
+---
+
+OpenAPI Validation Middlewares can reject invalid requests with "no code".
+
+---
+
+```php
+use League\OpenAPIValidation\PSR15\ValidationMiddlewareBuilder;
+use League\OpenAPIValidation\PSR15\SlimAdapter;
+
+$psr15Middleware = (new ValidationMiddlewareBuilder)
+  ->fromYamlFile('openapi.yaml')
+  ->getValidationMiddleware();
+
+/** @var \Slim\App $app */
+$app->add(new SlimAdapter($slimMiddleware));
+```
+
+---
 
 ```ruby
 # config/application.rb
 
 config.middleware.use Committee::Middleware::RequestValidation,
   schema_path: 'openapi.yaml'
+```
+
+---
+
+```js
+{
+  "errors": [
+    {
+      "status": "422",
+      "detail": "The property '#/widget/price' of type string did not match the following type: integer",
+      "source": {
+        "pointer": "#/widget/price"
+      }
+    }
+  ]
+}
 ```
 
 ---
@@ -312,26 +612,6 @@ config.middleware.use Committee::Middleware::RequestValidation,
 
 ---
 
-```js
-{
-  "errors": [
-    {
-      "status": "422",
-      "detail": "The property '#/widget/price' of type string 
-did not match the following type: integer",
-      "source": {
-        "pointer": "#/widget/price"
-      }
-    }
-  ]
-}
-```
----
-
-<!-- .slide: data-background="img/docs-api-reuse.jpg" data-background-size="contain" data-background-color="#fff" -->
-
----
-
 If you have validation code, you can delete it.
 
 If this is a new application, you **don't need to write it**.
@@ -342,16 +622,26 @@ If this is a new application, you **don't need to write it**.
 
 ---
 
-Your test suite uses descriptions to acceptance test **requests**.
+Your integration/e2e test suite proves the **requests** work as expected.
+
+Documented requests are now _proven_ to be correct.
 
 ---
 
-Your test suite uses descriptions to contract test **responses**.
+What about responses?
+
+---
+
+Middlewares _can_ validate responses, but why waste time in prod?
+
+---
+
+Your test suite can contract test **responses** with OpenAPI.
 
 ---
 
 ```rb
-JsonMatchers.schema_root = "reference/example-api/models"
+JsonMatchers.schema_root = "api/models/"
 
 it 'should conform to user schema' do
   get "/users/#{subject.id}"
@@ -363,15 +653,23 @@ end
 
 ---
 
-## Request Validation at Gateway
-
-Can't find a middleware?
+## Request Validation at API Gateway
 
 Middleware a bit slow in prod?
 
+Can't find a middleware?
+
 ---
 
-Gateways validate your payloads before your application server is called
+- AWS API Gateway
+- Azure Gateway
+- [Express Gateway](https://www.express-gateway.io/docs/policies/customization/conditions/#json-schema)
+- Kong
+- Tyk
+
+---
+
+API Gateways can validate your payloads before your application server is called
 
 ---
 
@@ -381,19 +679,11 @@ Note: like cache servers
 
 ---
 
-- AWS Gateway
-- Azure Gateway
-- [Express Gateway](https://www.express-gateway.io/docs/policies/customization/conditions/#json-schema)
-- Kong
-- Tyk
-
----
-
 Register a middleware in dev?
 
 Register a gateway plugin in prod?
 
-<small>Standards compliance should mean dev/prod parity.*</small>
+<small>Standards compliance _should_ mean dev/prod parity.*</small>
 
 ---
 
@@ -476,10 +766,14 @@ validate(userSchema, { ...input, email: 123 );
 
 ---
 
+<!-- .slide: data-background="img/lifecycle.png" data-background-size="contain" data-background-color="#eee" -->
+
+---
+
 <!-- .slide: data-background="img/questions.jpg" style="text-align: left" -->
 
 # Thank You! 
 
-[ApisYouWontHate.com](foo.com) <!-- .element: style="font-size: 38pt; color: #eee" -->
+[ApisYouWontHate.com](https://apisyouwonthate.com) <!-- .element: style="font-size: 38pt; color: #eee" -->
 
-[Stoplight.io](foo.com) <!-- .element: style="font-size: 38pt; color: #eee" -->
+[Stoplight.io](https://stoplight.io) <!-- .element: style="font-size: 38pt; color: #eee" -->
