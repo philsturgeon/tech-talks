@@ -33,15 +33,13 @@ Note: I am all for appropriate tool
 
 ---
 
-<!-- .slide: data-background="img/my-bikes-4.png" -->
+<!-- .slide: data-background="img/my-bikes-4.jpg" -->
 
 Note: I am all for appropriate tool
 
 ---
 
 <!-- .slide: data-background="img/my-bikes-5.png" -->
-
-Note: I am all for appropriate tool
 
 ---
 
@@ -198,23 +196,25 @@ Note: Normally dont need brakes but
 
 ## GraphQL is optimized for network speed
 
-But ignores HATEOAS and most of HTTP
+Make that big call smaller and therefore faster.
 
 ---
 
-## REST is optimized for API longevity
+## REST is optimized for network efficiency
 
-Network performance is a lesser concern
-
----
-
-## REST cares about decoupling client/server
+Reuse messages as much as reasonably possible.
 
 ---
 
-![](img/crash-but-recover.gif)
+## GraphQL avoids repetition through tight coupling
 
-Note: Losley coupled systems recover from crashes better
+If you're a full-stack dev why repeat contracts on the frontend and the backend.
+
+---
+
+## REST bakes in more information to the message
+
+Reduce the reliance on documentation by making each message self explanitory. Cache length, when to retry, can you even retry, etc.
 
 ---
 
@@ -226,7 +226,7 @@ Note: Losley coupled systems recover from crashes better
 
 ---
 
-### False differenciations
+### False differentiation
 
 ---
 
@@ -235,7 +235,7 @@ Note: Losley coupled systems recover from crashes better
 ---
 
 ```
-POST /graphql HTTP/1.1
+POST /graphql HTTP/2
 Content-Type: application/graphql
 
 {
@@ -249,11 +249,20 @@ Content-Type: application/graphql
 
 ---
 
-# REST Allows That
+# REST Has That
 
-Sparse Fieldsets / Partials
+It's called "Sparse Fieldsets".
 
-`GET /turtles/123?fields=length,width,intelligence`
+```
+GET /turtles/123?fields=length,width,intelligence HTTP/2
+```
+```json
+{
+  "length": 11,
+  "width": 6,
+  "intelligence": 100
+}
+```
 
 ---
 
@@ -261,11 +270,34 @@ Sparse Fieldsets / Partials
 
 ---
 
-# REST Allows That
+# REST Has That
 
-JSON-based: JSON Schema / JSON-LD
+JSON Schema and OpenAPI.
 
-Binary Based: Protobuff / Cap'n Proto
+```json
+{
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "maxLength": 20
+    },
+    "email": {
+      "type": "string",
+      "format": "email"
+    },
+    "date_of_birth": {
+      "type": "string",
+      "format": "date",
+      "example": "1990–12–28"
+    }
+  }
+}
+```
+
+---
+
+![](img/editor.webp)
 
 ---
 
@@ -273,11 +305,11 @@ Binary Based: Protobuff / Cap'n Proto
 
 ---
 
-# REST Allows That
+# REST Has That
 
-Compound Documents
+It's called "Compound Documents"
 
-JSON-API / OData
+Available in JSON-API, OData, HAL, Siren, etc.
 
 ---
 
@@ -295,15 +327,61 @@ JSON-API / OData
 
 ---
 
-[![](img/learn-about-versioning.png)](https://blog.apisyouwonthate.com/api-versioning-has-no-right-way-f3c75457c0b7)
+## GraphQL makes deprecation easy
 
-blog.apisyouwonthate.com/api-versioning-has-no-right-way-f3c75457c0b7
+```
+POST /graphql HTTP/2
+Content-Type: application/graphql
+
+{
+  turtles(id: "123") {
+    length,
+    width,
+    intelligence
+  }
+}
+```
 
 ---
 
-## So... GraphQL is a Query Language
+```
+type Turtle {
+  length: Int
+  width: Int
+  intelligence: String @deprecated
+}
+```
 
-Ususally _but not exclusively_ operated over HTTP
+---
+
+Endpoint-based APIs can deprecate whole endpoints.
+
+```js
+fastify.get('/old', options, (request, reply) => {
+  reply
+    .code(200)
+    .header('Content-Type', 'application/json')
+    .header('Deprecation', 'true')
+    .header('Sunset', 'Thu, 31 Dec 2020 23:59:59')
+    .send({ hello: 'world' });
+});
+```
+
+---
+
+> DEPRECATION: Endpoint #{env.url} is deprecated for removal on #{datetime.iso8601}
+
+---
+
+They can both do all the same general stuff. 
+
+So... wtf?
+
+---
+
+## GraphQL is _kinda_ a Query Language
+
+Usually _but not exclusively_ operated over HTTP.
 
 ---
 
@@ -324,12 +402,12 @@ GET /fql?q=SELECT status_id,message,time,source FROM `status` WHERE uid = me()
 
 ---
 
-Facebook disliked writing 2x code
+Facebook disliked writing 2x code.
 
-1x for FQL  
-1x for RESTish
+- 1x for FQL  
+- 1x for RESTish
 
-Wanted one API that covered both uses
+Wanted one API that covered both uses.
 
 ---
 
@@ -386,11 +464,36 @@ A GraphQL Client is entirely responsible for:
 
 ---
 
-Each client has to guess the rules for how long to cache certain data, and how to invalidate
+Each client has to guess the rules for how long to cache certain data, and how to invalidate.
+
+```ruby
+Rails.cache.fetch("users/#{uuid}", expires_in: 12.hours.from_now) do
+  UserAPI.find_user(uuid)
+end
+```
+
+12 is arbitrary!
 
 ---
 
-REST says this should be a concern of the server
+"My email is showing up differently in two different places..."
+
+---
+
+REST says this should be a concern of the server.
+
+```
+Cache-Control: public, max-age=1800
+```
+
+---
+
+You might want to increase cache duration when stability wobbles, decrease when its good.
+
+```
+Cache-Control: public, max-age=6000
+Cache-Control: public, max-age=60
+```
 
 ---
 
@@ -412,6 +515,8 @@ HTTP has loads of amazing caching proxies:
 - Squid
 - Fastly
 - Nginx!
+
+They're all ready to go and don't need to know anything about your API.
 
 ---
 
@@ -483,13 +588,13 @@ GrahQL cannot use existing HTTP network caching tools
 
 ---
 
-## Data has to be readily accessable for ANY query
+## Data has to be readily accessible for ANY query
 
 That's not something you should take lightly
 
 ---
 
-_You won't have an efficient GraphQL API without restructing your data_
+_You won't have an efficient GraphQL API without restructuring your data_
 
 ---
 
@@ -506,12 +611,38 @@ server,is,on,fire,agggghhhhhh
 
 ---
 
-## Multiple handshakes are not going to be _your_ bottleneck
+## Bizarre Fear of "Multiple handshakes"
 
-_And HTTP/2 solves the multiple handshake issue anyway_
+1999: HTTP/1.1 "keep-alive" solved multiple handshakes
+2015: HTTP/2.0 reuses same connection
+2021: HTTP/3.0 improves performance again
 
 ---
 
+## Confusion about multiple Methods
+
+- POST
+- PUT
+- PATCH
+- DELETE
+
+---
+
+But when everything is "query" or "mutation", how do you tell the difference between a partial update and a complete replace?
+
+Everyone has to invent this convention. 
+
+- updateFoo?
+- updatePartialFoo?
+- updateFooFull?
+
+--- 
+
+Caching tools haven't got a clue about your convention.
+
+HTTP clients don't know if they can retry those mutations.
+
+---
 ## REST vs RESTish
 
 ---
@@ -536,19 +667,11 @@ Most RESTish APIs miss the most important concept: Controls
 
 ---
 
-Hypermedia controls are seen as confusing, slow or pointless
-
----
-
-### BECAUSE THEY ARE MISUSED + MISUNDERSTOOD
+Hypermedia controls are seen as confusing, slow or pointless, but they normalize state instead of leaking state all over client code.
 
 ---
 
 ## REST != CRUD over HTTP
-
----
-
-Hypermedia "Links" are not just for related data
 
 ---
 
@@ -589,7 +712,7 @@ end
 
 ---
 
-## Simple State machines
+## Simple State Machines
 
 ``` ruby
 invoice.current_state # => "draft"
@@ -599,19 +722,16 @@ invoice.transition_to(:paid) # => true/false
 
 ---
 
-## State Machines can power Hypermedia Controls!
+## State Machines can power Hypermedia Controls
 
-Original approach...
+If you see a pay link, you can make a payment.
 
 ```
 {
   "data": {
-    "type": "invoice",
     "id": "093b941d",
-    "attributes": {
-      "bla": "stuff",
-      "status": "draft"
-    }
+    "bla": "stuff",
+    "status": "draft"
   },
   "links": {
     "pay": "https://api.acme.com/invoices/093b941d/payment_attempts"
@@ -621,47 +741,87 @@ Original approach...
 
 ---
 
-# Different levels of HATEOAS
-
----
-
-## 1.) String containing just URL
+Compare this to the GraphQL or RESTish "just a bunch of data" approach.
 
 ```
-"links": {
-  "pay": "https://api.acme.com/invoices/093b941d/payment_attempts"
+{
+  "data": {
+    "id": "093b941d",
+    "published_at": "2017-06-15 12:31:01Z",
+    "sent_at": "2017-06-15 12:34:29Z",
+    "paid_at": null
+  }
 }
 ```
 
-- If link exists clients can "click it"
-- (No guarentee of success)
-- Make URL respond to `OPTIONS`
-- Use `Allow: GET, PATCH` to show available actions
+---
+
+```
+{
+  "data": {
+    "id": "093b941d",
+    "published_at": "2017-06-15 12:31:01Z",
+    "sent_at": "2017-06-15 12:34:29Z",
+    "paid_at": "2017-06-16 09:05:00Z",
+    "payment_received_at": null
+  }
+}
+```
 
 ---
 
-**Downsides**
-
-1. Working out what GET and PATCH are exactly for
-2. What fields should be sent to PATCH
-
----
-
-## 2.) Add metadata to that OPTIONS payload
-
-- Use JSON Schema to detail fields
-- Use JSON HyperSchema to detail potential actions
-- Entirely optional extra layer of strictness
-
----
-
-**Downsides**
-
-Optional nature means some clients will ignore/not notice
+```
+{
+  "data": {
+    "id": "093b941d",
+    "published_at": "2017-06-15 12:31:01Z",
+    "sent_at": "2017-06-15 12:34:29Z",
+    "paid_at": null,
+    "payment_received_at": null,
+    "status": "payable"
+  }
+}
+```
 
 ---
 
-## 3.) Add Hypermedia controlls in response
+```
+{
+  "data": {
+    "id": "093b941d",
+    "published_at": "2017-06-15 12:31:01Z",
+    "sent_at": "2017-06-15 12:34:29Z",
+    "paid_at": null,
+    "payment_received_at": null,
+    "status": "payable"
+  },
+  "links": {
+    "pay": "https://api.acme.com/invoices/093b941d/payment_attempts"
+  }
+}
+```
+
+---
+
+## Hypermedia Controls with JSON:API
+
+```
+{
+  // ...
+  "links": {
+    "pay": {
+      "href": "https://api.acme.com/invoices/093b941d/payment_attempts"
+      "describedby": "http://example.com/schemas/payment_attempt"
+    }
+  }
+}
+```
+
+JSON Schema to the rescue! 
+
+---
+
+## Hypermedia Controls with Siren
 
 ```
   "actions": [
@@ -680,19 +840,11 @@ Optional nature means some clients will ignore/not notice
   ],
 ```
 
-[Siren](https://github.com/kevinswiber/siren) / [HAL](https://tools.ietf.org/html/draft-kelly-json-hal-06)
+[Siren](https://github.com/kevinswiber/siren) makes it _really_ easy.
 
-_[Many others](https://sookocheff.com/post/api/on-choosing-a-hypermedia-format/)_
-
----
-
-**Downsides**
-
-Increases size of response message
+_[Many other hypermedia formats to try out.](https://sookocheff.com/post/api/on-choosing-a-hypermedia-format/)_
 
 ---
-
-### HATEOAS Pitch
 
 HATEOAS can help clients build "Actions" dropdowns dynamically!
 
@@ -700,84 +852,50 @@ HATEOAS can help clients build "Actions" dropdowns dynamically!
 
 ---
 
-### HATEOAS Pitch
+Looks gross? Doesn't matter. Grab a sweet sweet client like ketting.
 
-GraphQL cannot help you communicate with other systems
-
----
-
-### HATEOAS Pitch
-
-Hypermedia can help you make cross-API requests
-
----
-
-### HATEOAS Pitch
-
-iOS, Web and XBox apps _cannot_ mismatch state
-
-Note: One client offers link another doesnt
-
----
-
-## Enough, we dont want/need HATEOAS
-
----
-
-GraphQL is a great alternative to JSON-API-like RESTish APIs
-
----
-
-## GraphQL makes Deprecations awesome
-
-```
-POST /graphql HTTP/1.1
-Content-Type: application/graphql
-
-{
-  turtles(id: "123") {
-    length,
-    width,
-    intelligence
-  }
-}
+```js
+const newRes = await res
+  .follow('article-collection')
+  .followAll('item')
+  .preFetch();
 ```
 
----
+--- 
 
-```
-type Turtle {
-  length: String
-  width: Int
-  intelligence: String @deprecated
-}
+**Pros**
 
----
+- State moved from frontend to the server
+- Multiple clients less likely to diverge
+- Less conversations required about what fields infer what state
 
-Endpoint-based APIs can deprecate whole endpoints
+**Cons**
 
-`Sunset: Thu, 13 Jul 2017 15:42:12 GMT`
-
-([IETF Draft](https://tools.ietf.org/html/draft-wilde-sunset-header-03))
+- Increases size of response message
+- Change in mindset for client developers
+- Annoying if you're building front and back simultaneously
 
 ---
 
-[faraday-sunset](https://github.com/philsturgeon/faraday-sunset)
+Hypermedia Controls can be really useful. Don't always need them.
 
 ---
 
-> DEPRECATION WARNING: Endpoint #{env.url} is deprecated for removal on #{datetime.iso8601}
+GraphQL is a great alternative to JSON-API-like RESTish APIs.
 
 ---
 
 If you don't want to learn:
 
+- HTTP/2 clients
 - Serializing data
-- Implement sparse fieldsets
+- Implementing sparse fieldsets
 - GZiping contents
-- Outlining data structures with JSON Schema
-- Offer binary alts to JSON like Protobuff or CapnProto
-- Evolution instead of global versioning
+- Schemas/Types with JSON Schema
+- HTTP Caching
+- Offer binary alts to JSON like Protobuf
+- ... 
+
 
 ---
 
@@ -785,28 +903,31 @@ If you don't want to learn:
 
 ---
 
-It's packaged together in one system, which is cool
+It's packaged together in one system, which is cool.
 
 ---
 
 ### Ask yourself
 
-Are you ok letting go of HTTP?
+Are you ok letting go of HTTP conventions?
 
 ---
 
 ### Ask yourself
-How different are your clients from each other?
+
+Do we need sparse fieldsets or could we design our API better?
 
 ---
 
 ### Ask yourself
+
 Do you trust your clients to handle caching without any hints from the server?
 
 ---
 
 ### Ask yourself
-Do we _defitely_ never _ever_ want HATEOAS?
+
+Do we _definitely_ never _ever_ want HATEOAS?
 
 ---
 
@@ -824,17 +945,21 @@ A [mostly] read-only Statistics API
 
 ## I would use GraphQL for
 
-A CRUD API that 100% did not need HATEOAS or file uploads ever
+A CRUD API that 100% did not need HATEOAS or file uploads ever.
 
 ---
 
-## I would use GraphQL for
-
-A CRUD API that the team might make shitty
+It's not about which is best. Generally you want a mixture.
 
 ---
 
-<!-- .slide: data-background="img/surviving-other-peoples-apis.jpg" data-background-size="contain" data-background-color="#333" -->
+<!-- .slide: data-background="img/context-boundary.png" -->
+
+---
+
+"Picking the Right Paradigm"
+
+`apisyouwonthate.com/blog`
 
 ---
 
@@ -844,4 +969,4 @@ Books and blogs on [apisyouwonthate.com](https://apisyouwonthate.com)
 
 # Thanks!
 
-Slides are up on [philsturgeon.uk/speaking](http://philsturgeon.uk/speaking)
+Slides are up on [phil.tech/talks](http://phil.tech/talks)
